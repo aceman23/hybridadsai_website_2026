@@ -29,7 +29,7 @@ export default function StatsTicker() {
   const doubled = [...tickerItems, ...tickerItems];
 
   return (
-    <div className="bg-gray-950 border-y border-white/10 overflow-hidden py-4">
+    <div className="bg-white/60 backdrop-blur-md border-y border-gray-200/60 overflow-hidden py-4">
       <div className="flex items-center">
         <div className="flex-shrink-0 bg-blue-600 text-white text-xs font-black px-4 py-2 z-10 relative whitespace-nowrap mr-4 rounded-r-full">
           2024 ACHIEVEMENTS
@@ -46,9 +46,9 @@ export default function StatsTicker() {
                   <span className={`${colors.bg} ${colors.text} text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap`}>
                     {item.label}
                   </span>
-                  <span className="text-gray-400 text-sm whitespace-nowrap">{item.stat}</span>
-                  <span className="text-white font-black text-sm whitespace-nowrap">{item.value}</span>
-                  <span className="text-white/20 mx-2 text-lg">|</span>
+                  <span className="text-gray-500 text-sm whitespace-nowrap">{item.stat}</span>
+                  <span className="text-gray-900 font-black text-sm whitespace-nowrap">{item.value}</span>
+                  <span className="text-gray-300 mx-2 text-lg">|</span>
                 </div>
               );
             })}
