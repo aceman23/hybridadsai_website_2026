@@ -1,63 +1,121 @@
-import { ArrowRight, CheckCircle2, Plus, ChevronUp, Bot, Mic, Smartphone, Globe, Brain, ExternalLink } from 'lucide-react';
-import { useState } from 'react';
+import { ArrowRight, Plus, ChevronUp, Bot, Mic, Smartphone, Globe, Brain, ExternalLink } from 'lucide-react';
+import { useState, useRef } from 'react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
 import StatsTicker from '../components/StatsTicker';
 
+const PROJECT_CATEGORIES = ['All', 'SaaS', 'Mobile App', 'iOS App', 'Open Source', 'AI Platform'] as const;
+
 const recentProjects = [
+  {
+    name: 'DapperLimoLax',
+    url: 'https://dapperlimolax.com',
+    category: 'SaaS',
+    tag: 'SaaS',
+    tagColor: 'bg-sky-100 text-sky-700',
+    desc: 'Premium luxury limousine booking platform for LAX transfers — real-time availability, fleet management, and targeted paid ad campaigns driving direct bookings.',
+    stack: ['React', 'Node.js', 'Google Ads', 'Meta Ads'],
+    img: '/DapperLimoLax.png',
+    screenshot: true,
+  },
+  {
+    name: 'AsterionDB',
+    url: 'https://asteriondb.com',
+    category: 'SaaS',
+    tag: 'SaaS',
+    tagColor: 'bg-sky-100 text-sky-700',
+    desc: 'Enterprise database platform built for converged, secure, and simple data management. Handles unstructured content at scale without data duplication.',
+    stack: ['Database', 'Cloud', 'Security', 'APIs'],
+    img: '/AsterionDB.png',
+    screenshot: true,
+  },
+  {
+    name: 'Inference Learning Hub',
+    url: 'https://github.com/aceman23',
+    category: 'SaaS',
+    tag: 'SaaS',
+    tagColor: 'bg-sky-100 text-sky-700',
+    desc: 'AI education platform covering disaggregated inference, LLM serving architectures, and hands-on machine learning curriculum for engineers and researchers.',
+    stack: ['Next.js', 'AI/ML', 'Education', 'LLMs'],
+    img: '/InferenceLearningHub.png',
+    screenshot: true,
+  },
+  {
+    name: 'mySomaLabs',
+    url: 'https://mysomalabs.com',
+    category: 'SaaS',
+    tag: 'SaaS',
+    tagColor: 'bg-sky-100 text-sky-700',
+    desc: 'Biohacking and body recovery lab combining fitness science, red light therapy, cold plunge, and AI-driven personalized wellness coaching programs.',
+    stack: ['React', 'Supabase', 'Meta Ads', 'Google Ads'],
+    img: '/mySomaLabs.png',
+    screenshot: true,
+  },
+  {
+    name: 'OpenTranslateAI',
+    url: 'https://github.com/aceman23/OpenTranslateAI-OpenSourceWebsiteTranslator',
+    category: 'Open Source',
+    tag: 'Open Source',
+    tagColor: 'bg-orange-100 text-orange-700',
+    desc: 'Open-source React translation widget with smart DOM translation, 10+ languages, local caching, batch processing, and a beautiful animated UI. Privacy-first alternative to paid tools.',
+    stack: ['React', 'TypeScript', 'Tailwind', 'Vite'],
+    img: '/OpenTranslateAI.png',
+    screenshot: true,
+  },
   {
     name: 'LimoLogic',
     url: 'https://limologic.io/',
+    category: 'AI Platform',
     tag: 'AI Platform',
     tagColor: 'bg-blue-100 text-blue-700',
     desc: 'AI-powered platform with turnkey websites, instant online booking, intelligent chatbots, CRM integration, and targeted Google/Meta/TikTok ads — built for luxury transportation operators.',
     stack: ['Next.js', 'AI Chatbot', 'Google Ads', 'Meta Ads'],
     img: 'https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=600',
+    screenshot: false,
   },
   {
     name: 'SnapScanAI',
     url: 'https://github.com/aceman23/snapscan-landing',
+    category: 'Mobile App',
     tag: 'Mobile AI App',
     tagColor: 'bg-green-100 text-green-700',
     desc: 'AI-powered document scanner with Gemini File Search, cloud sync, local LLM chat, smooth animations, and clean UX. Built for privacy-conscious professionals and remote workers.',
     stack: ['Next.js 13', 'TypeScript', 'Gemini AI', 'Local LLM'],
     img: 'https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=600',
-  },
-  {
-    name: 'OpenTranslateAI',
-    url: 'https://github.com/aceman23/OpenTranslateAI-OpenSourceWebsiteTranslator',
-    tag: 'Open Source',
-    tagColor: 'bg-orange-100 text-orange-700',
-    desc: 'Open-source React translation widget with smart DOM translation, 10+ languages, local caching, batch processing, and a beautiful animated UI. Privacy-first alternative to paid tools.',
-    stack: ['React', 'TypeScript', 'Tailwind', 'Vite'],
-    img: 'https://images.pexels.com/photos/267669/pexels-photo-267669.jpeg?auto=compress&cs=tinysrgb&w=600',
+    screenshot: false,
   },
   {
     name: 'AI Agent Pals',
     url: 'https://ai-agent-pals-26.aura.build/',
+    category: 'Mobile App',
     tag: 'On-Device AI',
     tagColor: 'bg-pink-100 text-pink-700',
     desc: 'Mobile app for fully offline, privacy-first AI companions using open-source LLMs (Llama, Mistral, DeepSeek) with local inference, personalized prompts, and zero data leaving your phone.',
     stack: ['Swift', 'Local LLM', 'Llama', 'Mistral'],
     img: 'https://images.pexels.com/photos/8438918/pexels-photo-8438918.jpeg?auto=compress&cs=tinysrgb&w=600',
+    screenshot: false,
   },
   {
     name: 'Car Spotting by MotorTrend',
     url: 'https://apps.apple.com/us/app/car-spotting-by-motortrend/id1447901560',
+    category: 'iOS App',
     tag: 'iOS App',
     tagColor: 'bg-gray-100 text-gray-700',
     desc: 'Augmented reality car recognition game powered by machine learning — point your camera at real cars to identify, capture, and collect them in a virtual garage with detailed specs.',
     stack: ['iOS', 'ARKit', 'Core ML', 'Swift'],
     img: 'https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=600',
+    screenshot: false,
   },
   {
     name: 'MotorTrend App',
     url: 'https://apps.apple.com/us/app/motortrend/id1039264027',
+    category: 'iOS App',
     tag: 'iOS App',
     tagColor: 'bg-gray-100 text-gray-700',
     desc: 'Official MotorTrend app featuring streaming shows, news, buyer\'s guides, marketplace, and digital magazine archives. 4.8 stars from 56K+ ratings on the App Store.',
     stack: ['iOS', 'Swift', 'Streaming', 'Swift UI'],
     img: 'https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg?auto=compress&cs=tinysrgb&w=600',
+    screenshot: false,
   },
 ];
 
@@ -214,6 +272,135 @@ function AccordionItem({ title, body, defaultOpen = false }: { title: string; bo
         </div>
       )}
     </div>
+  );
+}
+
+function ProjectsSection({ navigate }: HomePageProps) {
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [visible, setVisible] = useState(true);
+  const [displayedCategory, setDisplayedCategory] = useState<string>('All');
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleCategory = (cat: string) => {
+    if (cat === activeCategory) return;
+    setActiveCategory(cat);
+    setVisible(false);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      setDisplayedCategory(cat);
+      setVisible(true);
+    }, 180);
+  };
+
+  const filtered = displayedCategory === 'All'
+    ? recentProjects
+    : recentProjects.filter((p) => p.category === displayedCategory);
+
+  const counts = PROJECT_CATEGORIES.reduce<Record<string, number>>((acc, cat) => {
+    acc[cat] = cat === 'All' ? recentProjects.length : recentProjects.filter((p) => p.category === cat).length;
+    return acc;
+  }, {});
+
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10">
+          <AnimateIn>
+            <div className="inline-flex items-center bg-blue-50 text-blue-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+              Recent Projects
+            </div>
+            <h2 className="text-4xl font-black text-gray-900 mb-3">What We've Built</h2>
+          </AnimateIn>
+          <AnimateIn delay={120}>
+            <p className="text-gray-500 max-w-xl mx-auto">
+              From AI-powered mobile apps to open-source tools and high-traffic iOS apps with millions of users
+            </p>
+          </AnimateIn>
+        </div>
+
+        <AnimateIn delay={200}>
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
+            {PROJECT_CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => handleCategory(cat)}
+                className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+                  activeCategory === cat
+                    ? 'bg-blue-600 text-white shadow-md shadow-blue-200 scale-105'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {cat}
+                <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${
+                  activeCategory === cat ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-500'
+                }`}>
+                  {counts[cat]}
+                </span>
+              </button>
+            ))}
+          </div>
+        </AnimateIn>
+
+        <div
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(8px)', transition: 'opacity 180ms ease, transform 180ms ease' }}
+        >
+          {filtered.map((project, i) => (
+            <div
+              key={project.name}
+              className="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl hover:border-blue-200 hover:-translate-y-1 transition-all duration-300"
+              style={{ animationDelay: `${i * 40}ms` }}
+            >
+              <div className={`overflow-hidden ${project.screenshot ? 'h-48 bg-gray-50' : 'h-44'}`}>
+                <img
+                  src={project.img}
+                  alt={project.name}
+                  className={`w-full h-full transition-transform duration-500 group-hover:scale-105 ${
+                    project.screenshot ? 'object-cover object-top' : 'object-cover'
+                  }`}
+                />
+              </div>
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-2">
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${project.tagColor}`}>
+                    {project.tag}
+                  </span>
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-blue-600 transition-colors"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </div>
+                <h3 className="font-black text-gray-900 mb-2">{project.name}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed mb-4">{project.desc}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {project.stack.map((tech) => (
+                    <span key={tech} className="text-xs bg-gray-100 text-gray-600 font-medium px-2 py-0.5 rounded-full">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <AnimateIn>
+            <button
+              onClick={() => navigate('ai-agency')}
+              className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+            >
+              View full AI Agency portfolio
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </button>
+          </AnimateIn>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -464,71 +651,7 @@ export default function HomePage({ navigate }: HomePageProps) {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <AnimateIn>
-              <div className="inline-flex items-center bg-blue-50 text-blue-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
-                Recent Projects
-              </div>
-              <h2 className="text-4xl font-black text-gray-900 mb-3">What We've Built</h2>
-            </AnimateIn>
-            <AnimateIn delay={120}>
-              <p className="text-gray-500 max-w-xl mx-auto">
-                From AI-powered mobile apps to open-source tools and high-traffic iOS apps with millions of users
-              </p>
-            </AnimateIn>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recentProjects.map((project) => (
-              <div key={project.name} className="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:border-blue-200 transition-all">
-                <div className="overflow-hidden h-44">
-                  <img
-                    src={project.img}
-                    alt={project.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-5">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${project.tagColor}`}>
-                      {project.tag}
-                    </span>
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-blue-600 transition-colors"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  </div>
-                  <h3 className="font-black text-gray-900 mb-2">{project.name}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed mb-4">{project.desc}</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.stack.map((tech) => (
-                      <span key={tech} className="text-xs bg-gray-100 text-gray-600 font-medium px-2 py-0.5 rounded-full">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <AnimateIn>
-              <button
-                onClick={() => navigate('ai-agency')}
-                className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors"
-              >
-                View full AI Agency portfolio
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </button>
-            </AnimateIn>
-          </div>
-        </div>
-      </section>
+      <ProjectsSection navigate={navigate} />
 
       <section className="py-20 bg-gray-950 text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
