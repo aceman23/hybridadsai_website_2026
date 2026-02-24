@@ -2,6 +2,7 @@ import { ArrowRight, CheckCircle2, Plus, ChevronUp, Bot, Mic, Smartphone, Globe,
 import { useState } from 'react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
+import StatsTicker from '../components/StatsTicker';
 
 const recentProjects = [
   {
@@ -255,6 +256,8 @@ export default function HomePage({ navigate }: HomePageProps) {
           </AnimateIn>
         </div>
       </section>
+
+      <StatsTicker />
 
       <section className="py-20 bg-slate-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
