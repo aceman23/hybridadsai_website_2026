@@ -271,6 +271,48 @@ export default function DashboardPage({ navigate }: DashboardPageProps) {
         </div>
       </section>
 
+      <section className="bg-black py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimateIn>
+            <h2 className="text-4xl md:text-5xl font-black text-center mb-14 leading-tight">
+              <span className="text-yellow-400">See Why These Businesses</span>{' '}
+              <span className="text-orange-400">Trust the Dashboard</span>
+            </h2>
+          </AnimateIn>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: 'NewportBodyWorks.com',
+                category: 'Service Business (Wellness Lounge)',
+                quote: '"Before the dashboard, it was a headache figuring out if our Facebook ads actually led to sales. Now, I can see the complete customer journey and know exactly which campaigns are crushing it and which need tweaking. A game-changer!"',
+                attribution: 'Owners - NewportBodyWorks.com',
+              },
+              {
+                name: 'TerraRosaWines.com',
+                category: 'E-commerce (Wines)',
+                quote: '"With the setup of Google Ads, Facebook Ads and Shopify pixel tracking and the dashboard, we were able to see a complete view of our ad spend, site performance & attributed purchases by channels and audience type"',
+                attribution: 'Owner - TerraRosaWines Family Office',
+              },
+              {
+                name: 'AsteriasBeaute.com',
+                category: 'E-commerce (Beauty)',
+                quote: '"We\'re a small team, and this dashboard saves us countless hours compared to sifting through multiple platform reports. The ability to drill down to keyword-level & meta ads performance has been crucial for refining our ad targeting."',
+                attribution: 'Owner - AsteriasBeaute.com',
+              },
+            ].map((t, i) => (
+              <AnimateIn key={i} delay={i * 120}>
+                <div className="flex flex-col h-full">
+                  <h3 className="text-white font-black text-xl mb-2">{t.name}</h3>
+                  <p className="text-blue-400 text-sm mb-4">{t.category}</p>
+                  <p className="text-gray-300 text-sm leading-relaxed flex-1">{t.quote}</p>
+                  <p className="text-gray-500 text-sm italic mt-6">{t.attribution}</p>
+                </div>
+              </AnimateIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-gray-950 py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-black text-white mb-8">Frequently Asked Questions</h2>
