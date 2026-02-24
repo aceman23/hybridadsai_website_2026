@@ -434,6 +434,67 @@ export default function HomePage({ navigate }: HomePageProps) {
         </div>
       </section>
 
+      <section className="py-20 bg-blue-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-3 gap-10">
+            {[
+              {
+                initials: 'RIU',
+                bg: 'bg-green-600',
+                name: 'Roll It Up Inc',
+                quote: 'Hybrid Ads setup our brand website, wholesale management platform with integration into State compliance system',
+                attribution: 'Owner - Roll It Up Inc',
+              },
+              {
+                initials: 'BP',
+                bg: 'bg-red-600',
+                name: 'Brooklynz Pizza Artesia',
+                quote: 'Hybrid Ads grew our website engagement to over 1.6k users in 60 days and ranked us on the first page of google',
+                attribution: 'Owner - Brooklynz Pizza Artesia',
+              },
+              {
+                initials: 'TR',
+                bg: 'bg-amber-700',
+                name: 'TerraRosaWines',
+                quote: 'With the setup of Google Ads, Facebook Ads and Shopify pixel tracking, we were able to see a complete dashboard of our ad spend, performance & attributed purchases by channels and audience type',
+                attribution: 'Owner - TerraRosaWines Family Office',
+              },
+              {
+                initials: 'PC',
+                bg: 'bg-pink-500',
+                name: 'Paradise Club',
+                quote: 'Setting up a shopify landing page helped us convert around 60% better from our original site',
+                attribution: 'Founder - Paradise Club',
+              },
+              {
+                initials: 'DW',
+                bg: 'bg-gray-900',
+                name: 'Don Wapo Hot Sauce',
+                quote: 'Hybrid Ads AI manages the ad space through the creatives and gives outperforming ads that bring value',
+                attribution: 'Owner - Don Wapo Hot Sauce',
+              },
+              {
+                initials: 'r',
+                bg: 'bg-orange-400',
+                name: 'Delivery E-commerce',
+                quote: 'We saw Month over Month of Revenue Growth as we increased our daily ad spend and watched our organic search increase',
+                attribution: 'Owner - Delivery E-commerce',
+              },
+            ].map((t, i) => (
+              <AnimateIn key={i} delay={i * 80}>
+                <div className="flex flex-col">
+                  <div className={`${t.bg} w-16 h-16 rounded-full flex items-center justify-center text-white font-black text-xl mb-5 shadow-md`}>
+                    {t.initials}
+                  </div>
+                  <p className="text-gray-700 text-sm leading-relaxed mb-5 flex-1">"{t.quote}"</p>
+                  <p className="text-gray-400 text-xs italic">{t.attribution}</p>
+                </div>
+              </AnimateIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
