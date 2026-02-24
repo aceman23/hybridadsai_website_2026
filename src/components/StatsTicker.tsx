@@ -32,7 +32,7 @@ export default function StatsTicker() {
     <div className="bg-white/60 backdrop-blur-md border-y border-gray-200/60 overflow-hidden py-4">
       <div className="flex items-center">
         <div className="flex-shrink-0 bg-blue-600 text-white text-xs font-black px-4 py-2 z-10 relative whitespace-nowrap mr-4 rounded-r-full">
-          2024 ACHIEVEMENTS
+          2024 + 2025 ACHIEVEMENTS
         </div>
         <div className="overflow-hidden flex-1 relative">
           <div
