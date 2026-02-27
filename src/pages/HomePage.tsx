@@ -1,4 +1,4 @@
-import { ArrowRight, Plus, ChevronUp, Bot, Mic, Smartphone, Globe, Brain, ExternalLink } from 'lucide-react';
+import { ArrowRight, Plus, ChevronUp, Bot, Mic, Smartphone, Globe, Brain, ExternalLink, Search, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
 import { useState, useRef } from 'react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
@@ -476,6 +476,79 @@ export default function HomePage({ navigate }: HomePageProps) {
       </section>
 
       <StatsTicker />
+
+      <section className="py-16 bg-white border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <AnimateIn>
+              <div className="inline-flex items-center bg-cyan-50 text-cyan-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+                AI Publisher Score — Free Tool
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
+                Is Your Business Visible to AI?
+              </h2>
+            </AnimateIn>
+            <AnimateIn delay={120}>
+              <p className="text-gray-500 max-w-2xl mx-auto">
+                ChatGPT, Gemini, and Perplexity are now where customers search for businesses. If AI gets your name, address, or category wrong — you're losing customers without knowing it.
+              </p>
+            </AnimateIn>
+          </div>
+          <AnimateIn delay={200}>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[
+                {
+                  icon: Search,
+                  color: 'bg-blue-50 text-blue-600',
+                  title: 'AI is the New Search',
+                  desc: 'Millions of people ask ChatGPT and Gemini to recommend local businesses, restaurants, and services every day.',
+                },
+                {
+                  icon: AlertTriangle,
+                  color: 'bg-amber-50 text-amber-600',
+                  title: 'Wrong Info Costs You',
+                  desc: 'AI models often hallucinate outdated phone numbers, wrong addresses, or misclassified business categories — sending customers elsewhere.',
+                },
+                {
+                  icon: TrendingUp,
+                  color: 'bg-green-50 text-green-600',
+                  title: 'Score Across 5 Platforms',
+                  desc: 'We check ChatGPT, Gemini, Copilot, Grok, and Perplexity instantly and show you exactly what each one says about your business.',
+                },
+                {
+                  icon: CheckCircle,
+                  color: 'bg-cyan-50 text-cyan-600',
+                  title: 'Fix It Before It Hurts',
+                  desc: 'Know your AI visibility score in seconds — and get actionable steps to ensure AI models represent your business accurately.',
+                },
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.title} className="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:border-cyan-200 hover:shadow-md transition-all duration-200">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${item.color}`}>
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="font-black text-gray-900 mb-2 text-sm">{item.title}</h3>
+                    <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </AnimateIn>
+          <AnimateIn delay={320}>
+            <div className="text-center mt-8">
+              <button
+                onClick={() => navigate('ai-score')}
+                className="inline-flex items-center justify-center bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-3.5 rounded-xl text-base font-semibold transition-colors shadow-lg shadow-cyan-100 gap-2"
+              >
+                <span className="text-xs bg-white/20 font-bold px-1.5 py-0.5 rounded-full">Free</span>
+                Check Your AI Score Now
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          </AnimateIn>
+        </div>
+      </section>
 
       <section className="py-20 bg-slate-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
