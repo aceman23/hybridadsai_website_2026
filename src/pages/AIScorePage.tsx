@@ -85,16 +85,33 @@ function LoadingState() {
 
 function ReportView({ report, navigate }: { report: AnalysisReport; navigate: (page: Page) => void }) {
   const reportRef = useRef<HTMLDivElement>(null);
+  const [downloading, setDownloading] = useState(false);
 
   const handleDownload = async () => {
     const el = reportRef.current;
-    if (!el) return;
-    const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
-    const img = canvas.toDataURL('image/png');
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    const w = pdf.internal.pageSize.getWidth();
-    pdf.addImage(img, 'PNG', 0, 0, w, (canvas.height * w) / canvas.width);
-    pdf.save(`ai-publisher-score-${report.url.replace(/https?:\/\//, '').split('/')[0]}.pdf`);
+    if (!el || downloading) return;
+    setDownloading(true);
+    try {
+      const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+      const img = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const imgH = (canvas.height * pageW) / canvas.width;
+      let heightLeft = imgH;
+      let position = 0;
+      pdf.addImage(img, 'PNG', 0, position, pageW, imgH);
+      heightLeft -= pageH;
+      while (heightLeft > 0) {
+        position = heightLeft - imgH;
+        pdf.addPage();
+        pdf.addImage(img, 'PNG', 0, position, pageW, imgH);
+        heightLeft -= pageH;
+      }
+      pdf.save(`ai-publisher-score-${report.url.replace(/https?:\/\//, '').split('/')[0]}.pdf`);
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const date = new Date(report.generatedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -169,10 +186,20 @@ function ReportView({ report, navigate }: { report: AnalysisReport; navigate: (p
           <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row gap-3">
             <button
               onClick={handleDownload}
-              className="flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors"
+              disabled={downloading}
+              className="flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-60 disabled:cursor-not-allowed text-gray-700 px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors"
             >
-              <Download className="w-4 h-4" />
-              Download PDF Report
+              {downloading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                  Generating PDF…
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4" />
+                  Download PDF Report
+                </>
+              )}
             </button>
             <a
               href="https://calendly.com/hybridadsai"
