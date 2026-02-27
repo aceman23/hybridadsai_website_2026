@@ -449,11 +449,10 @@ export default function HomePage({ navigate }: HomePageProps) {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </button>
               <button
-                onClick={() => navigate('ai-score')}
-                className="inline-flex items-center justify-center border-2 border-cyan-400 text-cyan-600 px-8 py-4 rounded-xl text-base font-semibold hover:bg-cyan-50 transition-colors gap-2"
+                onClick={() => navigate('about')}
+                className="inline-flex items-center justify-center border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-xl text-base font-semibold hover:border-gray-300 hover:bg-gray-50 transition-colors"
               >
-                <span className="text-xs bg-cyan-500 text-white font-bold px-1.5 py-0.5 rounded-full">Free</span>
-                AI Publisher Score
+                About Us
               </button>
             </div>
           </AnimateIn>

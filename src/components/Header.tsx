@@ -7,10 +7,9 @@ interface HeaderProps {
   navigate: (page: Page) => void;
 }
 
-const navLinks: { label: string; page: Page; badge?: string }[] = [
+const navLinks: { label: string; page: Page }[] = [
   { label: 'Home', page: 'home' },
   { label: 'AI Agency', page: 'ai-agency' },
-  { label: 'AI Score', page: 'ai-score', badge: 'Free' },
   { label: 'Ad Performance', page: 'dashboard' },
   { label: 'About Us', page: 'about' },
 ];
@@ -42,23 +41,18 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
           </button>
 
           <nav className="hidden md:flex items-center space-x-7" aria-label="Main navigation">
-            {navLinks.map(({ label, page, badge }) => (
+            {navLinks.map(({ label, page }) => (
               <button
                 key={page}
                 onClick={() => navigate(page)}
                 aria-current={currentPage === page ? 'page' : undefined}
-                className={`relative inline-flex items-center gap-1.5 text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-1 ${
+                className={`text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-1 ${
                   currentPage === page
                     ? 'text-blue-600'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
                 {label}
-                {badge && (
-                  <span className="text-xs bg-cyan-500 text-white font-bold px-1.5 py-0.5 rounded-full leading-none">
-                    {badge}
-                  </span>
-                )}
               </button>
             ))}
           </nav>
@@ -93,21 +87,16 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
           className="md:hidden border-t border-gray-100 bg-white px-4 py-4 space-y-1"
           aria-label="Mobile navigation"
         >
-          {navLinks.map(({ label, page, badge }) => (
+          {navLinks.map(({ label, page }) => (
             <button
               key={page}
               onClick={() => { navigate(page); setMobileOpen(false); }}
               aria-current={currentPage === page ? 'page' : undefined}
-              className={`flex items-center gap-2 w-full text-left text-base font-semibold py-2.5 px-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+              className={`block w-full text-left text-base font-semibold py-2.5 px-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                 currentPage === page ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
               {label}
-              {badge && (
-                <span className="text-xs bg-cyan-500 text-white font-bold px-1.5 py-0.5 rounded-full leading-none">
-                  {badge}
-                </span>
-              )}
             </button>
           ))}
           <div className="pt-2">
