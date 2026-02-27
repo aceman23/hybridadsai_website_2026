@@ -23,16 +23,15 @@ export default function ProgressBars({ results }: Props) {
         const color = PLATFORM_COLORS[platform];
         return (
           <div key={platform} className="flex items-center gap-3">
-            <span className="text-sm text-slate-300 w-40 flex-shrink-0 font-medium">
+            <span className="text-sm text-gray-700 w-40 flex-shrink-0 font-medium">
               {PLATFORM_LABELS[platform]}
             </span>
-            <div className="flex-1 h-3 bg-slate-700 rounded-full overflow-hidden">
+            <div className="flex-1 h-3 bg-gray-200 rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full"
                 style={{
                   width: animated ? `${pct}%` : '0%',
                   backgroundColor: color,
-                  boxShadow: `0 0 8px ${color}66`,
                   transition: `width 1s cubic-bezier(0.4,0,0.2,1) ${i * 100}ms`,
                 }}
               />
