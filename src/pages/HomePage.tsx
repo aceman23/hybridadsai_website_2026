@@ -484,13 +484,17 @@ export default function HomePage({ navigate }: HomePageProps) {
               <div className="inline-flex items-center bg-cyan-50 text-cyan-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
                 AI Publisher Score — Free Tool
               </div>
+            </AnimateIn>
+            <AnimateIn delay={80}>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
                 Is Your Business Visible to AI?
               </h2>
             </AnimateIn>
-            <AnimateIn delay={120}>
+            <AnimateIn delay={180}>
               <p className="text-gray-500 max-w-2xl mx-auto">
-                ChatGPT, Gemini, and Perplexity are now where customers search for businesses. If AI gets your name, address, or category wrong — you're losing customers without knowing it.
+                ChatGPT, Gemini, and Perplexity are now where customers search for businesses.
+                <br />
+                If AI gets your name, address, or category wrong — you're losing customers without knowing it.
               </p>
             </AnimateIn>
           </div>

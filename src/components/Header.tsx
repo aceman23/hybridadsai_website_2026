@@ -19,7 +19,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm" role="banner">
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm animate-header-in" role="banner">
       <div className="bg-gray-900 text-gray-300 text-xs py-1.5 px-4 text-center tracking-wide" aria-label="Platform expertise">
         <span className="font-medium text-white">Expert in:</span>
         {' '}
