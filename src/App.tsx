@@ -7,13 +7,14 @@ import HomePage from './pages/HomePage';
 import DashboardPage from './pages/DashboardPage';
 import AboutPage from './pages/AboutPage';
 import AIAgencyPage from './pages/AIAgencyPage';
+import AIScorePage from './pages/AIScorePage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import NotFoundPage from './pages/NotFoundPage';
 
-export type Page = 'home' | 'dashboard' | 'about' | 'ai-agency' | 'privacy' | 'terms';
+export type Page = 'home' | 'dashboard' | 'about' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'ai-agency', 'privacy', 'terms'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'ai-agency', 'ai-score', 'privacy', 'terms'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -39,6 +40,11 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     description:
       'Meet the team behind 2M+ leads and 3000+ campaigns. 12 years PPC experience combined with AI automation. Real results: 602% click growth, $476k/month revenue.',
     path: 'about',
+  },
+  'ai-score': {
+    title: 'AI Publisher Score – Free Business Visibility Audit | Hybrid Ads',
+    description: 'Check how accurately ChatGPT, Gemini, Copilot, Grok, and Perplexity describe your business. Get your free AI Publisher Score in seconds.',
+    path: 'ai-score',
   },
   privacy: {
     title: 'Privacy Policy – HybridAds.ai',
@@ -128,6 +134,7 @@ function App() {
       case 'dashboard': return <DashboardPage navigate={navigate} />;
       case 'about': return <AboutPage navigate={navigate} />;
       case 'ai-agency': return <AIAgencyPage navigate={navigate} />;
+      case 'ai-score': return <AIScorePage navigate={navigate} />;
       case 'privacy': return <PrivacyPolicyPage navigate={navigate} />;
       case 'terms': return <TermsOfServicePage navigate={navigate} />;
       default: return <HomePage navigate={navigate} />;
