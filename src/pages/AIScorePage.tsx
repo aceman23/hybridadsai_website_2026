@@ -1,5 +1,7 @@
 import { useState, useRef } from 'react';
 import { ArrowRight, Search, Download, Sparkles, Globe, Bot, BarChart3, ChevronDown, AlertTriangle, ExternalLink, Zap } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 import type { AnalysisReport } from '../types/aps';
 import ScoreCircle from '../components/aps/ScoreCircle';
 import ProgressBars from '../components/aps/ProgressBars';
@@ -138,8 +140,6 @@ function ReportView({ report, navigate }: { report: AnalysisReport; navigate: (p
   const handleDownload = async () => {
     const el = reportRef.current;
     if (!el) return;
-    const { default: html2canvas } = await import('html2canvas');
-    const { jsPDF } = await import('jspdf');
     const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: '#0f172a' });
     const img = canvas.toDataURL('image/png');
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
