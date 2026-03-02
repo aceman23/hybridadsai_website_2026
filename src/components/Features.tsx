@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  Shield, Globe, Activity, Code2, BarChart3, Workflow
-} from 'lucide-react';
+import { Shield, Globe, Activity, Code as Code2, ChartBar as BarChart3, Workflow } from 'lucide-react';
 import { FEATURES } from '../data';
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {

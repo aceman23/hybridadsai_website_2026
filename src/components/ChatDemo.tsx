@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Send, Bot, User, Loader2, ChevronDown, Sparkles } from 'lucide-react';
+import { Send, Bot, User, Loader as Loader2, ChevronDown, Sparkles } from 'lucide-react';
 import type { ChatMessage } from '../types';
 import { AI_CHAT_RESPONSES } from '../data';
 import { saveChatMessage, trackInteraction } from '../lib/supabase';
