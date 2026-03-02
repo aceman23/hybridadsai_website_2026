@@ -1,0 +1,226 @@
+import type { AIModel, Feature, Testimonial, PricingPlan, Stat } from '../types';
+
+export const AI_MODELS: AIModel[] = [
+  {
+    id: 'nexus-7',
+    name: 'Nexus-7',
+    description: 'Our flagship reasoning model. Excels at complex multi-step tasks, code generation, and scientific analysis.',
+    capabilities: ['Advanced Reasoning', 'Code Generation', 'Scientific Analysis', 'Multi-step Tasks'],
+    badge: 'Flagship',
+    badgeColor: 'blue',
+    icon: 'brain',
+    latency: '< 400ms',
+    contextWindow: '200K tokens',
+  },
+  {
+    id: 'nexus-vision',
+    name: 'Nexus Vision',
+    description: 'Multimodal intelligence for image, video, and document understanding. Processes visual content with precision.',
+    capabilities: ['Image Analysis', 'Video Processing', 'Document OCR', 'Visual QA'],
+    badge: 'Multimodal',
+    badgeColor: 'cyan',
+    icon: 'eye',
+    latency: '< 600ms',
+    contextWindow: '128K tokens',
+  },
+  {
+    id: 'nexus-swift',
+    name: 'Nexus Swift',
+    description: 'Ultra-fast language model optimized for real-time applications, chat, and high-throughput workloads.',
+    capabilities: ['Real-time Chat', 'Summarization', 'Classification', 'Extraction'],
+    badge: 'Fast',
+    badgeColor: 'green',
+    icon: 'zap',
+    latency: '< 80ms',
+    contextWindow: '64K tokens',
+  },
+  {
+    id: 'nexus-agent',
+    name: 'Nexus Agent',
+    description: 'Autonomous agent model capable of using tools, browsing the web, writing code, and executing multi-agent workflows.',
+    capabilities: ['Tool Use', 'Web Browsing', 'Code Execution', 'Multi-Agent'],
+    badge: 'Agentic',
+    badgeColor: 'orange',
+    icon: 'cpu',
+    latency: '< 1s',
+    contextWindow: '256K tokens',
+  },
+  {
+    id: 'nexus-embed',
+    name: 'Nexus Embed',
+    description: 'State-of-the-art embedding model for semantic search, retrieval-augmented generation, and vector operations.',
+    capabilities: ['Semantic Search', 'RAG', 'Vector Similarity', 'Clustering'],
+    badge: 'Embedding',
+    badgeColor: 'rose',
+    icon: 'layers',
+    latency: '< 50ms',
+    contextWindow: '32K tokens',
+  },
+  {
+    id: 'nexus-code',
+    name: 'Nexus Code',
+    description: 'Specialized code model trained on 100+ programming languages. Autocomplete, debugging, and full project generation.',
+    capabilities: ['Code Completion', 'Bug Detection', 'Refactoring', 'Documentation'],
+    badge: 'Code',
+    badgeColor: 'teal',
+    icon: 'code',
+    latency: '< 200ms',
+    contextWindow: '128K tokens',
+  },
+];
+
+export const FEATURES: Feature[] = [
+  {
+    icon: 'shield',
+    title: 'Enterprise Security',
+    description: 'SOC 2 Type II certified, HIPAA compliant, end-to-end encryption, and private deployment options. Your data never trains our models.',
+    gradient: 'from-blue-500/20 to-cyan-500/20',
+  },
+  {
+    icon: 'globe',
+    title: 'Global Infrastructure',
+    description: 'Deployed across 12 regions worldwide with 99.99% SLA uptime. Automatic failover and load balancing built in.',
+    gradient: 'from-teal-500/20 to-emerald-500/20',
+  },
+  {
+    icon: 'activity',
+    title: 'Real-time Streaming',
+    description: 'Token-by-token streaming with sub-100ms TTFB. WebSocket and SSE support for building responsive AI experiences.',
+    gradient: 'from-cyan-500/20 to-sky-500/20',
+  },
+  {
+    icon: 'code-2',
+    title: 'Developer-First API',
+    description: 'Clean REST and gRPC APIs with OpenAI-compatible endpoints. SDKs for Python, JavaScript, Go, Ruby, and more.',
+    gradient: 'from-sky-500/20 to-blue-500/20',
+  },
+  {
+    icon: 'bar-chart-3',
+    title: 'Advanced Analytics',
+    description: 'Real-time dashboards, usage metrics, cost analysis, and model performance monitoring. Full observability stack.',
+    gradient: 'from-blue-500/20 to-indigo-500/20',
+  },
+  {
+    icon: 'workflow',
+    title: 'Workflow Automation',
+    description: 'Build complex AI pipelines with our visual workflow editor. Chain models, tools, and actions with no-code ease.',
+    gradient: 'from-violet-500/20 to-blue-500/20',
+  },
+];
+
+export const TESTIMONIALS: Testimonial[] = [
+  {
+    name: 'Sarah Chen',
+    role: 'CTO',
+    company: 'DataFlow Labs',
+    content: 'NexusAI reduced our data processing pipeline time from 4 hours to 8 minutes. The Nexus-7 model handles our edge cases better than anything we\'ve tried.',
+    avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop',
+    rating: 5,
+  },
+  {
+    name: 'Marcus Rivera',
+    role: 'Head of AI',
+    company: 'Quantum Dynamics',
+    content: 'The agent capabilities are genuinely impressive. Our autonomous research system now handles literature review, hypothesis generation, and experiment design without human intervention.',
+    avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop',
+    rating: 5,
+  },
+  {
+    name: 'Priya Sharma',
+    role: 'VP Engineering',
+    company: 'Meridian Finance',
+    content: 'Security was our biggest concern. NexusAI\'s private deployment option with zero data retention was the deciding factor. Performance is exceptional.',
+    avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop',
+    rating: 5,
+  },
+];
+
+export const PRICING_PLANS: PricingPlan[] = [
+  {
+    name: 'Starter',
+    price: '$49',
+    period: '/month',
+    description: 'Perfect for developers and small teams exploring AI integration.',
+    features: [
+      'Access to Nexus Swift & Nexus Embed',
+      '1M tokens per month',
+      'Standard API access',
+      '99.9% uptime SLA',
+      'Community support',
+      '3 projects',
+    ],
+    cta: 'Start Free Trial',
+    highlighted: false,
+  },
+  {
+    name: 'Professional',
+    price: '$299',
+    period: '/month',
+    description: 'For teams building production AI applications at scale.',
+    features: [
+      'Access to all 6 AI models',
+      '25M tokens per month',
+      'Priority API access',
+      '99.99% uptime SLA',
+      'Priority email support',
+      'Unlimited projects',
+      'Advanced analytics',
+      'Custom fine-tuning',
+    ],
+    cta: 'Get Started',
+    highlighted: true,
+    badge: 'Most Popular',
+  },
+  {
+    name: 'Enterprise',
+    price: 'Custom',
+    period: '',
+    description: 'Full platform access with dedicated infrastructure and compliance.',
+    features: [
+      'Unlimited token usage',
+      'Private deployment options',
+      'Custom model training',
+      '99.999% uptime SLA',
+      '24/7 dedicated support',
+      'SOC 2 / HIPAA compliance',
+      'Custom integrations',
+      'SLA guarantees',
+    ],
+    cta: 'Contact Sales',
+    highlighted: false,
+  },
+];
+
+export const STATS: Stat[] = [
+  {
+    value: '2.4B+',
+    label: 'API Requests',
+    sublabel: 'served daily',
+    trend: '+127% YoY',
+  },
+  {
+    value: '99.99%',
+    label: 'Uptime SLA',
+    sublabel: 'across all regions',
+    trend: '12 global regions',
+  },
+  {
+    value: '< 80ms',
+    label: 'P50 Latency',
+    sublabel: 'for Nexus Swift',
+    trend: 'Industry leading',
+  },
+  {
+    value: '18,000+',
+    label: 'Companies',
+    sublabel: 'using NexusAI',
+    trend: '+340% this year',
+  },
+];
+
+export const AI_CHAT_RESPONSES: Record<string, string> = {
+  default: "I'm Nexus-7, NexusAI's flagship reasoning model. I can help you with complex analysis, code generation, research, and much more. What would you like to explore?",
+  code: "Here's a Python implementation of a binary search tree with O(log n) insertion and lookup:\n\n```python\nclass BST:\n    def __init__(self, val=None):\n        self.val = val\n        self.left = None\n        self.right = None\n\n    def insert(self, val):\n        if self.val is None:\n            self.val = val\n            return\n        if val < self.val:\n            if self.left:\n                self.left.insert(val)\n            else:\n                self.left = BST(val)\n        else:\n            if self.right:\n                self.right.insert(val)\n            else:\n                self.right = BST(val)\n```\n\nThis implementation supports both left and right child nodes with efficient recursive insertion.",
+  analysis: "Based on the data patterns you've described, I'm detecting three primary anomalies:\n\n1. **Temporal drift** — Values trending +2.3σ above baseline over the last 14 days\n2. **Cyclical variance** — 7-day periodicity suggesting external dependency\n3. **Outlier cluster** — 4 data points exceeding 3σ in the Q3 window\n\nRecommendation: Apply a LOESS smoothing function with span=0.3 and investigate the Q3 cluster for data collection errors.",
+  help: "I can assist with a wide range of tasks:\n\n• **Code** — Write, debug, refactor, and explain code in 100+ languages\n• **Analysis** — Data analysis, statistical modeling, and research synthesis\n• **Writing** — Technical documentation, reports, and creative content\n• **Reasoning** — Complex problem-solving and logical deduction\n• **Agents** — I can use tools, browse the web, and execute multi-step workflows\n\nJust describe what you need and I'll get started.",
+};
