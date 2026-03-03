@@ -18,42 +18,45 @@ const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'ai-agency', 'ai-scor
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
-    title: 'Hybrid Ads – AI-Powered Paid Ads Agency | 12 Yrs PPC',
+    title: 'Hybrid Ads – AI Systems Integrator & Paid Ads Agency',
     description:
-      'Hybrid Ads combines human expertise with AI to manage your paid ads on Google, Meta, TikTok & more. 2M+ leads generated, $400k/month in e-commerce sales.',
+      'Hybrid Ads builds AI systems and manages paid ads on Google, Meta, TikTok & more. Cut digital labor costs, scale smarter. 2M+ leads generated.',
     path: '',
   },
   'ai-agency': {
-    title: 'AI Systems – Custom Agentic AI Systems | Hybrid Ads',
+    title: 'AI Systems Integrator – Agents, RAG & Voice AI | Hybrid Ads',
     description:
-      'Build production-ready AI: autonomous agents, RAG pipelines, voice AI, on-device ML & LLM fine-tuning. 50+ systems shipped to 2M+ users. Enterprise & consumer.',
+      'Custom AI systems built for production: autonomous agents, RAG pipelines, voice AI, LLM fine-tuning & on-device ML. 50+ systems shipped to 2M+ users.',
     path: 'ai-agency',
   },
   dashboard: {
-    title: 'Ad Performance Dashboard – Multi-Platform Analytics',
+    title: 'Ad Analytics Dashboard – Google, Meta, TikTok & LinkedIn',
     description:
-      'Centralize your Google, Meta, LinkedIn & TikTok ad data in one dashboard. Eliminate data silos, surface AI insights, and optimize toward 3x+ ROAS in real time.',
+      'Unify Google, Meta, LinkedIn & TikTok ad data in one AI-powered dashboard. Surface insights, eliminate data silos, and optimize toward 3x+ ROAS.',
     path: 'dashboard',
   },
   about: {
-    title: 'About Hybrid Ads – 12-Year Ad Experts + AI Engineers',
+    title: 'About Hybrid Ads – AI Systems Integrators & PPC Experts',
     description:
-      'Meet the team behind 2M+ leads and 3000+ campaigns. 12 years PPC experience combined with AI automation. Real results: 602% click growth, $476k/month revenue.',
+      'Meet the team behind 50+ AI systems and 3000+ ad campaigns. 12 years of performance marketing combined with production-grade AI engineering.',
     path: 'about',
   },
   'ai-score': {
-    title: 'AI Publisher Score – Free Business Visibility Audit | Hybrid Ads',
-    description: 'Check how accurately ChatGPT, Gemini, Copilot, Grok, and Perplexity describe your business. Get your free AI Publisher Score in seconds.',
+    title: 'AI Publisher Score – Free AI Visibility Audit | Hybrid Ads',
+    description:
+      'Discover how ChatGPT, Gemini, Copilot, Grok & Perplexity describe your business. Get your free AI Publisher Score and visibility report in seconds.',
     path: 'ai-score',
   },
   privacy: {
     title: 'Privacy Policy – HybridAds.ai',
-    description: 'Learn how HybridAds.ai collects, uses, and protects your personal data. GDPR & CCPA compliant.',
+    description:
+      'Read the HybridAds.ai Privacy Policy. We explain how your data is collected, used, and protected. GDPR & CCPA compliant.',
     path: 'privacy',
   },
   terms: {
     title: 'Terms of Service – HybridAds.ai',
-    description: 'Read the Terms of Service for HybridAds.ai, including DMCA policy, intellectual property rights, and service conditions.',
+    description:
+      'Review the HybridAds.ai Terms of Service covering usage rights, intellectual property, DMCA policy, and conditions for using our platform.',
     path: 'terms',
   },
 };
