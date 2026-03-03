@@ -185,26 +185,26 @@ export default function AboutPage({ navigate }: AboutPageProps) {
               </p>
             </AnimateIn>
           </div>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {team.map((member, i) => (
-              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 group">
-                <div className="overflow-hidden">
+              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 group flex flex-row items-center gap-4 p-4">
+                <div className="overflow-hidden rounded-xl flex-shrink-0 w-16 h-16">
                   {member.img ? (
                     <img
                       src={member.img}
                       alt={member.name}
-                      className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    <div className="w-full aspect-square bg-gradient-to-br from-slate-100 to-blue-50 flex items-center justify-center">
-                      <span className="text-4xl font-black text-blue-300 select-none">{member.displayName}</span>
+                    <div className="w-full h-full bg-gradient-to-br from-slate-100 to-blue-50 flex items-center justify-center">
+                      <span className="text-xl font-black text-blue-300 select-none">{member.displayName}</span>
                     </div>
                   )}
                 </div>
-                <div className="p-5">
-                  <h3 className="font-black text-gray-900">{member.name}</h3>
-                  <p className="text-blue-600 text-sm font-semibold mb-2">{member.role}</p>
-                  <p className="text-gray-500 text-sm leading-relaxed">{member.bio}</p>
+                <div className="min-w-0">
+                  <h3 className="font-black text-gray-900 text-sm leading-tight">{member.name}</h3>
+                  <p className="text-blue-600 text-xs font-semibold mb-1">{member.role}</p>
+                  <p className="text-gray-500 text-xs leading-relaxed">{member.bio}</p>
                 </div>
               </div>
             ))}
