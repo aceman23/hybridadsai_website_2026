@@ -71,8 +71,8 @@ const recentProjects = [
     tagColor: 'bg-blue-100 text-blue-700',
     desc: 'AI-powered platform with turnkey websites, instant online booking, intelligent chatbots, CRM integration, and targeted Google/Meta/TikTok ads — built for luxury transportation operators.',
     stack: ['Next.js', 'AI Chatbot', 'Google Ads', 'Meta Ads'],
-    img: 'https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=600',
-    screenshot: false,
+    img: '/LimoLogic.png',
+    screenshot: true,
   },
   {
     name: 'SnapScanAI',
@@ -82,8 +82,8 @@ const recentProjects = [
     tagColor: 'bg-green-100 text-green-700',
     desc: 'AI-powered document scanner with Gemini File Search, cloud sync, local LLM chat, smooth animations, and clean UX. Built for privacy-conscious professionals and remote workers.',
     stack: ['Next.js 13', 'TypeScript', 'Gemini AI', 'Local LLM'],
-    img: 'https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=600',
-    screenshot: false,
+    img: '/SnapScanAI.png',
+    screenshot: true,
   },
   {
     name: 'AI Agent Pals',
@@ -93,8 +93,8 @@ const recentProjects = [
     tagColor: 'bg-pink-100 text-pink-700',
     desc: 'Mobile app for fully offline, privacy-first AI companions using open-source LLMs (Llama, Mistral, DeepSeek) with local inference, personalized prompts, and zero data leaving your phone.',
     stack: ['Swift', 'Local LLM', 'Llama', 'Mistral'],
-    img: 'https://images.pexels.com/photos/8438918/pexels-photo-8438918.jpeg?auto=compress&cs=tinysrgb&w=600',
-    screenshot: false,
+    img: '/AIAgentPals.png',
+    screenshot: true,
   },
   {
     name: 'Car Spotting by MotorTrend',
