@@ -104,8 +104,8 @@ const recentProjects = [
     tagColor: 'bg-gray-100 text-gray-700',
     desc: 'Augmented reality car recognition game powered by machine learning — point your camera at real cars to identify, capture, and collect them in a virtual garage with detailed specs.',
     stack: ['iOS', 'ARKit', 'Core ML', 'Swift'],
-    img: 'https://images.pexels.com/photos/1545743/pexels-photo-1545743.jpeg?auto=compress&cs=tinysrgb&w=600',
-    screenshot: false,
+    img: '/CarSpotiOSApp.png',
+    screenshot: true,
   },
   {
     name: 'MotorTrend App',
@@ -115,8 +115,8 @@ const recentProjects = [
     tagColor: 'bg-gray-100 text-gray-700',
     desc: 'Official MotorTrend app featuring streaming shows, news, buyer\'s guides, marketplace, and digital magazine archives. 4.8 stars from 56K+ ratings on the App Store.',
     stack: ['iOS', 'Swift', 'Streaming', 'Swift UI'],
-    img: 'https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg?auto=compress&cs=tinysrgb&w=600',
-    screenshot: false,
+    img: '/MotorTrendiOSApp.png',
+    screenshot: true,
   },
 ];
 
