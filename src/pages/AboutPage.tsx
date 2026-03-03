@@ -11,7 +11,7 @@ const team = [
   {
     name: 'Founder & CEO',
     role: 'AI and Growth Architect',
-    bio: '12+ years in paid advertising. Built campaigns generating $400k/month in e-commerce revenue.',
+    bio: '12+ years in paid advertising. Built campaigns generating $400k/month in e-commerce revenue. Architects AI Systems and manages AI Engineers and Data Scientists.',
     img: '/AntonAnsalmar.png',
     displayName: null,
   },
@@ -39,7 +39,7 @@ const team = [
   {
     name: 'Daniel Block',
     role: 'Growth Strategist',
-    bio: 'Leads our AI platform development. Former data scientist at a Fortune 500 ad tech company.',
+    bio: 'Managing Ad Campaigns.',
     img: '/DanielBlock.png',
     displayName: null,
   },
