@@ -182,7 +182,7 @@ export default function AIAgencyPage({ navigate }: AIAgencyPageProps) {
           <AnimateIn delay={120}>
             <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
               We Build
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 pb-2">
                 Agentic AI Systems
               </span>
             </h1>

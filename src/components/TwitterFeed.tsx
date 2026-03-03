@@ -180,7 +180,51 @@ export default function TwitterFeed() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (error) return null;
+  const accounts = [
+    { name: 'Hybrid Ads AI', username: 'hybridadsai', description: 'AI systems, digital advertising, and growth strategies.' },
+    { name: 'Anton Ansalmar', username: 'antona23', description: 'AI engineering, agentic systems, and full-stack builds.' },
+  ];
+
+  if (error) {
+    return (
+      <section className="py-16 bg-gray-50 border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-2.5 mb-10">
+            <XIcon className="w-5 h-5 text-gray-900" />
+            <h2 className="text-xl font-bold text-gray-900">Follow Us on X</h2>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-6 max-w-2xl">
+            {accounts.map((account) => (
+              <a
+                key={account.username}
+                href={`https://x.com/${account.username}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-200"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center flex-shrink-0">
+                      <XIcon className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-gray-900">{account.name}</div>
+                      <div className="text-xs text-gray-400">@{account.username}</div>
+                    </div>
+                  </div>
+                  <ExternalLink className="w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors" />
+                </div>
+                <p className="text-sm text-gray-500 leading-relaxed">{account.description}</p>
+                <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full w-fit transition-colors">
+                  Follow on X
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 bg-gray-50 border-t border-gray-100">
