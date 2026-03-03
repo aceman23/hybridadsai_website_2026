@@ -38,7 +38,7 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
   about: {
     title: 'About Hybrid Ads – AI Systems Integrators & PPC Experts',
     description:
-      'Meet the team behind 50+ AI systems and 3000+ ad campaigns. 12 years of performance marketing combined with production-grade AI engineering.',
+      'Meet the team behind 50+ AI systems and 3000+ ad campaigns. 15 years of Web + Mobile Dev combined with production-grade AI engineering.',
     path: 'about',
   },
   'ai-score': {

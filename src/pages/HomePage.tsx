@@ -139,7 +139,7 @@ const expertise = [
   {
     icon: Globe,
     title: 'Paid Advertising & Growth',
-    desc: 'Google, Meta, TikTok, and LinkedIn campaigns managed by humans and optimized by AI. Performance Max + 12 years of PPC expertise.',
+    desc: 'Google, Meta, TikTok, and LinkedIn campaigns managed by humans and optimized by AI. Performance Max + 15 years of Web + Mobile Dev expertise.',
   },
   {
     icon: Brain,
@@ -412,7 +412,7 @@ export default function HomePage({ navigate }: HomePageProps) {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <AnimateIn>
             <div className="inline-flex items-center bg-blue-100 text-blue-700 text-sm font-medium rounded-full px-4 py-1.5 mb-6">
-              Meta Ads · X Ads · TikTok Ads · Google Ads · 12 Years Experience
+              Meta Ads · X Ads · TikTok Ads · Google Ads · 15 Years Experience
             </div>
           </AnimateIn>
           <AnimateIn delay={120}>
@@ -461,7 +461,7 @@ export default function HomePage({ navigate }: HomePageProps) {
                 { value: '2M+', label: 'Leads Generated' },
                 { value: '$400k', label: 'Monthly E-com Sales' },
                 { value: '3000+', label: 'Google Campaigns' },
-                { value: '12 yrs', label: 'PPC Experience' },
+                { value: '15 yrs', label: 'Web + Mobile Dev' },
               ].map((stat) => (
                 <div key={stat.label} className="bg-white rounded-2xl shadow-sm border border-gray-100 py-5 px-4">
                   <div className="text-2xl md:text-3xl font-black text-blue-600">{stat.value}</div>

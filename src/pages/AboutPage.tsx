@@ -121,7 +121,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
             <div className="grid grid-cols-2 gap-4">
               {[
                 { icon: Globe, label: 'Meta · X · TikTok · Google', sub: 'Ads Experience' },
-                { icon: Award, label: '12 Years', sub: 'PPC + Digital Marketing' },
+                { icon: Award, label: '15 Years', sub: 'Web + Mobile Dev' },
                 { icon: Users, label: '2M+ Leads', sub: 'Generated' },
                 { icon: Rocket, label: '3000+', sub: 'Campaigns Launched' },
               ].map(({ icon: Icon, label, sub }, i) => (
@@ -261,7 +261,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                 {[
                   'AI + Humans working together in 🇺🇸 serving the world',
                   'Experience in Meta Ads, X Ads, TikTok Ads & Google Ads 🌎',
-                  '12 years of experience in PPC + Digital Marketing 📈',
+                  '15 years of experience in Web + Mobile Development 📈',
                   'Grown E-commerce Sales monthly to $400k per month 🤑',
                   '2 Million Leads Generated ✅',
                   '3000+ Paid Ad Campaigns across Meta, X, TikTok & Google',
