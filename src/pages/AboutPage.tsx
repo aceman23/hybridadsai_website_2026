@@ -16,13 +16,6 @@ const team = [
     displayName: null,
   },
   {
-    name: 'Daniel Block',
-    role: 'Head of AI Operations',
-    bio: 'Leads our AI platform development. Former data scientist at a Fortune 500 ad tech company.',
-    img: '/DanielBlock.png',
-    displayName: null,
-  },
-  {
     name: 'Richard Wayne',
     role: 'Creative Director',
     bio: 'Crafts ad creative that converts. Specialized in e-commerce, SaaS, and local business campaigns.',
@@ -42,6 +35,13 @@ const team = [
     bio: 'Develops scalable front-end and back-end systems that power our AI-driven ad infrastructure.',
     img: null,
     displayName: 'ZH',
+  },
+  {
+    name: 'Daniel Block',
+    role: 'Growth Strategist',
+    bio: 'Leads our AI platform development. Former data scientist at a Fortune 500 ad tech company.',
+    img: '/DanielBlock.png',
+    displayName: null,
   },
 ];
 

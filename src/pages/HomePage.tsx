@@ -113,7 +113,7 @@ const recentProjects = [
     category: 'iOS App',
     tag: 'iOS App',
     tagColor: 'bg-gray-100 text-gray-700',
-    desc: 'Official MotorTrend app featuring streaming shows, news, buyer\'s guides, marketplace, and digital magazine archives. 4.8 stars from 56K+ ratings on the App Store.',
+    desc: 'Official MotorTrend app featuring streaming shows, news, buyer\'s guides, marketplace, and digital magazine archives.',
     stack: ['iOS', 'Swift', 'Streaming', 'Swift UI'],
     img: '/MotorTrendiOSApp.png',
     screenshot: true,
@@ -463,7 +463,7 @@ export default function HomePage({ navigate }: HomePageProps) {
               {[
                 { value: '2M+', label: 'Leads Generated' },
                 { value: '$400k', label: 'Monthly E-com Sales' },
-                { value: '3000+', label: 'Google Campaigns' },
+                { value: '3000+', label: 'Ad Campaigns' },
                 { value: '15 yrs', label: 'Web + Mobile Dev' },
               ].map((stat) => (
                 <div key={stat.label} className="bg-white rounded-2xl shadow-sm border border-gray-100 py-5 px-4">
