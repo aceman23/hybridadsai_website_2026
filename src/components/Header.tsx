@@ -9,7 +9,7 @@ interface HeaderProps {
 
 const navLinks: { label: string; page: Page; badge?: string }[] = [
   { label: 'Home', page: 'home' },
-  { label: 'AI Agency', page: 'ai-agency' },
+  { label: 'AI Systems', page: 'ai-agency' },
   { label: 'AI Score', page: 'ai-score', badge: 'Free' },
   { label: 'Ad Performance', page: 'dashboard' },
   { label: 'About Us', page: 'about' },

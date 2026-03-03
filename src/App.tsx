@@ -24,7 +24,7 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     path: '',
   },
   'ai-agency': {
-    title: 'AI Agency – Custom Agentic AI Systems | Hybrid Ads',
+    title: 'AI Systems – Custom Agentic AI Systems | Hybrid Ads',
     description:
       'Build production-ready AI: autonomous agents, RAG pipelines, voice AI, on-device ML & LLM fine-tuning. 50+ systems shipped to 2M+ users. Enterprise & consumer.',
     path: 'ai-agency',

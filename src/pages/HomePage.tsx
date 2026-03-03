@@ -394,7 +394,7 @@ function ProjectsSection({ navigate }: HomePageProps) {
               onClick={() => navigate('ai-agency')}
               className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors"
             >
-              View full AI Agency portfolio
+              View full AI Systems portfolio
               <ArrowRight className="ml-2 h-4 w-4" />
             </button>
           </AnimateIn>

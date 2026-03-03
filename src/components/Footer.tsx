@@ -61,7 +61,7 @@ export default function Footer({ navigate }: FooterProps) {
             <h4 className="text-white font-semibold mb-4">Navigation</h4>
             <ul className="space-y-2 text-sm">
               <li><button onClick={() => navigate('home')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">Home</button></li>
-              <li><button onClick={() => navigate('ai-agency')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">AI Agency</button></li>
+              <li><button onClick={() => navigate('ai-agency')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">AI Systems</button></li>
               <li><button onClick={() => navigate('dashboard')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">Ad Performance</button></li>
               <li><button onClick={() => navigate('about')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">About Us</button></li>
               <li><a href="https://calendly.com/hybridadsai" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">Book a Call</a></li>
