@@ -279,7 +279,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                   <img
                     src="/OpenTranslateAI.png"
                     alt="OpenTranslateAI"
-                    className="w-full object-cover object-top h-36 group-hover:scale-105 transition-transform duration-300"
+                    className="w-full object-contain object-top h-36 group-hover:scale-105 transition-transform duration-300 bg-gray-50"
                   />
                 </div>
                 <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">OpenTranslateAI</div>
@@ -289,7 +289,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                   <img
                     src="/DapperLimoLax.png"
                     alt="DapperLimoLax"
-                    className="w-full object-cover object-top h-28 group-hover:scale-105 transition-transform duration-300"
+                    className="w-full object-contain object-top h-28 group-hover:scale-105 transition-transform duration-300 bg-gray-50"
                   />
                 </div>
                 <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">DapperLimoLax</div>
@@ -299,7 +299,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                   <img
                     src="/AsterionDB.png"
                     alt="AsterionDB"
-                    className="w-full object-cover object-top h-28 group-hover:scale-105 transition-transform duration-300"
+                    className="w-full object-contain object-top h-28 group-hover:scale-105 transition-transform duration-300 bg-gray-50"
                   />
                 </div>
                 <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">AsterionDB</div>
@@ -309,7 +309,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                   <img
                     src="/InferenceLearningHub.png"
                     alt="Inference Learning Hub"
-                    className="w-full object-cover object-top h-28 group-hover:scale-105 transition-transform duration-300"
+                    className="w-full object-contain object-top h-28 group-hover:scale-105 transition-transform duration-300 bg-gray-50"
                   />
                 </div>
                 <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">Inference Learning Hub</div>
@@ -319,7 +319,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                   <img
                     src="/mySomaLabs.png"
                     alt="mySomaLabs"
-                    className="w-full object-cover object-top h-28 group-hover:scale-105 transition-transform duration-300"
+                    className="w-full object-contain object-top h-28 group-hover:scale-105 transition-transform duration-300 bg-gray-50"
                   />
                 </div>
                 <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">mySomaLabs</div>

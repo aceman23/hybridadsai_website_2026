@@ -352,13 +352,16 @@ function ProjectsSection({ navigate }: HomePageProps) {
               className="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl hover:border-blue-200 hover:-translate-y-1 transition-all duration-300"
               style={{ animationDelay: `${i * 40}ms` }}
             >
-              <div className={`overflow-hidden ${project.screenshot ? 'h-48 bg-gray-50' : 'h-44'}`}>
+              <div className={`overflow-hidden flex items-center justify-center ${project.screenshot ? 'h-52 bg-gray-50' : 'h-44'}`}>
                 <img
                   src={project.img}
                   alt={project.name}
-                  className={`w-full h-full transition-transform duration-500 group-hover:scale-105 ${
-                    project.screenshot ? 'object-cover object-top' : 'object-cover'
+                  className={`transition-transform duration-500 group-hover:scale-105 ${
+                    project.screenshot
+                      ? 'w-full h-full object-contain object-top'
+                      : 'w-full h-full object-cover'
                   }`}
+                  style={project.screenshot ? { imageRendering: 'auto' } : undefined}
                 />
               </div>
               <div className="p-5">
