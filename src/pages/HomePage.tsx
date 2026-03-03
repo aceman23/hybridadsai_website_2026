@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
 import StatsTicker from '../components/StatsTicker';
+import TwitterFeed from '../components/TwitterFeed';
 
 const PROJECT_CATEGORIES = ['All', 'SaaS', 'Mobile App', 'iOS App', 'Open Source', 'AI Platform'] as const;
 
@@ -767,6 +768,8 @@ export default function HomePage({ navigate }: HomePageProps) {
           </div>
         </div>
       </section>
+
+      <TwitterFeed />
 
       <section className="bg-white py-20 border-t border-gray-100">
         <div className="max-w-3xl mx-auto px-4 text-center">

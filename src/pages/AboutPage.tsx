@@ -1,6 +1,7 @@
 import { CheckCircle2, ArrowRight, Award, Users, Globe, Rocket } from 'lucide-react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
+import TwitterFeed from '../components/TwitterFeed';
 
 interface AboutPageProps {
   navigate: (page: Page) => void;
@@ -327,6 +328,8 @@ export default function AboutPage({ navigate }: AboutPageProps) {
           </div>
         </div>
       </section>
+
+      <TwitterFeed />
 
       <section className="bg-gray-900 py-20">
         <div className="max-w-3xl mx-auto px-4 text-center">
