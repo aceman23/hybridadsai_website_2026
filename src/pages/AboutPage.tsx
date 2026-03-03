@@ -9,7 +9,7 @@ interface AboutPageProps {
 
 const team = [
   {
-    name: 'Founder & CEO',
+    name: 'Anton Ansalmar',
     role: 'AI and Growth Architect',
     bio: '12+ years in paid advertising. Built campaigns generating $400k/month in e-commerce revenue. Architects AI Systems and manages AI Engineers and Data Scientists.',
     img: '/AntonAnsalmar.png',
