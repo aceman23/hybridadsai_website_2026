@@ -10,7 +10,7 @@ interface AboutPageProps {
 const team = [
   {
     name: 'Founder & CEO',
-    role: 'PPC & AI Strategy',
+    role: 'AI and Growth Architect',
     bio: '12+ years in paid advertising. Built campaigns generating $400k/month in e-commerce revenue.',
     img: '/AntonAnsalmar.png',
     displayName: null,
