@@ -31,8 +31,7 @@ export default function Footer({ navigate }: FooterProps) {
               <img src="/logo.png" alt="HybridAds.ai" className="h-[120px] w-auto brightness-0 invert" />
             </button>
             <p className="text-sm leading-relaxed max-w-sm mt-2">
-              Experts in Paid Ads powered by Humans & AI. Saving businesses $$$ on digital
-              labor costs while maximizing returns across every platform.
+              AI Systems Integrators building intelligent automation for modern businesses — reducing digital labor costs and driving measurable returns across every channel.
             </p>
             <div className="mt-4 text-sm">
               <a

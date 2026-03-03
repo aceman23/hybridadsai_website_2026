@@ -423,11 +423,8 @@ export default function HomePage({ navigate }: HomePageProps) {
           </AnimateIn>
           <AnimateIn delay={240}>
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
-              Our mission at <span className="text-blue-600 font-semibold">Hybrid Ads</span> is to save you{' '}
-              <span className="text-green-600 font-semibold">$$$</span> on digital labor costs for managing
-              your paid ad campaigns. People search on Google and spend hours on Facebook & Instagram every
-              day — we make sure they find{' '}
-              <span className="font-semibold text-gray-800">you</span>.
+              <span className="text-blue-600 font-semibold">Hybrid Ads</span> builds AI systems that eliminate costly manual processes — from autonomous ad management to custom agentic workflows — so your business scales smarter, not harder. We cut{' '}
+              <span className="text-green-600 font-semibold">digital labor costs</span> while maximizing returns across every platform.
             </p>
           </AnimateIn>
           <AnimateIn delay={360}>

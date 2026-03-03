@@ -146,25 +146,20 @@ export default function AboutPage({ navigate }: AboutPageProps) {
             <div>
               <AnimateIn><h2 className="text-4xl font-black text-gray-900 mb-5">Our Mission</h2></AnimateIn>
               <p className="text-gray-600 leading-relaxed mb-5">
-                Our mission at Hybrid Ads is to save businesses{' '}
-                <span className="text-green-600 font-semibold">$$$</span> on digital labor costs
-                for managing paid ad campaigns — without sacrificing results.
+                Our mission at Hybrid Ads is to build production-ready AI systems that eliminate costly manual processes — reducing{' '}
+                <span className="text-green-600 font-semibold">digital labor overhead</span> while delivering measurable, compounding returns.
               </p>
               <p className="text-gray-600 leading-relaxed mb-5">
-                People search on Google and spend hours on Facebook & Instagram every day. Your
-                audio and social ads can show up as people are exploring what they're interested
-                in, making a connection with your business, product or service extremely important.
+                From autonomous ad agents and RAG pipelines to voice AI and LLM fine-tuning, we integrate AI into the fabric of your business operations — turning repetitive tasks into intelligent, self-improving systems.
               </p>
               <p className="text-gray-600 leading-relaxed mb-8">
-                We use AI platforms that learn from your ad performance. Every impression, reaction,
-                comment, share, and click teaches the system how to serve better ads — driving both
-                paid and organic discovery for your brand.
+                Every system we ship learns from real-world usage. Impressions, signals, and outcomes feed back into the model — so your AI gets sharper over time, driving both paid and organic growth for your brand.
               </p>
               <div className="space-y-3">
                 {[
-                  'AI + Humans working together, serving businesses in the USA 🇺🇸 and globally 🌎',
-                  'Performance Max & AI-enhanced ad strategies across all major platforms',
-                  'Campaigns that learn and improve with every dollar spent',
+                  'AI Systems Integrators serving businesses in the USA and globally',
+                  '50+ production AI systems shipped — agents, RAG pipelines, voice AI & more',
+                  'Systems that learn and compound in value with every interaction',
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
