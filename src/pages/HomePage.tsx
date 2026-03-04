@@ -1,9 +1,16 @@
-import { ArrowRight, Plus, ChevronUp, Bot, Mic, Smartphone, Globe, Brain, ExternalLink, Search, TrendingUp, AlertTriangle, CheckCircle } from 'lucide-react';
+import { ArrowRight, Plus, ChevronUp, Bot, Mic, Smartphone, Globe, Brain, ExternalLink, Search, TrendingUp, AlertTriangle, CheckCircle, Zap } from 'lucide-react';
 import { useState, useRef } from 'react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
 import StatsTicker from '../components/StatsTicker';
 import TwitterFeed from '../components/TwitterFeed';
+import LoadingState from '../components/aps/LoadingState';
+import ReportView from '../components/aps/ReportView';
+import type { AnalysisReport } from '../types/aps';
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/aps-analyze`;
 
 const PROJECT_CATEGORIES = ['All', 'SaaS', 'Mobile App', 'iOS App', 'Open Source', 'AI Platform'] as const;
 
@@ -409,6 +416,42 @@ function ProjectsSection({ navigate }: HomePageProps) {
 }
 
 export default function HomePage({ navigate }: HomePageProps) {
+  const [apsUrl, setApsUrl] = useState('');
+  const [apsLoading, setApsLoading] = useState(false);
+  const [apsReport, setApsReport] = useState<AnalysisReport | null>(null);
+  const [apsError, setApsError] = useState<string | null>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  const handleApsSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = apsUrl.trim();
+    if (!trimmed) return;
+    setApsLoading(true);
+    setApsError(null);
+    setApsReport(null);
+    setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+
+    try {
+      const res = await fetch(FUNCTION_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+          Apikey: SUPABASE_ANON_KEY,
+        },
+        body: JSON.stringify({ url: trimmed }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Analysis failed');
+      setApsReport(data);
+      setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    } catch (err: unknown) {
+      setApsError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+    } finally {
+      setApsLoading(false);
+    }
+  };
+
   return (
     <div className="bg-white">
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-20 md:py-28">
@@ -432,7 +475,7 @@ export default function HomePage({ navigate }: HomePageProps) {
             </p>
           </AnimateIn>
           <AnimateIn delay={360}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
               <a
                 href="https://calendly.com/hybridadsai"
                 target="_blank"
@@ -449,14 +492,41 @@ export default function HomePage({ navigate }: HomePageProps) {
                 View Ad Performance
                 <ArrowRight className="ml-2 h-5 w-5" />
               </button>
-              <button
-                onClick={() => navigate('ai-score')}
-                className="inline-flex items-center justify-center border-2 border-cyan-400 text-cyan-600 px-8 py-4 rounded-xl text-base font-semibold hover:bg-cyan-50 transition-colors gap-2"
-              >
-                <span className="text-xs bg-cyan-500 text-white font-bold px-1.5 py-0.5 rounded-full">Free</span>
-                AI Publisher Score
-              </button>
             </div>
+            <form onSubmit={handleApsSubmit} className="flex flex-col sm:flex-row gap-2 max-w-xl mx-auto">
+              <div className="flex items-center gap-2 bg-cyan-50 border border-cyan-200 rounded-xl px-3 py-1.5 flex-shrink-0 self-center sm:self-auto">
+                <Zap className="w-3 h-3 text-cyan-600" fill="currentColor" />
+                <span className="text-xs font-bold text-cyan-700 whitespace-nowrap">Free AI Score</span>
+              </div>
+              <div className="relative flex-1">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  value={apsUrl}
+                  onChange={e => setApsUrl(e.target.value)}
+                  placeholder="yourwebsite.com — check AI visibility"
+                  disabled={apsLoading}
+                  className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 rounded-xl text-gray-900 placeholder-gray-400 text-sm outline-none transition-all disabled:opacity-50 shadow-sm"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={apsLoading || !apsUrl.trim()}
+                className="flex items-center justify-center gap-1.5 bg-cyan-500 hover:bg-cyan-600 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-white font-bold px-5 py-3 rounded-xl text-sm transition-colors whitespace-nowrap shadow-sm shadow-cyan-200"
+              >
+                {apsLoading ? (
+                  <>
+                    <div className="w-3.5 h-3.5 border-2 border-white/50 border-t-transparent rounded-full animate-spin" />
+                    Analyzing…
+                  </>
+                ) : (
+                  <>
+                    Check Score
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </>
+                )}
+              </button>
+            </form>
           </AnimateIn>
           <AnimateIn delay={480}>
             <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
@@ -541,19 +611,89 @@ export default function HomePage({ navigate }: HomePageProps) {
             </div>
           </AnimateIn>
           <AnimateIn delay={320}>
-            <div className="text-center mt-8">
-              <button
-                onClick={() => navigate('ai-score')}
-                className="inline-flex items-center justify-center bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-3.5 rounded-xl text-base font-semibold transition-colors shadow-lg shadow-cyan-100 gap-2"
-              >
-                <span className="text-xs bg-white/20 font-bold px-1.5 py-0.5 rounded-full">Free</span>
-                Check Your AI Score Now
-                <ArrowRight className="h-4 w-4" />
-              </button>
+            <div className="mt-8 max-w-2xl mx-auto">
+              <form onSubmit={handleApsSubmit} className="flex flex-col sm:flex-row gap-3">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    value={apsUrl}
+                    onChange={e => setApsUrl(e.target.value)}
+                    placeholder="Enter your business website URL…"
+                    disabled={apsLoading}
+                    className="w-full pl-10 pr-4 py-3.5 bg-white border border-gray-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 rounded-xl text-gray-900 placeholder-gray-400 text-sm outline-none transition-all disabled:opacity-50 shadow-sm"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={apsLoading || !apsUrl.trim()}
+                  className="flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-600 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-white font-bold px-7 py-3.5 rounded-xl text-sm transition-colors whitespace-nowrap shadow-lg shadow-cyan-100"
+                >
+                  {apsLoading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/50 border-t-transparent rounded-full animate-spin" />
+                      Analyzing…
+                    </>
+                  ) : (
+                    <>
+                      <span className="text-xs bg-white/20 font-bold px-1.5 py-0.5 rounded-full">Free</span>
+                      Check Your AI Score Now
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  )}
+                </button>
+              </form>
+              <p className="text-center text-gray-400 text-xs mt-3">
+                Try:{' '}
+                {['starbucks.com', 'chipotle.com', 'yourwebsite.com'].map(u => (
+                  <button
+                    key={u}
+                    onClick={() => setApsUrl(u)}
+                    className="text-gray-400 hover:text-cyan-600 transition-colors underline underline-offset-2 mx-1"
+                  >
+                    {u}
+                  </button>
+                ))}
+              </p>
             </div>
           </AnimateIn>
         </div>
       </section>
+
+      <div ref={resultsRef}>
+        {apsLoading && (
+          <section className="py-12 bg-white border-b border-gray-100">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+              <LoadingState />
+            </div>
+          </section>
+        )}
+
+        {apsError && (
+          <section className="py-8 bg-white border-b border-gray-100">
+            <div className="max-w-xl mx-auto px-4">
+              <div className="bg-red-50 border border-red-200 rounded-xl px-5 py-4 text-red-600 text-sm text-center">
+                {apsError}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {apsReport && (
+          <section className="py-12 bg-white border-b border-gray-100">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+              <ReportView report={apsReport} />
+            </div>
+          </section>
+        )}
+      </div>
+
+      <style>{`
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
 
       <section className="py-20 bg-slate-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
