@@ -326,7 +326,7 @@ function ProjectsSection({ navigate }: HomePageProps) {
           </AnimateIn>
         </div>
 
-        <AnimateIn delay={200}>
+        <AnimateIn delay={200} variant="fade">
           <div className="flex flex-wrap justify-center gap-2 mb-10">
             {PROJECT_CATEGORIES.map((cat) => (
               <button
@@ -474,7 +474,7 @@ export default function HomePage({ navigate }: HomePageProps) {
               <span className="text-green-600 font-semibold">digital labor costs</span> while maximizing returns across every platform.
             </p>
           </AnimateIn>
-          <AnimateIn delay={360}>
+          <AnimateIn delay={360} variant="fade">
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
               <a
                 href="https://calendly.com/hybridadsai"
@@ -528,7 +528,7 @@ export default function HomePage({ navigate }: HomePageProps) {
               </button>
             </form>
           </AnimateIn>
-          <AnimateIn delay={480}>
+          <AnimateIn delay={480} variant="fade">
             <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
               {[
                 { value: '2M+', label: 'Leads Generated' },
@@ -569,7 +569,7 @@ export default function HomePage({ navigate }: HomePageProps) {
               </p>
             </AnimateIn>
           </div>
-          <AnimateIn delay={200}>
+          <AnimateIn delay={200} variant="fade">
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {[
                 {
@@ -610,7 +610,7 @@ export default function HomePage({ navigate }: HomePageProps) {
               })}
             </div>
           </AnimateIn>
-          <AnimateIn delay={320}>
+          <AnimateIn delay={320} variant="fade">
             <div className="mt-8 max-w-2xl mx-auto">
               <form onSubmit={handleApsSubmit} className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
@@ -815,7 +815,7 @@ export default function HomePage({ navigate }: HomePageProps) {
                   Learn how we grew online sales by driving organic search for a delivery brand in Sacramento, CA 😎
                 </p>
               </AnimateIn>
-              <AnimateIn delay={280}>
+              <AnimateIn delay={280} variant="fade">
                 <button
                   onClick={() => navigate('about')}
                   className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors"
@@ -855,7 +855,7 @@ export default function HomePage({ navigate }: HomePageProps) {
             <AnimateIn>
               <p className="text-gray-500 mb-5 text-base">Ready to see results like these?</p>
             </AnimateIn>
-            <AnimateIn delay={150}>
+            <AnimateIn delay={150} variant="fade">
               <a
                 href="https://calendly.com/hybridadsai"
                 target="_blank"
@@ -899,7 +899,7 @@ export default function HomePage({ navigate }: HomePageProps) {
             })}
           </div>
           <div className="text-center mt-10">
-            <AnimateIn>
+            <AnimateIn variant="fade">
               <button
                 onClick={() => navigate('ai-agency')}
                 className="inline-flex items-center bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-semibold transition-colors"
@@ -926,7 +926,7 @@ export default function HomePage({ navigate }: HomePageProps) {
               Paid ads, AI systems, mobile apps, or full-stack products — Hybrid Ads delivers results with humans and AI working together.
             </p>
           </AnimateIn>
-          <AnimateIn delay={300}>
+          <AnimateIn delay={300} variant="fade">
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="https://calendly.com/hybridadsai"
