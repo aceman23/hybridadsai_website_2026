@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CookieConsent from './components/CookieConsent';
 import ErrorBoundary from './components/ErrorBoundary';
-import HomePage from './pages/HomePage';
-import DashboardPage from './pages/DashboardPage';
-import AboutPage from './pages/AboutPage';
-import AIAgencyPage from './pages/AIAgencyPage';
-import AIScorePage from './pages/AIScorePage';
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
-import TermsOfServicePage from './pages/TermsOfServicePage';
-import NotFoundPage from './pages/NotFoundPage';
+
+const HomePage = lazy(() => import('./pages/HomePage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const AIAgencyPage = lazy(() => import('./pages/AIAgencyPage'));
+const AIScorePage = lazy(() => import('./pages/AIScorePage'));
+const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
+const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 export type Page = 'home' | 'dashboard' | 'about' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms';
 
@@ -155,7 +156,9 @@ function App() {
         </a>
         <Header currentPage={currentPage} navigate={navigate} />
         <main id="main-content" className="flex-grow" tabIndex={-1}>
-          {renderPage()}
+          <Suspense fallback={<div className="min-h-screen" />}>
+            {renderPage()}
+          </Suspense>
         </main>
         <Footer navigate={navigate} />
         <CookieConsent navigate={navigate} />
