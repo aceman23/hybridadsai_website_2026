@@ -12,10 +12,11 @@ const AIScorePage = lazy(() => import('./pages/AIScorePage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const NemoClawPage = lazy(() => import('./pages/NemoClawPage'));
 
-export type Page = 'home' | 'dashboard' | 'about' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms';
+export type Page = 'home' | 'dashboard' | 'about' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'ai-agency', 'ai-score', 'privacy', 'terms'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -59,6 +60,12 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     description:
       'Review the HybridAds.ai Terms of Service covering usage rights, intellectual property, DMCA policy, and conditions for using our platform.',
     path: 'terms',
+  },
+  'nemo-claw': {
+    title: 'NemoClaw Enterprise AI Agents | Secure Agentic AI for Marketing & Ads',
+    description:
+      'Deploy production-grade, sandboxed AI agents with NVIDIA NemoClaw and NeMo Agent Toolkit — built by Hybrid Ads for enterprise paid media teams.',
+    path: 'nemo-claw',
   },
 };
 
@@ -141,6 +148,7 @@ function App() {
       case 'ai-score': return <AIScorePage navigate={navigate} />;
       case 'privacy': return <PrivacyPolicyPage navigate={navigate} />;
       case 'terms': return <TermsOfServicePage navigate={navigate} />;
+      case 'nemo-claw': return <NemoClawPage navigate={navigate} />;
       default: return <HomePage navigate={navigate} />;
     }
   };

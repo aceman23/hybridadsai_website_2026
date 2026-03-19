@@ -7,10 +7,11 @@ interface HeaderProps {
   navigate: (page: Page) => void;
 }
 
-const navLinks: { label: string; page: Page; badge?: string }[] = [
+const navLinks: { label: string; page: Page; badge?: string; badgeColor?: string }[] = [
   { label: 'Home', page: 'home' },
   { label: 'AI Systems', page: 'ai-agency' },
-  { label: 'AI Score', page: 'ai-score', badge: 'Free' },
+  { label: 'NemoClaw', page: 'nemo-claw', badge: 'New', badgeColor: 'bg-emerald-600' },
+  { label: 'AI Score', page: 'ai-score', badge: 'Free', badgeColor: 'bg-cyan-500' },
   { label: 'Ad Performance', page: 'dashboard' },
   { label: 'About Us', page: 'about' },
 ];
@@ -42,7 +43,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
           </button>
 
           <nav className="hidden md:flex items-center space-x-7" aria-label="Main navigation">
-            {navLinks.map(({ label, page, badge }) => (
+            {navLinks.map(({ label, page, badge, badgeColor }) => (
               <button
                 key={page}
                 onClick={() => navigate(page)}
@@ -55,7 +56,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
               >
                 {label}
                 {badge && (
-                  <span className="text-xs bg-cyan-500 text-white font-bold px-1.5 py-0.5 rounded-full leading-none">
+                  <span className={`text-xs ${badgeColor ?? 'bg-cyan-500'} text-white font-bold px-1.5 py-0.5 rounded-full leading-none`}>
                     {badge}
                   </span>
                 )}
@@ -93,7 +94,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
           className="md:hidden border-t border-gray-100 bg-white px-4 py-4 space-y-1"
           aria-label="Mobile navigation"
         >
-          {navLinks.map(({ label, page, badge }) => (
+          {navLinks.map(({ label, page, badge, badgeColor }) => (
             <button
               key={page}
               onClick={() => { navigate(page); setMobileOpen(false); }}
@@ -104,7 +105,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
             >
               {label}
               {badge && (
-                <span className="text-xs bg-cyan-500 text-white font-bold px-1.5 py-0.5 rounded-full leading-none">
+                <span className={`text-xs ${badgeColor ?? 'bg-cyan-500'} text-white font-bold px-1.5 py-0.5 rounded-full leading-none`}>
                   {badge}
                 </span>
               )}
