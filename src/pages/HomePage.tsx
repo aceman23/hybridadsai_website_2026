@@ -688,6 +688,92 @@ export default function HomePage({ navigate }: HomePageProps) {
         )}
       </div>
 
+      {/* ── NemoClaw Teaser ── */}
+      <section className="relative overflow-hidden bg-gray-950 border-t border-white/5 py-20">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse 70% 50% at 100% 50%, rgba(16,185,129,0.08) 0%, transparent 70%)' }}
+          aria-hidden="true"
+        />
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <AnimateIn>
+                <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-bold px-4 py-1.5 rounded-full mb-5 tracking-widest uppercase">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
+                  NVIDIA NemoClaw · GTC 2026
+                </div>
+              </AnimateIn>
+              <AnimateIn delay={80}>
+                <h2 className="text-4xl md:text-5xl font-black text-white mb-5 leading-tight">
+                  Production-Grade Agentic AI.<br />
+                  <span className="text-emerald-400">Secured at the Kernel Level.</span>
+                </h2>
+              </AnimateIn>
+              <AnimateIn delay={160}>
+                <p className="text-gray-400 text-lg leading-relaxed mb-8">
+                  Hybrid Ads is now deploying NVIDIA NemoClaw — the enterprise-hardened agentic AI stack announced at GTC 2026 — for paid media teams who need agents they can trust in production.
+                </p>
+              </AnimateIn>
+              <AnimateIn delay={220}>
+                <ul className="space-y-4 mb-10">
+                  {[
+                    { icon: Shield, text: 'OpenShell sandbox — Landlock LSM + seccomp isolation per agent, zero lateral movement' },
+                    { icon: Activity, text: 'Full OpenTelemetry observability — every tool call traced, profiled, and auditable' },
+                    { icon: Lock, text: 'Privacy-first inference — run Nemotron 120B locally via NIM, your data never leaves' },
+                    { icon: Zap, text: '10x faster time-to-production with pre-built marketing agent blueprints' },
+                  ].map(({ icon: Icon, text }) => (
+                    <li key={text} className="flex items-start gap-3">
+                      <div className="bg-emerald-700/30 border border-emerald-500/20 w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                        <Icon className="h-3.5 w-3.5 text-emerald-400" />
+                      </div>
+                      <p className="text-gray-300 text-sm leading-relaxed">{text}</p>
+                    </li>
+                  ))}
+                </ul>
+              </AnimateIn>
+              <AnimateIn delay={300} variant="fade">
+                <button
+                  onClick={() => navigate('nemo-claw')}
+                  className="inline-flex items-center bg-emerald-600 hover:bg-emerald-500 text-white px-7 py-3.5 rounded-xl font-semibold transition-colors shadow-lg shadow-emerald-900/40"
+                >
+                  Learn More
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </button>
+              </AnimateIn>
+            </div>
+
+            <AnimateIn delay={200} variant="fade">
+              <div className="bg-gray-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-black/60">
+                <div className="bg-gray-800 border-b border-white/10 px-4 py-2.5 flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
+                  <span className="ml-3 text-xs text-gray-500 font-mono">github.com/NVIDIA/NemoClaw</span>
+                </div>
+                <div className="p-6 font-mono text-xs space-y-3">
+                  <p className="text-emerald-400 font-bold text-sm"># NVIDIA NemoClaw</p>
+                  <p className="text-gray-400 text-xs leading-relaxed">Secure sandbox plugin for OpenClaw — production-grade agentic AI with OpenShell isolation, Landlock LSM, and reproducible blueprints.</p>
+                  <div className="bg-black/50 border border-white/8 rounded-lg p-4 space-y-2 mt-4">
+                    <p className="text-gray-200"><span className="text-emerald-500 mr-2">$</span>git clone https://github.com/NVIDIA/NemoClaw.git</p>
+                    <p className="text-gray-200"><span className="text-emerald-500 mr-2">$</span>cd NemoClaw &amp;&amp; ./install.sh</p>
+                    <p className="text-gray-200"><span className="text-emerald-500 mr-2">$</span>nemoclaw run --blueprint hybrid-ads/campaign-optimizer</p>
+                    <p className="text-emerald-400 mt-2">✓ Sandbox initialized (Landlock + seccomp)</p>
+                    <p className="text-emerald-400">✓ Agent connected to Meta Ads API</p>
+                    <p className="text-emerald-400">✓ OpenTelemetry tracing active</p>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 mt-3">
+                    {['NemoClaw', 'NeMo Agent Toolkit', 'Nemotron 120B', 'OpenTelemetry'].map(t => (
+                      <span key={t} className="bg-white/5 border border-white/10 text-gray-400 text-xs px-2 py-0.5 rounded-full">{t}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </AnimateIn>
+          </div>
+        </div>
+      </section>
+
       <style>{`
         @keyframes fadeSlideUp {
           from { opacity: 0; transform: translateY(24px); }
@@ -907,92 +993,6 @@ export default function HomePage({ navigate }: HomePageProps) {
                 Explore AI Services
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
-            </AnimateIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ── NemoClaw Teaser ── */}
-      <section className="relative overflow-hidden bg-gray-950 border-t border-white/5 py-20">
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse 70% 50% at 100% 50%, rgba(16,185,129,0.08) 0%, transparent 70%)' }}
-          aria-hidden="true"
-        />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <AnimateIn>
-                <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-bold px-4 py-1.5 rounded-full mb-5 tracking-widest uppercase">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
-                  NVIDIA NemoClaw · GTC 2026
-                </div>
-              </AnimateIn>
-              <AnimateIn delay={80}>
-                <h2 className="text-4xl md:text-5xl font-black text-white mb-5 leading-tight">
-                  Production-Grade Agentic AI.<br />
-                  <span className="text-emerald-400">Secured at the Kernel Level.</span>
-                </h2>
-              </AnimateIn>
-              <AnimateIn delay={160}>
-                <p className="text-gray-400 text-lg leading-relaxed mb-8">
-                  Hybrid Ads is now deploying NVIDIA NemoClaw — the enterprise-hardened agentic AI stack announced at GTC 2026 — for paid media teams who need agents they can trust in production.
-                </p>
-              </AnimateIn>
-              <AnimateIn delay={220}>
-                <ul className="space-y-4 mb-10">
-                  {[
-                    { icon: Shield, text: 'OpenShell sandbox — Landlock LSM + seccomp isolation per agent, zero lateral movement' },
-                    { icon: Activity, text: 'Full OpenTelemetry observability — every tool call traced, profiled, and auditable' },
-                    { icon: Lock, text: 'Privacy-first inference — run Nemotron 120B locally via NIM, your data never leaves' },
-                    { icon: Zap, text: '10x faster time-to-production with pre-built marketing agent blueprints' },
-                  ].map(({ icon: Icon, text }) => (
-                    <li key={text} className="flex items-start gap-3">
-                      <div className="bg-emerald-700/30 border border-emerald-500/20 w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                        <Icon className="h-3.5 w-3.5 text-emerald-400" />
-                      </div>
-                      <p className="text-gray-300 text-sm leading-relaxed">{text}</p>
-                    </li>
-                  ))}
-                </ul>
-              </AnimateIn>
-              <AnimateIn delay={300} variant="fade">
-                <button
-                  onClick={() => navigate('nemo-claw')}
-                  className="inline-flex items-center bg-emerald-600 hover:bg-emerald-500 text-white px-7 py-3.5 rounded-xl font-semibold transition-colors shadow-lg shadow-emerald-900/40"
-                >
-                  Learn More
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </button>
-              </AnimateIn>
-            </div>
-
-            <AnimateIn delay={200} variant="fade">
-              <div className="bg-gray-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-black/60">
-                <div className="bg-gray-800 border-b border-white/10 px-4 py-2.5 flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
-                  <span className="ml-3 text-xs text-gray-500 font-mono">github.com/NVIDIA/NemoClaw</span>
-                </div>
-                <div className="p-6 font-mono text-xs space-y-3">
-                  <p className="text-emerald-400 font-bold text-sm"># NVIDIA NemoClaw</p>
-                  <p className="text-gray-400 text-xs leading-relaxed">Secure sandbox plugin for OpenClaw — production-grade agentic AI with OpenShell isolation, Landlock LSM, and reproducible blueprints.</p>
-                  <div className="bg-black/50 border border-white/8 rounded-lg p-4 space-y-2 mt-4">
-                    <p className="text-gray-200"><span className="text-emerald-500 mr-2">$</span>git clone https://github.com/NVIDIA/NemoClaw.git</p>
-                    <p className="text-gray-200"><span className="text-emerald-500 mr-2">$</span>cd NemoClaw &amp;&amp; ./install.sh</p>
-                    <p className="text-gray-200"><span className="text-emerald-500 mr-2">$</span>nemoclaw run --blueprint hybrid-ads/campaign-optimizer</p>
-                    <p className="text-emerald-400 mt-2">✓ Sandbox initialized (Landlock + seccomp)</p>
-                    <p className="text-emerald-400">✓ Agent connected to Meta Ads API</p>
-                    <p className="text-emerald-400">✓ OpenTelemetry tracing active</p>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 mt-3">
-                    {['NemoClaw', 'NeMo Agent Toolkit', 'Nemotron 120B', 'OpenTelemetry'].map(t => (
-                      <span key={t} className="bg-white/5 border border-white/10 text-gray-400 text-xs px-2 py-0.5 rounded-full">{t}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </AnimateIn>
           </div>
         </div>
