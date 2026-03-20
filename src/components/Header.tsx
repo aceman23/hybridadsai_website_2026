@@ -50,7 +50,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
                 aria-current={currentPage === page ? 'page' : undefined}
                 className={`relative inline-flex items-center gap-1.5 text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-1 ${
                   currentPage === page
-                    ? 'text-green-600'
+                    ? 'text-blue-600'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
@@ -100,7 +100,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
               onClick={() => { navigate(page); setMobileOpen(false); }}
               aria-current={currentPage === page ? 'page' : undefined}
               className={`flex items-center gap-2 w-full text-left text-base font-semibold py-2.5 px-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
-                currentPage === page ? 'text-green-600 bg-green-50' : 'text-gray-700 hover:bg-gray-50'
+                currentPage === page ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
               {label}
