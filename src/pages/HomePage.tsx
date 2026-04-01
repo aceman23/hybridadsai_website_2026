@@ -16,6 +16,17 @@ const PROJECT_CATEGORIES = ['All', 'SaaS', 'Mobile App', 'iOS App', 'Open Source
 
 const recentProjects = [
   {
+    name: 'KARLimoLax',
+    url: 'https://karlimolax.com',
+    category: 'SaaS',
+    tag: 'SaaS',
+    tagColor: 'bg-sky-100 text-sky-700',
+    desc: 'Premium luxury transportation in Los Angeles — website and booking system built on the LimoLogic.io platform with Meta ads campaigns driving 26.7K impressions and 712 clicks at $0.63 CPC.',
+    stack: ['LimoLogic.io', 'Meta Ads', 'Booking System', 'SEO'],
+    img: '/Screenshot_2026-04-01_at_11.28.12_AM.png',
+    screenshot: true,
+  },
+  {
     name: 'DapperLimoLax',
     url: 'https://dapperlimolax.com',
     category: 'SaaS',

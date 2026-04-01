@@ -82,6 +82,12 @@ const projects = [
     detail: 'Full e-commerce setup with the latest features. Client thrilled with design and results.',
     tag: 'Fashion & Apparel',
   },
+  {
+    client: 'KARLimoLax',
+    result: '101.9K Instagram views in 30 days',
+    detail: 'Built website and booking system on LimoLogic.io, launched Meta ads driving 26.7K impressions, 712 clicks at $0.63 CPC, and 757 website sessions.',
+    tag: 'Luxury Transportation',
+  },
 ];
 
 export default function AboutPage({ navigate }: AboutPageProps) {
@@ -287,12 +293,12 @@ export default function AboutPage({ navigate }: AboutPageProps) {
               <div className="rounded-2xl overflow-hidden shadow-md group">
                 <div className="overflow-hidden">
                   <img
-                    src="/DapperLimoLax.png"
-                    alt="DapperLimoLax"
+                    src="/Screenshot_2026-04-01_at_11.28.12_AM.png"
+                    alt="KARLimoLax"
                     className="w-full object-contain object-top h-28 group-hover:scale-105 transition-transform duration-300 bg-gray-50"
                   />
                 </div>
-                <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">DapperLimoLax</div>
+                <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">KARLimoLax</div>
               </div>
               <div className="rounded-2xl overflow-hidden shadow-md group mt-4">
                 <div className="overflow-hidden">
