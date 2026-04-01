@@ -1,4 +1,4 @@
-import { Mail, Linkedin, Twitter, Instagram } from 'lucide-react';
+import { Mail, Linkedin, Instagram } from 'lucide-react';
 import type { Page } from '../App';
 
 interface FooterProps {
@@ -45,7 +45,9 @@ export default function Footer({ navigate }: FooterProps) {
             </div>
             <div className="flex space-x-4 mt-5" aria-label="Social media links">
               <a href="https://twitter.com/hybridadsai" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded" aria-label="Follow us on X (Twitter)">
-                <Twitter className="h-5 w-5" aria-hidden="true" />
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
               </a>
               <a href="https://www.linkedin.com/company/hybridadsai" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded" aria-label="Connect on LinkedIn">
                 <Linkedin className="h-5 w-5" aria-hidden="true" />
