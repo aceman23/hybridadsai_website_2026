@@ -13,10 +13,11 @@ const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const NemoClawPage = lazy(() => import('./pages/NemoClawPage'));
+const CaseStudiesPage = lazy(() => import('./pages/CaseStudiesPage'));
 
-export type Page = 'home' | 'dashboard' | 'about' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw';
+export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -42,6 +43,12 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     description:
       'Meet the team behind 50+ AI systems and 3000+ ad campaigns. 15 years of Web + Mobile Dev combined with production-grade AI engineering.',
     path: 'about',
+  },
+  'case-studies': {
+    title: 'Case Studies – Client Results & Growth Stories | Hybrid Ads',
+    description:
+      'See how Hybrid Ads delivers measurable results: $476K/month revenue, 602% booking increases, 101.9K Instagram views, and more. Real results for real businesses.',
+    path: 'case-studies',
   },
   'ai-score': {
     title: 'AI Publisher Score – Free AI Visibility Audit | Hybrid Ads',
@@ -144,6 +151,7 @@ function App() {
     switch (currentPage) {
       case 'dashboard': return <DashboardPage navigate={navigate} />;
       case 'about': return <AboutPage navigate={navigate} />;
+      case 'case-studies': return <CaseStudiesPage navigate={navigate} />;
       case 'ai-agency': return <AIAgencyPage navigate={navigate} />;
       case 'ai-score': return <AIScorePage navigate={navigate} />;
       case 'privacy': return <PrivacyPolicyPage navigate={navigate} />;

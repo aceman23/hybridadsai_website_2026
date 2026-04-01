@@ -914,10 +914,10 @@ export default function HomePage({ navigate }: HomePageProps) {
               </AnimateIn>
               <AnimateIn delay={280} variant="fade">
                 <button
-                  onClick={() => navigate('about')}
+                  onClick={() => navigate('case-studies')}
                   className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors"
                 >
-                  Case Study on growth
+                  View All Case Studies
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </AnimateIn>

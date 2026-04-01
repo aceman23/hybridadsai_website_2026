@@ -225,9 +225,16 @@ export default function AboutPage({ navigate }: AboutPageProps) {
               <h2 className="text-4xl font-black text-gray-900 mb-3">Work We've Done</h2>
             </AnimateIn>
             <AnimateIn delay={120}>
-              <p className="text-gray-500 max-w-xl mx-auto">
+              <p className="text-gray-500 max-w-xl mx-auto mb-4">
                 Real results for real businesses across e-commerce, SaaS, local services, and beyond
               </p>
+              <button
+                onClick={() => navigate('case-studies')}
+                className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors text-sm"
+              >
+                View detailed case studies
+                <ArrowRight className="ml-1.5 h-4 w-4" />
+              </button>
             </AnimateIn>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
