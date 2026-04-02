@@ -39,4 +39,4 @@ export interface PromoCardData {
   qualification: string;
 }
 
-export type CardTab = 'features' | 'testimonials' | 'quotes' | 'custom-quote' | 'promotional';
+export type CardTab = 'features' | 'testimonials' | 'quotes' | 'custom-quote' | 'promotional' | 'viral-posts';

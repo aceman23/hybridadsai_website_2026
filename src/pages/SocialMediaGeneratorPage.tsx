@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Layers, MessageSquareQuote, Quote, Megaphone, Star, Sparkles } from 'lucide-react';
+import { Layers, MessageSquareQuote, Quote, Megaphone, Star, Sparkles, Zap } from 'lucide-react';
 import type { Page } from '../App';
 import type { BrandData, CardTab } from '../components/social-generator/types';
 import BrandInput from '../components/social-generator/BrandInput';
@@ -8,6 +8,7 @@ import TestimonialCards from '../components/social-generator/TestimonialCards';
 import QuoteCards from '../components/social-generator/QuoteCards';
 import CustomQuoteCard from '../components/social-generator/CustomQuoteCard';
 import PromotionalCard from '../components/social-generator/PromotionalCard';
+import ViralPostEngine from '../components/social-generator/ViralPostEngine';
 
 interface SocialMediaGeneratorPageProps {
   navigate: (page: Page) => void;
@@ -19,6 +20,7 @@ const TABS: { id: CardTab; label: string; icon: typeof Layers }[] = [
   { id: 'quotes', label: 'Quote Cards', icon: MessageSquareQuote },
   { id: 'custom-quote', label: 'Custom Quote', icon: Quote },
   { id: 'promotional', label: 'Promotional', icon: Megaphone },
+  { id: 'viral-posts', label: 'Viral Posts', icon: Zap },
 ];
 
 const DEFAULT_BRAND: BrandData = {
@@ -51,6 +53,8 @@ export default function SocialMediaGeneratorPage({ navigate }: SocialMediaGenera
         return <CustomQuoteCard brand={activeBrand} />;
       case 'promotional':
         return <PromotionalCard brand={activeBrand} />;
+      case 'viral-posts':
+        return <ViralPostEngine brand={activeBrand} />;
     }
   };
 
