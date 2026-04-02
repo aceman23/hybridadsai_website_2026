@@ -14,10 +14,11 @@ const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const NemoClawPage = lazy(() => import('./pages/NemoClawPage'));
 const CaseStudiesPage = lazy(() => import('./pages/CaseStudiesPage'));
+const SocialMediaGeneratorPage = lazy(() => import('./pages/SocialMediaGeneratorPage'));
 
-export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw';
+export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw', 'social-generator'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -73,6 +74,12 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     description:
       'Deploy production-grade, sandboxed AI agents with NVIDIA NemoClaw and NeMo Agent Toolkit — built by Hybrid Ads for enterprise paid media teams.',
     path: 'nemo-claw',
+  },
+  'social-generator': {
+    title: 'Social Media Card Generator – Auto Brand Detection | Hybrid Ads',
+    description:
+      'Paste any website URL to auto-extract brand colors, logo, and identity. Generate download-ready social media cards for Instagram, LinkedIn, Twitter & Facebook.',
+    path: 'social-generator',
   },
 };
 
@@ -157,6 +164,7 @@ function App() {
       case 'privacy': return <PrivacyPolicyPage navigate={navigate} />;
       case 'terms': return <TermsOfServicePage navigate={navigate} />;
       case 'nemo-claw': return <NemoClawPage navigate={navigate} />;
+      case 'social-generator': return <SocialMediaGeneratorPage navigate={navigate} />;
       default: return <HomePage navigate={navigate} />;
     }
   };
