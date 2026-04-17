@@ -65,7 +65,7 @@ export default function Footer({ navigate }: FooterProps) {
               <li><button onClick={() => navigate('ai-agency')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">AI Systems</button></li>
               <li>
                 <button onClick={() => navigate('nemo-claw')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white inline-flex items-center gap-2">
-                  NemoClaw Agents
+                  AI Agents
                   <span className="text-xs bg-emerald-600 text-white font-bold px-1.5 py-0.5 rounded-full leading-none">New</span>
                 </button>
               </li>

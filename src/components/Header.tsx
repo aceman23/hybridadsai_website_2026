@@ -18,7 +18,7 @@ interface NavLink {
 const navLinks: NavLink[] = [
   { label: 'Home', page: 'home' },
   { label: 'AI Systems', page: 'ai-agency' },
-  { label: 'NemoClaw', page: 'nemo-claw', badge: 'New', badgeColor: 'bg-emerald-600' },
+  { label: 'AI Agents', page: 'nemo-claw', badge: 'New', badgeColor: 'bg-emerald-600' },
   { label: 'AI Score', page: 'ai-score', badge: 'Free', badgeColor: 'bg-cyan-500' },
   { label: 'Ad Performance', page: 'dashboard' },
   {
