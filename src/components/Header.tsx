@@ -20,7 +20,6 @@ const navLinks: NavLink[] = [
   { label: 'AI Systems', page: 'ai-agency' },
   { label: 'NemoClaw', page: 'nemo-claw', badge: 'New', badgeColor: 'bg-emerald-600' },
   { label: 'AI Score', page: 'ai-score', badge: 'Free', badgeColor: 'bg-cyan-500' },
-  { label: 'Social Cards', page: 'social-generator', badge: 'Free', badgeColor: 'bg-cyan-500' },
   { label: 'Ad Performance', page: 'dashboard' },
   {
     label: 'About Us',

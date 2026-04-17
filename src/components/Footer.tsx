@@ -72,6 +72,7 @@ export default function Footer({ navigate }: FooterProps) {
               <li><button onClick={() => navigate('dashboard')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">Ad Performance</button></li>
               <li><button onClick={() => navigate('about')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">About Us</button></li>
               <li><button onClick={() => navigate('case-studies')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">Case Studies</button></li>
+              <li><button onClick={() => navigate('social-generator')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">Social Cards</button></li>
               <li><a href="https://calendly.com/hybridadsai" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">Book a Call</a></li>
             </ul>
           </nav>
