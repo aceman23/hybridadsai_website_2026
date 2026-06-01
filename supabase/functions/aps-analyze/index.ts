@@ -80,32 +80,58 @@ function buildDemoReport(url: string): AnalysisReport {
   return { url, groundTruth: DEMO_GROUND_TRUTH, results, overallScore, generatedAt: new Date().toISOString(), isDemo: true };
 }
 
-async function parseJSON(text: string): Promise<BusinessInfo> {
-  const cleaned = text.replace(/```json|```/g, "").trim();
-  const match = cleaned.match(/\{[\s\S]*\}/);
-  if (!match) throw new Error("No JSON found");
-  const p = JSON.parse(match[0]);
-  return {
-    name: p.name || NOT_AVAILABLE,
-    address: p.address || NOT_AVAILABLE,
-    phone: p.phone || NOT_AVAILABLE,
-    primary_category: p.primary_category || NOT_AVAILABLE,
-    secondary_category: p.secondary_category || NOT_AVAILABLE,
-    website: p.website || NOT_AVAILABLE,
-  };
+function parseJSON(text: string): BusinessInfo {
+  try {
+    const cleaned = text.replace(/```json|```/g, "").trim();
+    const match = cleaned.match(/\{[\s\S]*\}/);
+    if (!match) return { ...NA_BUSINESS };
+    const p = JSON.parse(match[0]);
+    return {
+      name: p.name || NOT_AVAILABLE,
+      address: p.address || NOT_AVAILABLE,
+      phone: p.phone || NOT_AVAILABLE,
+      primary_category: p.primary_category || NOT_AVAILABLE,
+      secondary_category: p.secondary_category || NOT_AVAILABLE,
+      website: p.website || NOT_AVAILABLE,
+    };
+  } catch {
+    return { ...NA_BUSINESS };
+  }
+}
+
+async function fetchWithTimeout(url: string, options: RequestInit, timeoutMs: number): Promise<Response> {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { ...options, signal: controller.signal });
+    return res;
+  } finally {
+    clearTimeout(id);
+  }
+}
+
+async function retryFetch(fn: () => Promise<BusinessInfo>, retries = 2): Promise<BusinessInfo> {
+  for (let i = 0; i <= retries; i++) {
+    try {
+      return await fn();
+    } catch {
+      if (i === retries) return { ...NA_BUSINESS };
+      await new Promise(r => setTimeout(r, 500 * (i + 1)));
+    }
+  }
+  return { ...NA_BUSINESS };
 }
 
 async function fetchSiteHTML(url: string): Promise<string> {
   const normalized = url.startsWith("http") ? url : `https://${url}`;
-  const res = await fetch(normalized, {
+  const res = await fetchWithTimeout(normalized, {
     headers: { "User-Agent": "Mozilla/5.0 (compatible; HybridAdsBot/1.0)" },
-    signal: AbortSignal.timeout(8000),
-  });
+  }, 15000);
   return (await res.text()).slice(0, 15000);
 }
 
 async function extractGroundTruth(html: string, url: string, key: string): Promise<BusinessInfo> {
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+  const res = await fetchWithTimeout("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
     body: JSON.stringify({
@@ -114,58 +140,58 @@ async function extractGroundTruth(html: string, url: string, key: string): Promi
       temperature: 0,
       max_tokens: 350,
     }),
-  });
+  }, 20000);
   const d = await res.json();
   return parseJSON(d.choices?.[0]?.message?.content || "{}");
 }
 
 async function queryOpenAI(url: string, key: string): Promise<BusinessInfo> {
   const prompt = `A user asked about the business at: ${url}. Based on your training data, respond ONLY with valid JSON (no markdown): {"name":"","address":"","phone":"","primary_category":"","secondary_category":"","website":""}. Use "Not Available" for unknown fields.`;
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+  const res = await fetchWithTimeout("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
     body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: prompt }], temperature: 0, max_tokens: 300 }),
-  });
+  }, 20000);
   return parseJSON((await res.json()).choices?.[0]?.message?.content || "{}");
 }
 
 async function queryGemini(url: string, key: string): Promise<BusinessInfo> {
   const prompt = `A user asked about the business at: ${url}. Based on your knowledge, respond ONLY with valid JSON (no markdown): {"name":"","address":"","phone":"","primary_category":"","secondary_category":"","website":""}. Use "Not Available" for unknown fields.`;
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+  const res = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0, maxOutputTokens: 300 } }),
-  });
+  }, 20000);
   return parseJSON((await res.json()).candidates?.[0]?.content?.parts?.[0]?.text || "{}");
 }
 
 async function queryCopilot(url: string, key: string): Promise<BusinessInfo> {
   const prompt = `A user asked about the business at: ${url}. Based on your knowledge, respond ONLY with valid JSON (no markdown): {"name":"","address":"","phone":"","primary_category":"","secondary_category":"","website":""}. Use "Not Available" for unknown fields.`;
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+  const res = await fetchWithTimeout("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
     body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "system", content: "You are Microsoft Copilot." }, { role: "user", content: prompt }], temperature: 0, max_tokens: 300 }),
-  });
+  }, 20000);
   return parseJSON((await res.json()).choices?.[0]?.message?.content || "{}");
 }
 
 async function queryGrok(url: string, key: string): Promise<BusinessInfo> {
   const prompt = `A user asked about the business at: ${url}. Based on your knowledge, respond ONLY with valid JSON (no markdown): {"name":"","address":"","phone":"","primary_category":"","secondary_category":"","website":""}. Use "Not Available" for unknown fields.`;
-  const res = await fetch("https://api.x.ai/v1/chat/completions", {
+  const res = await fetchWithTimeout("https://api.x.ai/v1/chat/completions", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
     body: JSON.stringify({ model: "grok-beta", messages: [{ role: "user", content: prompt }], temperature: 0, max_tokens: 300 }),
-  });
+  }, 20000);
   return parseJSON((await res.json()).choices?.[0]?.message?.content || "{}");
 }
 
 async function queryPerplexity(url: string, key: string): Promise<BusinessInfo> {
   const prompt = `A user asked about the business at: ${url}. Based on your knowledge, respond ONLY with valid JSON (no markdown): {"name":"","address":"","phone":"","primary_category":"","secondary_category":"","website":""}. Use "Not Available" for unknown fields.`;
-  const res = await fetch("https://api.perplexity.ai/chat/completions", {
+  const res = await fetchWithTimeout("https://api.perplexity.ai/chat/completions", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
     body: JSON.stringify({ model: "llama-3.1-sonar-small-128k-online", messages: [{ role: "user", content: prompt }], temperature: 0, max_tokens: 300 }),
-  });
+  }, 20000);
   return parseJSON((await res.json()).choices?.[0]?.message?.content || "{}");
 }
 
@@ -181,13 +207,11 @@ async function runLiveAnalysis(url: string): Promise<AnalysisReport> {
   const xaiKey = Deno.env.get("XAI_API_KEY") || "";
   const perplexityKey = Deno.env.get("PERPLEXITY_API_KEY") || "";
 
-  let groundTruth: BusinessInfo;
-  try {
+  const groundTruth = await retryFetch(async () => {
     const html = await fetchSiteHTML(url);
-    groundTruth = await extractGroundTruth(html, url, openaiKey);
-  } catch {
-    groundTruth = { ...NA_BUSINESS, website: url };
-  }
+    return await extractGroundTruth(html, url, openaiKey);
+  }, 2);
+  if (groundTruth.website === NOT_AVAILABLE) groundTruth.website = url;
 
   const [openaiData, geminiData, copilotData, grokData, perplexityData] = await Promise.all([
     safeQuery(() => queryOpenAI(url, openaiKey)),

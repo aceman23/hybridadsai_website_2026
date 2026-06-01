@@ -288,25 +288,31 @@ export default function AIScorePage({ navigate: _navigate }: Props) {
     setError(null);
     setReport(null);
 
-    try {
-      const res = await fetch(FUNCTION_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-          Apikey: SUPABASE_ANON_KEY,
-        },
-        body: JSON.stringify({ url: trimmed }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Analysis failed');
-      setReport(data);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
-    } finally {
-      setLoading(false);
+    const maxAttempts = 2;
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        const res = await fetch(FUNCTION_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+            Apikey: SUPABASE_ANON_KEY,
+          },
+          body: JSON.stringify({ url: trimmed }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Analysis failed');
+        setReport(data);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setLoading(false);
+        return;
+      } catch (err: unknown) {
+        if (attempt === maxAttempts - 1) {
+          setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
+        }
+      }
     }
+    setLoading(false);
   };
 
   return (
