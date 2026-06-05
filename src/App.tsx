@@ -15,10 +15,11 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const NemoClawPage = lazy(() => import('./pages/NemoClawPage'));
 const CaseStudiesPage = lazy(() => import('./pages/CaseStudiesPage'));
 const SocialMediaGeneratorPage = lazy(() => import('./pages/SocialMediaGeneratorPage'));
+const GTMServicePage = lazy(() => import('./pages/GTMServicePage'));
 
-export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator';
+export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw', 'social-generator'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -80,6 +81,12 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     description:
       'Paste any website URL to auto-extract brand colors, logo, and identity. Generate download-ready social media cards for Instagram, LinkedIn, Twitter & Facebook.',
     path: 'social-generator',
+  },
+  'gtm-service': {
+    title: 'AI Go-To-Market Sales Team – $0.03/Email | Hybrid Ads',
+    description:
+      'Deploy a fully autonomous AI sales team of 7 agents. Prospect, personalize, and outreach 24/7 at $0.03 per email. No contracts, no minimums, live in 24 hours.',
+    path: 'gtm-service',
   },
 };
 
@@ -165,6 +172,7 @@ function App() {
       case 'terms': return <TermsOfServicePage navigate={navigate} />;
       case 'nemo-claw': return <NemoClawPage navigate={navigate} />;
       case 'social-generator': return <SocialMediaGeneratorPage navigate={navigate} />;
+      case 'gtm-service': return <GTMServicePage navigate={navigate} />;
       default: return <HomePage navigate={navigate} />;
     }
   };

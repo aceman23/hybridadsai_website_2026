@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
+import GTMPromoSection from '../components/GTMPromoSection';
 
 interface AIAgencyPageProps {
   navigate: (page: Page) => void;
@@ -232,6 +233,8 @@ export default function AIAgencyPage({ navigate }: AIAgencyPageProps) {
           </AnimateIn>
         </div>
       </section>
+
+      <GTMPromoSection navigate={navigate} />
 
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">

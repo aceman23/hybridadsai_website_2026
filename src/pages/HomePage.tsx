@@ -3,6 +3,7 @@ import { useState, useRef } from 'react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
 import StatsTicker from '../components/StatsTicker';
+import GTMPromoSection from '../components/GTMPromoSection';
 import TwitterFeed from '../components/TwitterFeed';
 import LoadingState from '../components/aps/LoadingState';
 import ReportView from '../components/aps/ReportView';
@@ -558,6 +559,8 @@ export default function HomePage({ navigate }: HomePageProps) {
       </section>
 
       <StatsTicker />
+
+      <GTMPromoSection navigate={navigate} compact />
 
       <section className="py-16 bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
