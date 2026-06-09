@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import {
   Bot, Search, Users, Sparkles, Target, RefreshCw, Mail,
   Code2, Calendar, ArrowRight, CheckCircle2, Zap, Shield,
@@ -75,21 +75,7 @@ const faqs = [
 
 export default function GTMServicePage({ navigate }: Props) {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoPaused, setVideoPaused] = useState(false);
   const [videoError, setVideoError] = useState(false);
-
-  const handleVideoTap = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (v.paused) {
-      v.play();
-      setVideoPaused(false);
-    } else {
-      v.pause();
-      setVideoPaused(true);
-    }
-  };
 
   const handleCtaClick = () => {
     if (typeof window !== 'undefined' && (window as Record<string, unknown>).gtag) {
@@ -200,27 +186,17 @@ export default function GTMServicePage({ navigate }: Props) {
                     <p className="text-sm font-medium">Video coming soon</p>
                   </div>
                 ) : (
-                  <>
-                    <video
-                      ref={videoRef}
-                      src="/HybridAds_AutoGTM_Video.mp4"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="auto"
-                      onError={() => setVideoError(true)}
-                      onClick={handleVideoTap}
-                      className="w-full h-full object-cover cursor-pointer"
-                    />
-                    {videoPaused && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
-                        <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center">
-                          <Play className="w-7 h-7 text-gray-900 ml-0.5" fill="currentColor" />
-                        </div>
-                      </div>
-                    )}
-                  </>
+                  <video
+                    src="/HybridAds_AutoGTM_Video.mp4"
+                    controls
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    onError={() => setVideoError(true)}
+                    className="w-full h-full object-cover"
+                  />
                 )}
               </div>
               <p className="text-center text-gray-400 text-sm mt-4 italic">
