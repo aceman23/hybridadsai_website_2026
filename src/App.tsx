@@ -1,7 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import CookieConsent from './components/CookieConsent';
 import ErrorBoundary from './components/ErrorBoundary';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -193,7 +192,6 @@ function App() {
           </Suspense>
         </main>
         <Footer navigate={navigate} />
-        <CookieConsent navigate={navigate} />
       </div>
     </ErrorBoundary>
   );
