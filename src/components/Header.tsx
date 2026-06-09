@@ -18,8 +18,15 @@ interface NavLink {
 const navLinks: NavLink[] = [
   { label: 'Home', page: 'home' },
   { label: 'AI Systems', page: 'ai-agency' },
-  { label: 'AI Agents', page: 'nemo-claw', badge: 'New', badgeColor: 'bg-emerald-600' },
-  { label: 'AI Score', page: 'ai-score', badge: 'Free', badgeColor: 'bg-cyan-500' },
+  {
+    label: 'AI Services',
+    page: 'gtm-service',
+    children: [
+      { label: 'AI Sales Team', page: 'gtm-service' },
+      { label: 'AI Agents', page: 'nemo-claw' },
+      { label: 'AI Score', page: 'ai-score' },
+    ],
+  },
   { label: 'Ad Performance', page: 'dashboard' },
   {
     label: 'About Us',
@@ -33,31 +40,40 @@ const navLinks: NavLink[] = [
 
 export default function Header({ currentPage, navigate }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
+  const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setDropdownOpen(false);
-      }
+      const target = e.target as Node;
+      const isInsideAny = Object.values(dropdownRefs.current).some(
+        (ref) => ref && ref.contains(target)
+      );
+      if (!isInsideAny) setOpenDropdown(null);
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (key: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setDropdownOpen(true);
+    setOpenDropdown(key);
   };
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => setDropdownOpen(false), 150);
+    timeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
   };
 
+  const isAiServicesSection = currentPage === 'gtm-service' || currentPage === 'nemo-claw' || currentPage === 'ai-score';
   const isAboutSection = currentPage === 'about' || currentPage === 'case-studies';
+
+  const isDropdownActive = (link: NavLink) => {
+    if (link.label === 'AI Services') return isAiServicesSection;
+    if (link.label === 'About Us') return isAboutSection;
+    return false;
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm animate-header-in" role="banner">
@@ -86,28 +102,28 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
             {navLinks.map((link) =>
               link.children ? (
                 <div
-                  key={link.page}
-                  ref={dropdownRef}
+                  key={link.label}
+                  ref={(el) => { dropdownRefs.current[link.label] = el; }}
                   className="relative"
-                  onMouseEnter={handleMouseEnter}
+                  onMouseEnter={() => handleMouseEnter(link.label)}
                   onMouseLeave={handleMouseLeave}
                 >
                   <button
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                    aria-expanded={dropdownOpen}
+                    onClick={() => setOpenDropdown(openDropdown === link.label ? null : link.label)}
+                    aria-expanded={openDropdown === link.label}
                     aria-haspopup="true"
                     className={`relative inline-flex items-center gap-1 text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-1 ${
-                      isAboutSection
+                      isDropdownActive(link)
                         ? 'text-blue-600'
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
                   >
                     {link.label}
-                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${openDropdown === link.label ? 'rotate-180' : ''}`} />
                   </button>
                   <div
                     className={`absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 transition-all duration-200 origin-top ${
-                      dropdownOpen
+                      openDropdown === link.label
                         ? 'opacity-100 scale-100 translate-y-0'
                         : 'opacity-0 scale-95 -translate-y-1 pointer-events-none'
                     }`}
@@ -118,7 +134,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
                         key={child.page}
                         onClick={() => {
                           navigate(child.page);
-                          setDropdownOpen(false);
+                          setOpenDropdown(null);
                         }}
                         role="menuitem"
                         className={`w-full text-left px-4 py-2.5 text-sm font-semibold transition-colors ${
@@ -186,22 +202,22 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
         >
           {navLinks.map((link) =>
             link.children ? (
-              <div key={link.page}>
+              <div key={link.label}>
                 <button
-                  onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
+                  onClick={() => setMobileDropdown(mobileDropdown === link.label ? null : link.label)}
                   className={`flex items-center justify-between w-full text-left text-base font-semibold py-2.5 px-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
-                    isAboutSection ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-50'
+                    isDropdownActive(link) ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-50'
                   }`}
                 >
                   {link.label}
-                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${mobileAboutOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${mobileDropdown === link.label ? 'rotate-180' : ''}`} />
                 </button>
-                {mobileAboutOpen && (
+                {mobileDropdown === link.label && (
                   <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-gray-100 pl-3">
                     {link.children.map((child) => (
                       <button
                         key={child.page}
-                        onClick={() => { navigate(child.page); setMobileOpen(false); setMobileAboutOpen(false); }}
+                        onClick={() => { navigate(child.page); setMobileOpen(false); setMobileDropdown(null); }}
                         className={`block w-full text-left text-sm font-semibold py-2 px-2 rounded-lg ${
                           currentPage === child.page
                             ? 'text-blue-600 bg-blue-50'
