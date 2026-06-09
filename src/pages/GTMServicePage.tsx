@@ -189,53 +189,53 @@ export default function GTMServicePage({ navigate }: Props) {
       {/* Video + $149 Offer */}
       <section className="py-16 md:py-20 bg-gradient-to-b from-gray-950 to-gray-900 border-t border-white/5">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-            {/* Video */}
-            <AnimateIn>
-              <div className="relative mx-auto max-w-[320px] lg:max-w-[360px]">
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10 aspect-[9/16]">
-                  <video
-                    ref={videoRef}
-                    src="/HybridAds_AutoGTM_Video.mp4"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    onClick={handleVideoTap}
-                    className="w-full h-full object-cover cursor-pointer"
-                  />
-                  {videoPaused && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
-                      <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center">
-                        <Play className="w-6 h-6 text-gray-900 ml-0.5" fill="currentColor" />
-                      </div>
+          {/* Video - full width landscape */}
+          <AnimateIn>
+            <div className="relative mb-10">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10 aspect-video">
+                <video
+                  ref={videoRef}
+                  src="/HybridAds_AutoGTM_Video.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  onClick={handleVideoTap}
+                  className="w-full h-full object-cover cursor-pointer"
+                />
+                {videoPaused && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center">
+                      <Play className="w-7 h-7 text-gray-900 ml-0.5" fill="currentColor" />
                     </div>
-                  )}
-                </div>
-                <p className="text-center text-gray-400 text-xs mt-4 italic leading-relaxed">
-                  Real founder sharing how our 24/7 AI Sales Team is changing the game
-                </p>
+                  </div>
+                )}
               </div>
-            </AnimateIn>
+              <p className="text-center text-gray-400 text-sm mt-4 italic">
+                Real founder sharing how our 24/7 AI Sales Team is changing the game
+              </p>
+            </div>
+          </AnimateIn>
 
-            {/* $149 Offer Box */}
-            <AnimateIn delay={200}>
-              <div className="bg-gradient-to-br from-white/[0.08] to-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-7 md:p-8">
-                <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold rounded-full px-3 py-1 mb-5">
-                  <Zap className="w-3 h-3" />
-                  Launching Now
+          {/* $149 Offer Box */}
+          <AnimateIn delay={200}>
+            <div className="max-w-3xl mx-auto bg-gradient-to-br from-white/[0.08] to-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-7 md:p-10">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold rounded-full px-3 py-1 mb-5">
+                    <Zap className="w-3 h-3" />
+                    Launching Now
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">
+                    AI Sales Starter Credits
+                  </h3>
+                  <div className="flex items-baseline gap-2 justify-center">
+                    <span className="text-4xl font-black text-white">$149</span>
+                    <span className="text-gray-400 text-sm font-medium">one-time</span>
+                  </div>
                 </div>
 
-                <h3 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">
-                  AI Sales Starter Credits
-                </h3>
-                <div className="flex items-baseline gap-2 mb-6">
-                  <span className="text-4xl font-black text-white">$149</span>
-                  <span className="text-gray-400 text-sm font-medium">one-time</span>
-                </div>
-
-                <div className="space-y-3 mb-7">
+                <div className="grid sm:grid-cols-2 gap-3 mb-7 max-w-lg mx-auto">
                   {[
                     '$150 worth of AI email credits (~5,000 emails)',
                     '24/7 Autonomous AI Sales Team of 7 Agents',
@@ -249,16 +249,18 @@ export default function GTMServicePage({ navigate }: Props) {
                   ))}
                 </div>
 
-                <a
-                  href="https://calendly.com/hybridadsai"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={handleCtaClick}
-                  className="group flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-4 rounded-xl text-base transition-all shadow-lg shadow-blue-600/25 hover:shadow-blue-500/30"
-                >
-                  Get $149 AI Sales Credits
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                </a>
+                <div className="max-w-sm mx-auto">
+                  <a
+                    href="https://calendly.com/hybridadsai"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleCtaClick}
+                    className="group flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-4 rounded-xl text-base transition-all shadow-lg shadow-blue-600/25 hover:shadow-blue-500/30"
+                  >
+                    Get $149 AI Sales Credits
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </a>
+                </div>
 
                 <div className="flex flex-wrap items-center justify-center gap-4 mt-5">
                   {['No setup fees', 'Cancel anytime', 'Instant access'].map((t) => (
@@ -268,9 +270,8 @@ export default function GTMServicePage({ navigate }: Props) {
                     </span>
                   ))}
                 </div>
-              </div>
-            </AnimateIn>
-          </div>
+            </div>
+          </AnimateIn>
         </div>
       </section>
 
