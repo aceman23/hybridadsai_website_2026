@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
+import SignupModal from '../components/gtm/SignupModal';
 
 interface Props {
   navigate: (page: Page) => void;
@@ -76,13 +77,42 @@ const faqs = [
 export default function GTMServicePage({ navigate }: Props) {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [videoError, setVideoError] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
 
   const handleCtaClick = () => {
-    if (typeof window !== 'undefined' && (window as Record<string, unknown>).gtag) {
-      (window as Record<string, unknown> & { gtag: (...args: unknown[]) => void }).gtag('event', 'click_gtm_cta', {
+    const w = window as unknown as { gtag?: (...args: unknown[]) => void };
+    if (w.gtag) {
+      w.gtag('event', 'click_gtm_cta', {
         event_category: 'conversion',
         event_label: 'ai_sales_credits_149',
       });
+    }
+    setShowSignup(true);
+  };
+
+  const handleAuthSuccess = async (accessToken: string) => {
+    setShowSignup(false);
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-gtm-checkout`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else if (data.redirect) {
+        navigate('gtm-workspace');
+      } else {
+        alert(data.error || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      alert('Connection error. Please try again.');
     }
   };
 
@@ -120,15 +150,13 @@ export default function GTMServicePage({ navigate }: Props) {
               </AnimateIn>
               <AnimateIn delay={240}>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <a
-                    href="https://calendly.com/hybridadsai"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={handleCtaClick}
                     className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl text-sm transition-colors shadow-xl shadow-blue-600/25"
                   >
                     Get Started Today
                     <ArrowRight className="w-4 h-4" />
-                  </a>
+                  </button>
                   <button
                     onClick={() => {
                       document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
@@ -237,16 +265,13 @@ export default function GTMServicePage({ navigate }: Props) {
                 </div>
 
                 <div className="max-w-sm mx-auto">
-                  <a
-                    href="https://calendly.com/hybridadsai"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
                     onClick={handleCtaClick}
                     className="group flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-4 rounded-xl text-base transition-all shadow-lg shadow-blue-600/25 hover:shadow-blue-500/30"
                   >
                     Get $149 AI Sales Credits
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                  </a>
+                  </button>
                 </div>
 
                 <div className="flex flex-wrap items-center justify-center gap-4 mt-5">
@@ -451,15 +476,13 @@ export default function GTMServicePage({ navigate }: Props) {
           </AnimateIn>
           <AnimateIn delay={160}>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="https://calendly.com/hybridadsai"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={handleCtaClick}
                 className="inline-flex items-center justify-center gap-2 bg-white text-blue-700 px-8 py-4 rounded-xl text-base font-bold hover:bg-blue-50 transition-colors shadow-lg"
               >
                 <Zap className="w-5 h-5" fill="currentColor" />
-                Book Your Free Setup Call
-              </a>
+                Get Your AI Sales Team
+              </button>
               <button
                 onClick={() => navigate('home')}
                 className="inline-flex items-center justify-center border-2 border-white/40 text-white px-8 py-4 rounded-xl text-base font-semibold hover:bg-white/10 transition-colors"
@@ -480,6 +503,13 @@ export default function GTMServicePage({ navigate }: Props) {
           </AnimateIn>
         </div>
       </section>
+
+      {showSignup && (
+        <SignupModal
+          onClose={() => setShowSignup(false)}
+          onSuccess={handleAuthSuccess}
+        />
+      )}
     </div>
   );
 }

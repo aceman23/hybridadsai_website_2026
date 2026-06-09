@@ -15,10 +15,12 @@ const NemoClawPage = lazy(() => import('./pages/NemoClawPage'));
 const CaseStudiesPage = lazy(() => import('./pages/CaseStudiesPage'));
 const SocialMediaGeneratorPage = lazy(() => import('./pages/SocialMediaGeneratorPage'));
 const GTMServicePage = lazy(() => import('./pages/GTMServicePage'));
+const GTMSuccessPage = lazy(() => import('./pages/GTMSuccessPage'));
+const GTMWorkspacePage = lazy(() => import('./pages/GTMWorkspacePage'));
 
-export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service';
+export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -86,6 +88,18 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     description:
       'Deploy a fully autonomous AI sales team of 7 agents. Prospect, personalize, and outreach 24/7 at $0.03 per email. No contracts, no minimums, live in 24 hours.',
     path: 'gtm-service',
+  },
+  'gtm-success': {
+    title: 'Welcome to Your AI Sales Workspace | Hybrid Ads',
+    description:
+      'Your AI Sales Team is ready. Access your workspace, configure your ICP, and launch your first campaign.',
+    path: 'gtm-success',
+  },
+  'gtm-workspace': {
+    title: 'AI Sales Workspace – Dashboard | Hybrid Ads',
+    description:
+      'Manage your AI Sales Team, define your ideal customers, track campaigns, and monitor credits from your personalized workspace.',
+    path: 'gtm-workspace',
   },
 };
 
@@ -172,6 +186,8 @@ function App() {
       case 'nemo-claw': return <NemoClawPage navigate={navigate} />;
       case 'social-generator': return <SocialMediaGeneratorPage navigate={navigate} />;
       case 'gtm-service': return <GTMServicePage navigate={navigate} />;
+      case 'gtm-success': return <GTMSuccessPage navigate={navigate} />;
+      case 'gtm-workspace': return <GTMWorkspacePage navigate={navigate} />;
       default: return <HomePage navigate={navigate} />;
     }
   };
