@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   Bot, Search, Users, Sparkles, Target, RefreshCw, Mail,
   Code2, Calendar, ArrowRight, CheckCircle2, Zap, Shield,
-  ChevronDown, ChevronUp, BarChart3, Clock, DollarSign,
+  ChevronDown, ChevronUp, BarChart3, Clock, DollarSign, Play,
 } from 'lucide-react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
@@ -75,6 +75,29 @@ const faqs = [
 
 export default function GTMServicePage({ navigate }: Props) {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoPaused, setVideoPaused] = useState(false);
+
+  const handleVideoTap = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play();
+      setVideoPaused(false);
+    } else {
+      v.pause();
+      setVideoPaused(true);
+    }
+  };
+
+  const handleCtaClick = () => {
+    if (typeof window !== 'undefined' && (window as Record<string, unknown>).gtag) {
+      (window as Record<string, unknown> & { gtag: (...args: unknown[]) => void }).gtag('event', 'click_gtm_cta', {
+        event_category: 'conversion',
+        event_label: 'ai_sales_credits_149',
+      });
+    }
+  };
 
   return (
     <div className="bg-white">
@@ -156,6 +179,94 @@ export default function GTMServicePage({ navigate }: Props) {
                       <p className="text-amber-200/70 text-xs mt-0.5">Set your daily budget. Cap spend. Increase anytime.</p>
                     </div>
                   </div>
+                </div>
+              </div>
+            </AnimateIn>
+          </div>
+        </div>
+      </section>
+
+      {/* Video + $149 Offer */}
+      <section className="py-16 md:py-20 bg-gradient-to-b from-gray-950 to-gray-900 border-t border-white/5">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+            {/* Video */}
+            <AnimateIn>
+              <div className="relative mx-auto max-w-[320px] lg:max-w-[360px]">
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10 aspect-[9/16]">
+                  <video
+                    ref={videoRef}
+                    src="/HybridAds_AutoGTM_Video.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    onClick={handleVideoTap}
+                    className="w-full h-full object-cover cursor-pointer"
+                  />
+                  {videoPaused && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
+                      <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center">
+                        <Play className="w-6 h-6 text-gray-900 ml-0.5" fill="currentColor" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <p className="text-center text-gray-400 text-xs mt-4 italic leading-relaxed">
+                  Real founder sharing how our 24/7 AI Sales Team is changing the game
+                </p>
+              </div>
+            </AnimateIn>
+
+            {/* $149 Offer Box */}
+            <AnimateIn delay={200}>
+              <div className="bg-gradient-to-br from-white/[0.08] to-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-7 md:p-8">
+                <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold rounded-full px-3 py-1 mb-5">
+                  <Zap className="w-3 h-3" />
+                  Launching Now
+                </div>
+
+                <h3 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">
+                  AI Sales Starter Credits
+                </h3>
+                <div className="flex items-baseline gap-2 mb-6">
+                  <span className="text-4xl font-black text-white">$149</span>
+                  <span className="text-gray-400 text-sm font-medium">one-time</span>
+                </div>
+
+                <div className="space-y-3 mb-7">
+                  {[
+                    '$150 worth of AI email credits (~5,000 emails)',
+                    '24/7 Autonomous AI Sales Team of 7 Agents',
+                    'Instant workspace + automated first campaign',
+                    'Pay-as-you-go after credits ($0.03 per email)',
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-gray-200 leading-snug">{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <a
+                  href="https://calendly.com/hybridadsai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleCtaClick}
+                  className="group flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-4 rounded-xl text-base transition-all shadow-lg shadow-blue-600/25 hover:shadow-blue-500/30"
+                >
+                  Get $149 AI Sales Credits
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </a>
+
+                <div className="flex flex-wrap items-center justify-center gap-4 mt-5">
+                  {['No setup fees', 'Cancel anytime', 'Instant access'].map((t) => (
+                    <span key={t} className="flex items-center gap-1.5 text-xs text-gray-400">
+                      <Shield className="w-3 h-3 text-gray-500" />
+                      {t}
+                    </span>
+                  ))}
                 </div>
               </div>
             </AnimateIn>
