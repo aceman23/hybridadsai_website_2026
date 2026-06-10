@@ -144,7 +144,7 @@ export default function SignupModal({ onClose, onSuccess }: Props) {
             {mode === 'signup' && (
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                  Verification: What is {challenge.question}?
+                  Human Verification: What is {challenge.question}?
                 </label>
                 <input
                   type="text"
