@@ -33,9 +33,13 @@ Deno.serve(async (req: Request) => {
     }
 
     let tier = "starter";
+    let icpDescription = "";
     try {
       const body = await req.json();
       if (body.tier === "growth") tier = "growth";
+      if (body.icp_description && typeof body.icp_description === "string") {
+        icpDescription = body.icp_description.slice(0, 500);
+      }
     } catch {
       // no body or invalid JSON — default to starter
     }
@@ -87,7 +91,7 @@ Deno.serve(async (req: Request) => {
           quantity: 1,
         },
       ],
-      metadata: { user_id: user.id, tier },
+      metadata: { user_id: user.id, tier, icp_description: icpDescription },
       success_url: "https://hybridads.ai/#gtm-success",
       cancel_url: "https://hybridads.ai/#gtm-service",
     });
@@ -101,6 +105,7 @@ Deno.serve(async (req: Request) => {
         .update({
           stripe_session_id: session.id,
           payment_status: "pending",
+          ...(icpDescription && { icp_description: icpDescription }),
         })
         .eq("user_id", user.id);
     } else {
@@ -110,6 +115,7 @@ Deno.serve(async (req: Request) => {
         email: user.email,
         stripe_session_id: session.id,
         payment_status: "pending",
+        ...(icpDescription && { icp_description: icpDescription }),
       });
     }
 

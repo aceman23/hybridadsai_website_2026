@@ -58,6 +58,7 @@ export default function GTMWorkspacePage({ navigate }: Props) {
   const [saving, setSaving] = useState(false);
   const [launching, setLaunching] = useState(false);
   const [apiKeyInput, setApiKeyInput] = useState('');
+  const [toast, setToast] = useState<{ type: string; message: string } | null>(null);
   const [connectingKey, setConnectingKey] = useState(false);
   const [activityFeed, setActivityFeed] = useState<Array<{ time: string; text: string; type: string }>>([]);
   const [stats, setStats] = useState({ prospectsFound: 0, emailsSentToday: 0, deliverability: 98.2 });
@@ -85,6 +86,15 @@ export default function GTMWorkspacePage({ navigate }: Props) {
 
   useEffect(() => {
     fetchData();
+    // Check for success toast from GTMSuccessPage redirect
+    const stored = sessionStorage.getItem('gtm_toast');
+    if (stored) {
+      try {
+        setToast(JSON.parse(stored));
+        sessionStorage.removeItem('gtm_toast');
+        setTimeout(() => setToast(null), 6000);
+      } catch { /* ignore */ }
+    }
   }, []);
 
   const fetchData = async () => {
@@ -320,6 +330,15 @@ export default function GTMWorkspacePage({ navigate }: Props) {
 
       {/* Main content */}
       <main className="flex-1 md:ml-64 px-4 sm:px-6 lg:px-8 py-6 pb-24 md:pb-6">
+        {/* Success Toast */}
+        {toast && (
+          <div className="mb-6 flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-5 py-4 animate-scale-in">
+            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+            <p className="text-sm text-emerald-300 font-medium flex-1">{toast.message}</p>
+            <button onClick={() => setToast(null)} className="text-emerald-500/50 hover:text-emerald-400 text-lg leading-none">&times;</button>
+          </div>
+        )}
+
         {/* Connect API Key Banner */}
         {!isProvisioned && (
           <div className="mb-6 bg-amber-500/10 border border-amber-500/30 rounded-xl p-5">

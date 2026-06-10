@@ -1,158 +1,193 @@
-import { useState, useEffect } from 'react';
-import { CheckCircle2, ArrowRight, Loader2, Sparkles, Target, Mail, Calendar } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { CheckCircle2, Loader2, Zap, ArrowRight } from 'lucide-react';
 import type { Page } from '../App';
 import { supabase } from '../lib/supabase';
-import AnimateIn from '../components/AnimateIn';
 
 interface Props {
   navigate: (page: Page) => void;
 }
 
+type Stage = 'confirming' | 'provisioning' | 'ready' | 'failed';
+
 export default function GTMSuccessPage({ navigate }: Props) {
-  const [loading, setLoading] = useState(true);
-  const [paid, setPaid] = useState(false);
+  const [stage, setStage] = useState<Stage>('confirming');
   const [customerName, setCustomerName] = useState('');
+  const [tier, setTier] = useState('starter');
   const [attempts, setAttempts] = useState(0);
+  const provisionedRef = useRef(false);
 
   useEffect(() => {
-    checkStatus();
+    checkPaymentStatus();
   }, []);
 
-  const checkStatus = async () => {
+  const checkPaymentStatus = async () => {
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      navigate('gtm-service');
-      return;
-    }
+    if (!session) { navigate('gtm-service'); return; }
 
     const res = await fetch(
       `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-gtm-status`,
-      {
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json',
-        },
-      }
+      { headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' } }
     );
 
     if (res.ok) {
       const data = await res.json();
       if (data.customer?.payment_status === 'paid') {
-        setPaid(true);
         setCustomerName(data.customer.full_name || '');
-        setLoading(false);
+        setTier(data.customer.tier || 'starter');
+        triggerProvisioning(session.access_token, data.customer);
         return;
       }
     }
 
-    setAttempts((prev) => {
+    setAttempts(prev => {
       const next = prev + 1;
       if (next < 20) {
-        setTimeout(checkStatus, 3000);
+        setTimeout(checkPaymentStatus, 3000);
       } else {
-        setLoading(false);
+        setStage('failed');
       }
       return next;
     });
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <Loader2 className="w-8 h-8 text-blue-600 animate-spin mb-4" />
-        <p className="text-gray-600 font-medium">Confirming your payment...</p>
-        <p className="text-sm text-gray-400 mt-1">This may take a few seconds</p>
-      </div>
-    );
-  }
+  const triggerProvisioning = async (accessToken: string, customer: Record<string, unknown>) => {
+    if (provisionedRef.current) return;
+    provisionedRef.current = true;
 
-  if (!paid) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
-        <div className="text-center">
-          <h1 className="text-2xl font-black text-gray-900 mb-3">Payment Processing</h1>
-          <p className="text-gray-500 mb-6">
-            Your payment was received. It may take a moment for confirmation to arrive.
-          </p>
-          <div className="flex flex-col items-center gap-3">
-            <button
-              onClick={() => { setLoading(true); setAttempts(0); checkStatus(); }}
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3 rounded-xl text-sm transition-colors"
-            >
-              Check Again
-            </button>
-            <button
-              onClick={() => navigate('gtm-workspace')}
-              className="text-blue-600 font-semibold hover:text-blue-700 text-sm"
-            >
-              Go to Workspace Anyway
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+    // If already provisioned, skip straight to redirect
+    if (customer.explee_status === 'active' && customer.explee_api_key) {
+      redirectToWorkspace();
+      return;
+    }
 
-  const steps = [
-    { icon: Target, title: 'Define Your ICP', description: 'Tell us who your ideal customers are', done: false },
-    { icon: Mail, title: 'Set Daily Budget', description: 'Choose how many emails to send per day', done: false },
-    { icon: Calendar, title: 'Connect Calendar', description: 'Sync your calendar for meeting bookings', done: false },
-    { icon: Sparkles, title: 'Launch Campaign', description: 'Review and activate your first AI campaign', done: false },
-  ];
+    setStage('provisioning');
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/provision-explee`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            tier: (customer.tier as string) || tier,
+            icp_description: customer.icp_description || customer.icp_definition || undefined,
+          }),
+        }
+      );
+
+      if (res.ok) {
+        setStage('ready');
+        setTimeout(() => redirectToWorkspace(), 2000);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        // If it needs a manual key, still redirect — workspace has the key input
+        if (data.requires_manual_key) {
+          setStage('ready');
+          setTimeout(() => redirectToWorkspace(), 2000);
+        } else {
+          // Non-critical failure; redirect anyway
+          setStage('ready');
+          setTimeout(() => redirectToWorkspace(), 2000);
+        }
+      }
+    } catch {
+      // Provisioning failure is non-blocking; user can connect key in workspace
+      setStage('ready');
+      setTimeout(() => redirectToWorkspace(), 2000);
+    }
+  };
+
+  const redirectToWorkspace = () => {
+    // Store toast flag for workspace to pick up
+    sessionStorage.setItem('gtm_toast', JSON.stringify({
+      type: 'success',
+      message: 'Your AI Sales Team is live! Configure your target audience to get started.',
+    }));
+    navigate('gtm-workspace');
+  };
+
+  const stageMessages: Record<Stage, { title: string; sub: string }> = {
+    confirming: { title: 'Confirming payment...', sub: 'This usually takes a few seconds' },
+    provisioning: { title: 'Setting up your workspace...', sub: 'Connecting AI agents and sales infrastructure' },
+    ready: { title: 'All set!', sub: 'Redirecting to your workspace...' },
+    failed: { title: 'Taking longer than expected', sub: 'Your payment was received but confirmation is delayed' },
+  };
+
+  const { title, sub } = stageMessages[stage];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24 pb-20">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6">
-        <AnimateIn>
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-100 mb-6">
-              <CheckCircle2 className="w-10 h-10 text-emerald-600" />
-            </div>
-            <h1 className="text-3xl md:text-4xl font-black text-gray-900 mb-3">
-              Welcome{customerName ? `, ${customerName.split(' ')[0]}` : ''}!
-            </h1>
-            <p className="text-lg text-gray-500">
-              Your AI Sales Team is ready. You have <span className="font-bold text-gray-900">5,000 email credits</span> loaded.
-            </p>
-          </div>
-        </AnimateIn>
-
-        <AnimateIn delay={200}>
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8 mb-8">
-            <h2 className="text-lg font-bold text-gray-900 mb-5">Next Steps</h2>
-            <div className="space-y-4">
-              {steps.map((step, i) => {
-                const Icon = step.icon;
-                return (
-                  <div key={i} className="flex items-start gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100">
-                    <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900">{step.title}</h3>
-                      <p className="text-sm text-gray-500">{step.description}</p>
-                    </div>
-                    <span className="ml-auto text-xs font-semibold text-gray-400 bg-gray-200 px-2 py-1 rounded-full">
-                      {i + 1}/4
-                    </span>
-                  </div>
-                );
-              })}
+    <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center px-4">
+      <div className="max-w-md w-full text-center">
+        {/* Progress indicator */}
+        {stage !== 'failed' && stage !== 'ready' && (
+          <div className="mb-8">
+            <div className="relative w-16 h-16 mx-auto mb-6">
+              <div className="absolute inset-0 rounded-full border-2 border-gray-800" />
+              <div className="absolute inset-0 rounded-full border-2 border-cyan-500 border-t-transparent animate-spin" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                {stage === 'confirming' && <Loader2 className="w-6 h-6 text-cyan-400 animate-spin" />}
+                {stage === 'provisioning' && <Zap className="w-6 h-6 text-cyan-400" />}
+              </div>
             </div>
           </div>
-        </AnimateIn>
+        )}
 
-        <AnimateIn delay={400}>
-          <div className="text-center">
+        {stage === 'ready' && (
+          <div className="mb-8">
+            <div className="w-16 h-16 mx-auto rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+              <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+            </div>
+          </div>
+        )}
+
+        <h1 className="text-2xl font-black text-white mb-2">{title}</h1>
+        <p className="text-sm text-gray-500 mb-6">{sub}</p>
+
+        {/* Progress steps */}
+        {stage !== 'failed' && (
+          <div className="flex items-center justify-center gap-2 mb-8">
+            {['Payment', 'Provisioning', 'Ready'].map((step, i) => {
+              const stepIndex = ['confirming', 'provisioning', 'ready'].indexOf(stage);
+              const isComplete = i <= stepIndex;
+              const isCurrent = i === stepIndex;
+              return (
+                <div key={step} className="flex items-center gap-2">
+                  <div className={`w-2 h-2 rounded-full transition-all ${
+                    isComplete ? 'bg-cyan-400' : 'bg-gray-700'
+                  } ${isCurrent ? 'w-6 rounded-full' : ''}`} />
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {customerName && stage === 'ready' && (
+          <p className="text-gray-400 text-sm mb-6">
+            Welcome aboard, <span className="text-white font-semibold">{customerName.split(' ')[0]}</span>
+          </p>
+        )}
+
+        {stage === 'failed' && (
+          <div className="space-y-3 mt-4">
             <button
-              onClick={() => navigate('gtm-workspace')}
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl text-base transition-colors shadow-lg shadow-blue-600/25"
+              onClick={() => { setStage('confirming'); setAttempts(0); checkPaymentStatus(); }}
+              className="flex items-center justify-center gap-2 mx-auto px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold rounded-lg transition-colors"
             >
-              Go to Your Workspace
-              <ArrowRight className="w-5 h-5" />
+              <Loader2 className="w-4 h-4" />
+              Try Again
+            </button>
+            <button
+              onClick={() => redirectToWorkspace()}
+              className="flex items-center justify-center gap-2 mx-auto text-sm text-gray-400 hover:text-gray-200 font-medium transition-colors"
+            >
+              Go to Workspace
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
-        </AnimateIn>
+        )}
       </div>
     </div>
   );
