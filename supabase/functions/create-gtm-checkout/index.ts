@@ -119,9 +119,19 @@ Deno.serve(async (req: Request) => {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Internal error";
-    return new Response(JSON.stringify({ error: message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    console.error("create-gtm-checkout error:", message);
+    return new Response(
+      JSON.stringify({
+        error: message,
+        debug: {
+          stripe_key_prefix: Deno.env.get("STRIPE_SECRET_KEY")?.slice(0, 8) || "NOT_SET",
+          price_id_used: PRICE_IDS["starter"]?.slice(0, 12) || "NOT_SET",
+        },
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      }
+    );
   }
 });
