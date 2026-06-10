@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Zap, LogIn } from 'lucide-react';
 import type { Page } from '../App';
+import { supabase } from '../lib/supabase';
+import AuthModal from './AuthModal';
 
 interface HeaderProps {
   currentPage: Page;
@@ -42,8 +44,20 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -170,7 +184,24 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
             )}
           </nav>
 
-          <div className="hidden md:flex items-center">
+          <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={() => {
+                if (isLoggedIn) {
+                  navigate('gtm-workspace');
+                } else {
+                  setShowAuthModal(true);
+                }
+              }}
+              className={`flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                currentPage === 'gtm-workspace'
+                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-200'
+                  : 'text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+              }`}
+            >
+              {isLoggedIn ? <Zap className="w-4 h-4" /> : <LogIn className="w-4 h-4" />}
+              {isLoggedIn ? 'Workspace' : 'Sign In'}
+            </button>
             <a
               href="https://calendly.com/hybridadsai"
               target="_blank"
@@ -248,7 +279,21 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
               </button>
             )
           )}
-          <div className="pt-2">
+          <div className="pt-2 space-y-2">
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                if (isLoggedIn) {
+                  navigate('gtm-workspace');
+                } else {
+                  setShowAuthModal(true);
+                }
+              }}
+              className="flex items-center justify-center gap-2 w-full text-sm font-semibold text-gray-700 border border-gray-200 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              {isLoggedIn ? <Zap className="w-4 h-4" /> : <LogIn className="w-4 h-4" />}
+              {isLoggedIn ? 'Workspace' : 'Sign In'}
+            </button>
             <a
               href="https://calendly.com/hybridadsai"
               target="_blank"
@@ -260,6 +305,12 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
             </a>
           </div>
         </nav>
+      )}
+      {showAuthModal && (
+        <AuthModal
+          onClose={() => setShowAuthModal(false)}
+          navigate={navigate}
+        />
       )}
     </header>
   );
