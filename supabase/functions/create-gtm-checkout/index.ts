@@ -70,15 +70,7 @@ Deno.serve(async (req: Request) => {
       customer_email: user.email,
       line_items: [
         {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: "AI Sales Starter Credits",
-              description:
-                "5,000 AI email credits + 24/7 autonomous sales team",
-            },
-            unit_amount: 14900,
-          },
+          price: "price_1TgWpHDfs3f237pkJAKAacEb",
           quantity: 1,
         },
       ],
