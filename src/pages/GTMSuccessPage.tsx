@@ -12,6 +12,7 @@ export default function GTMSuccessPage({ navigate }: Props) {
   const [loading, setLoading] = useState(true);
   const [paid, setPaid] = useState(false);
   const [customerName, setCustomerName] = useState('');
+  const [attempts, setAttempts] = useState(0);
 
   useEffect(() => {
     checkStatus();
@@ -39,12 +40,20 @@ export default function GTMSuccessPage({ navigate }: Props) {
       if (data.customer?.payment_status === 'paid') {
         setPaid(true);
         setCustomerName(data.customer.full_name || '');
-      } else {
-        setTimeout(checkStatus, 3000);
+        setLoading(false);
         return;
       }
     }
-    setLoading(false);
+
+    setAttempts((prev) => {
+      const next = prev + 1;
+      if (next < 20) {
+        setTimeout(checkStatus, 3000);
+      } else {
+        setLoading(false);
+      }
+      return next;
+    });
   };
 
   if (loading) {
@@ -62,13 +71,23 @@ export default function GTMSuccessPage({ navigate }: Props) {
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
         <div className="text-center">
           <h1 className="text-2xl font-black text-gray-900 mb-3">Payment Processing</h1>
-          <p className="text-gray-500 mb-6">Your payment is being processed. Please wait a moment.</p>
-          <button
-            onClick={() => navigate('gtm-service')}
-            className="text-blue-600 font-semibold hover:text-blue-700"
-          >
-            Back to GTM Service
-          </button>
+          <p className="text-gray-500 mb-6">
+            Your payment was received. It may take a moment for confirmation to arrive.
+          </p>
+          <div className="flex flex-col items-center gap-3">
+            <button
+              onClick={() => { setLoading(true); setAttempts(0); checkStatus(); }}
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3 rounded-xl text-sm transition-colors"
+            >
+              Check Again
+            </button>
+            <button
+              onClick={() => navigate('gtm-workspace')}
+              className="text-blue-600 font-semibold hover:text-blue-700 text-sm"
+            >
+              Go to Workspace Anyway
+            </button>
+          </div>
         </div>
       </div>
     );
