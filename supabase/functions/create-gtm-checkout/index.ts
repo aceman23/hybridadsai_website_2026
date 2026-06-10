@@ -13,6 +13,13 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2024-12-18.acacia",
 });
 
+const PRICE_IDS: Record<string, string> = {
+  starter: "price_1TgWpHDfs3f237pkJAKAacEb",
+  growth:
+    Deno.env.get("STRIPE_GROWTH_PRICE_ID") ||
+    "price_1TgWpHDfs3f237pkGrowth299",
+};
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 200, headers: corsHeaders });
@@ -25,6 +32,14 @@ Deno.serve(async (req: Request) => {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    let tier = "starter";
+    try {
+      const body = await req.json();
+      if (body.tier === "growth") tier = "growth";
+    } catch {
+      // no body or invalid JSON — default to starter
     }
 
     const supabase = createClient(
@@ -70,11 +85,11 @@ Deno.serve(async (req: Request) => {
       customer_email: user.email,
       line_items: [
         {
-          price: "price_1TgWpHDfs3f237pkJAKAacEb",
+          price: PRICE_IDS[tier],
           quantity: 1,
         },
       ],
-      metadata: { user_id: user.id },
+      metadata: { user_id: user.id, tier },
       success_url: "https://hybridads.ai/#gtm-success",
       cancel_url: "https://hybridads.ai/#gtm-service",
     });

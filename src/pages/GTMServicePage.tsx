@@ -3,6 +3,7 @@ import {
   Bot, Search, Users, Sparkles, Target, RefreshCw, Mail,
   Code2, Calendar, ArrowRight, CheckCircle2, Zap, Shield,
   ChevronDown, ChevronUp, BarChart3, Clock, DollarSign, Play,
+  Star, Crown,
 } from 'lucide-react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
@@ -22,6 +23,26 @@ const features = [
   { icon: Mail, label: 'Pre-warmed mailboxes — outreach on day one', badge: 'INCLUDED', badgeColor: 'bg-emerald-100 text-emerald-700' },
   { icon: Code2, label: 'API access — AI-agent friendly', badge: 'INCLUDED', badgeColor: 'bg-emerald-100 text-emerald-700' },
   { icon: Calendar, label: 'Calendar and CRM integration', badge: 'INCLUDED', badgeColor: 'bg-emerald-100 text-emerald-700' },
+];
+
+const starterFeatures = [
+  '$90 worth of AI Email Credits (~3,000 emails)',
+  'Full access to 24/7 AI Sales Team of 7 Agents',
+  'Searches across 105M companies + 536M people',
+  'Deep AI personalization + 97% deliverability',
+  'Pre-built vertical lead list (200-300 prospects)',
+  'Instant Explee workspace + automated first campaign',
+  'Perfect for testing or small teams',
+];
+
+const growthFeatures = [
+  '$240 worth of AI Email Credits (~8,000 emails)',
+  'Everything in Starter, plus:',
+  'Larger vertical lead list (800+ prospects)',
+  '3 pre-built outreach sequences',
+  'Priority support + onboarding call',
+  'Advanced audience targeting & lookalikes',
+  '30 days of performance optimization',
 ];
 
 const howItWorks = [
@@ -78,13 +99,15 @@ export default function GTMServicePage({ navigate }: Props) {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [videoError, setVideoError] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [selectedTier, setSelectedTier] = useState<'starter' | 'growth'>('starter');
 
-  const handleCtaClick = () => {
+  const handleCtaClick = (tier: 'starter' | 'growth' = 'starter') => {
+    setSelectedTier(tier);
     const w = window as unknown as { gtag?: (...args: unknown[]) => void };
     if (w.gtag) {
       w.gtag('event', 'click_gtm_cta', {
         event_category: 'conversion',
-        event_label: 'ai_sales_credits_149',
+        event_label: tier === 'growth' ? 'ai_sales_growth_299' : 'ai_sales_starter_149',
       });
     }
     setShowSignup(true);
@@ -101,6 +124,7 @@ export default function GTMServicePage({ navigate }: Props) {
             Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ tier: selectedTier }),
         }
       );
       const data = await res.json();
@@ -151,10 +175,12 @@ export default function GTMServicePage({ navigate }: Props) {
               <AnimateIn delay={240}>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
-                    onClick={handleCtaClick}
-                    className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl text-sm transition-colors shadow-xl shadow-blue-600/25"
+                    onClick={() => {
+                      document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="inline-flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-bold px-8 py-4 rounded-xl text-sm transition-colors shadow-xl shadow-purple-600/25"
                   >
-                    Get Started Today
+                    View Pricing
                     <ArrowRight className="w-4 h-4" />
                   </button>
                   <button
@@ -201,12 +227,12 @@ export default function GTMServicePage({ navigate }: Props) {
         </div>
       </section>
 
-      {/* Video + $149 Offer */}
-      <section className="py-16 md:py-20 bg-gradient-to-b from-gray-950 to-gray-900 border-t border-white/5">
+      {/* Video + Pricing Tiers */}
+      <section id="pricing" className="py-16 md:py-24 bg-gradient-to-b from-gray-950 to-gray-900 border-t border-white/5">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Video - full width landscape */}
+          {/* Video */}
           <AnimateIn>
-            <div className="relative mb-10">
+            <div className="relative mb-16">
               <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10 aspect-video bg-gray-900">
                 {videoError ? (
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
@@ -233,55 +259,98 @@ export default function GTMServicePage({ navigate }: Props) {
             </div>
           </AnimateIn>
 
-          {/* $149 Offer Box */}
-          <AnimateIn delay={200}>
-            <div className="max-w-3xl mx-auto bg-gradient-to-br from-white/[0.08] to-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-7 md:p-10">
-                <div className="text-center mb-6">
-                  <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold rounded-full px-3 py-1 mb-5">
-                    <Zap className="w-3 h-3" />
-                    Launching Now
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">
-                    AI Sales Starter Credits
-                  </h3>
-                  <div className="flex items-baseline gap-2 justify-center">
-                    <span className="text-4xl font-black text-white">$149</span>
-                    <span className="text-gray-400 text-sm font-medium">one-time</span>
-                  </div>
-                </div>
+          {/* Pricing Header */}
+          <AnimateIn delay={100}>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-3">
+                Choose Your AI Sales Package
+              </h2>
+              <p className="text-gray-400 max-w-xl mx-auto">
+                One-time payment. No monthly fees. Your AI sales team is live within 24 hours.
+              </p>
+            </div>
+          </AnimateIn>
 
-                <div className="grid sm:grid-cols-2 gap-3 mb-7 max-w-lg mx-auto">
-                  {[
-                    '$150 worth of AI email credits (~5,000 emails)',
-                    '24/7 Autonomous AI Sales Team of 7 Agents',
-                    'Instant workspace + automated first campaign',
-                    'Pay-as-you-go after credits ($0.03 per email)',
-                  ].map((item) => (
+          {/* Pricing Cards */}
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {/* Starter */}
+            <AnimateIn delay={200}>
+              <div className="relative bg-white/[0.06] backdrop-blur-sm border border-white/10 rounded-2xl p-7 md:p-8 hover:border-purple-500/30 transition-all duration-300 h-full flex flex-col">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-9 h-9 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                    <Star className="w-4.5 h-4.5 text-purple-400" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white">AI Sales Starter</h3>
+                </div>
+                <div className="flex items-baseline gap-2 mb-6">
+                  <span className="text-4xl font-black text-white">$149</span>
+                  <span className="text-gray-400 text-sm font-medium">one-time</span>
+                </div>
+                <div className="space-y-3 mb-8 flex-1">
+                  {starterFeatures.map((item) => (
                     <div key={item} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-purple-400 flex-shrink-0 mt-0.5" />
                       <span className="text-sm text-gray-200 leading-snug">{item}</span>
                     </div>
                   ))}
                 </div>
+                <button
+                  onClick={() => handleCtaClick('starter')}
+                  className="group flex items-center justify-center gap-2 w-full bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-4 rounded-xl text-base transition-all shadow-lg shadow-purple-600/20 hover:shadow-purple-500/30"
+                >
+                  Get Started for $149
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+              </div>
+            </AnimateIn>
 
-                <div className="max-w-sm mx-auto">
-                  <button
-                    onClick={handleCtaClick}
-                    className="group flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-4 rounded-xl text-base transition-all shadow-lg shadow-blue-600/25 hover:shadow-blue-500/30"
-                  >
-                    Get $149 AI Sales Credits
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                  </button>
+            {/* Growth - Best Value */}
+            <AnimateIn delay={300}>
+              <div className="relative bg-gradient-to-br from-purple-500/[0.12] to-blue-500/[0.08] backdrop-blur-sm border-2 border-purple-500/40 rounded-2xl p-7 md:p-8 hover:border-purple-400/60 transition-all duration-300 h-full flex flex-col">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                  <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-purple-600/30">
+                    <Crown className="w-3 h-3" />
+                    BEST VALUE
+                  </div>
                 </div>
-
-                <div className="flex flex-wrap items-center justify-center gap-4 mt-5">
-                  {['No setup fees', 'Cancel anytime', 'Instant access'].map((t) => (
-                    <span key={t} className="flex items-center gap-1.5 text-xs text-gray-400">
-                      <Shield className="w-3 h-3 text-gray-500" />
-                      {t}
-                    </span>
+                <div className="flex items-center gap-2 mb-4 mt-1">
+                  <div className="w-9 h-9 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                    <Crown className="w-4.5 h-4.5 text-purple-300" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white">AI Sales Growth</h3>
+                </div>
+                <div className="flex items-baseline gap-2 mb-6">
+                  <span className="text-4xl font-black text-white">$299</span>
+                  <span className="text-gray-400 text-sm font-medium">one-time</span>
+                </div>
+                <div className="space-y-3 mb-8 flex-1">
+                  {growthFeatures.map((item, idx) => (
+                    <div key={item} className="flex items-start gap-2.5">
+                      <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${idx === 1 ? 'text-blue-400' : 'text-purple-400'}`} />
+                      <span className={`text-sm leading-snug ${idx === 1 ? 'text-blue-300 font-semibold' : 'text-gray-200'}`}>{item}</span>
+                    </div>
                   ))}
                 </div>
+                <button
+                  onClick={() => handleCtaClick('growth')}
+                  className="group flex items-center justify-center gap-2 w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold px-6 py-4 rounded-xl text-base transition-all shadow-lg shadow-purple-600/25 hover:shadow-purple-500/35"
+                >
+                  Go with Growth - $299
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </button>
+              </div>
+            </AnimateIn>
+          </div>
+
+          {/* Trust signals */}
+          <AnimateIn delay={400}>
+            <div className="flex flex-wrap items-center justify-center gap-6 mt-10">
+              {['No monthly fees', 'Cancel anytime', 'Instant access'].map((t) => (
+                <span key={t} className="flex items-center gap-2 text-sm text-gray-400">
+                  <Shield className="w-3.5 h-3.5 text-gray-500" />
+                  {t}
+                </span>
+              ))}
             </div>
           </AnimateIn>
         </div>
@@ -462,7 +531,7 @@ export default function GTMServicePage({ navigate }: Props) {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-700">
+      <section className="py-20 bg-gradient-to-br from-purple-600 to-blue-700">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <AnimateIn>
             <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
@@ -470,32 +539,32 @@ export default function GTMServicePage({ navigate }: Props) {
             </h2>
           </AnimateIn>
           <AnimateIn delay={80}>
-            <p className="text-blue-100 text-lg mb-8 leading-relaxed">
-              Start sending personalized, AI-researched outreach at $0.03 per email. No contracts, no risk.
+            <p className="text-purple-100 text-lg mb-8 leading-relaxed">
+              Start with AI Sales Starter for $149 or go all-in with Growth for $299. One-time payment, instant access.
             </p>
           </AnimateIn>
           <AnimateIn delay={160}>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
-                onClick={handleCtaClick}
-                className="inline-flex items-center justify-center gap-2 bg-white text-blue-700 px-8 py-4 rounded-xl text-base font-bold hover:bg-blue-50 transition-colors shadow-lg"
+                onClick={() => handleCtaClick('growth')}
+                className="inline-flex items-center justify-center gap-2 bg-white text-purple-700 px-8 py-4 rounded-xl text-base font-bold hover:bg-purple-50 transition-colors shadow-lg"
               >
                 <Zap className="w-5 h-5" fill="currentColor" />
-                Get Your AI Sales Team
+                Get AI Sales Growth - $299
               </button>
               <button
-                onClick={() => navigate('home')}
+                onClick={() => handleCtaClick('starter')}
                 className="inline-flex items-center justify-center border-2 border-white/40 text-white px-8 py-4 rounded-xl text-base font-semibold hover:bg-white/10 transition-colors"
               >
-                Back to Hybrid Ads
+                Start with $149 Plan
               </button>
             </div>
           </AnimateIn>
           <AnimateIn delay={240}>
             <div className="flex flex-wrap items-center justify-center gap-5 mt-10">
-              {['No setup fees', 'No contracts', 'Cancel anytime', 'Live in 24 hours'].map((item) => (
-                <div key={item} className="flex items-center gap-1.5 text-blue-100 text-sm">
-                  <CheckCircle2 className="w-4 h-4 text-blue-200" />
+              {['No monthly fees', 'No contracts', 'Cancel anytime', 'Live in 24 hours'].map((item) => (
+                <div key={item} className="flex items-center gap-1.5 text-purple-100 text-sm">
+                  <CheckCircle2 className="w-4 h-4 text-purple-200" />
                   {item}
                 </div>
               ))}

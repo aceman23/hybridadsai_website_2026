@@ -40,6 +40,7 @@ Deno.serve(async (req: Request) => {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
       const userId = session.metadata?.user_id;
+      const tier = session.metadata?.tier || "starter";
 
       if (!userId) {
         return new Response(
@@ -50,6 +51,8 @@ Deno.serve(async (req: Request) => {
           }
         );
       }
+
+      const credits = tier === "growth" ? 8000 : 3000;
 
       const supabase = createClient(
         Deno.env.get("SUPABASE_URL")!,
@@ -62,20 +65,23 @@ Deno.serve(async (req: Request) => {
           payment_status: "paid",
           workspace_status: "active",
           stripe_customer_id: session.customer as string,
-          credits_remaining: 5000,
+          credits_remaining: credits,
         })
         .eq("user_id", userId);
 
       await supabase.from("gtm_payments").insert({
         user_id: userId,
         stripe_session_id: session.id,
-        amount_cents: session.amount_total || 14900,
+        amount_cents: session.amount_total || (tier === "growth" ? 29900 : 14900),
         status: "completed",
       });
 
+      const campaignName =
+        tier === "growth" ? "Growth Campaign" : "My First Campaign";
+
       await supabase.from("gtm_campaigns").insert({
         user_id: userId,
-        name: "My First Campaign",
+        name: campaignName,
         status: "draft",
       });
     }
