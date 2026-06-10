@@ -14,8 +14,8 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
 });
 
 const PRICE_IDS: Record<string, string> = {
-  starter: Deno.env.get("STRIPE_STARTER_PRICE_ID") || "price_1TgWpHDfs3f237pkJAKAacEb",
-  growth: Deno.env.get("STRIPE_GROWTH_PRICE_ID") || "price_1TgWpHDfs3f237pkGrowth299",
+  starter: Deno.env.get("STRIPE_STARTER_PRICE_ID") || "price_1TgnizDfs3f237pkcfBbWBnh",
+  growth: Deno.env.get("STRIPE_GROWTH_PRICE_ID") || "price_1TgnjXDfs3f237pkMzFCnnfd",
 };
 
 Deno.serve(async (req: Request) => {
