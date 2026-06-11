@@ -406,9 +406,9 @@ export default function GTMWorkspacePage({ navigate }: Props) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <Loader2 className="w-7 h-7 text-blue-600 animate-spin mb-4" />
-        <p className="text-gray-500 font-medium text-sm">Loading workspace...</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-950">
+        <Loader2 className="w-7 h-7 text-cyan-400 animate-spin mb-4" />
+        <p className="text-gray-400 font-medium text-sm">Loading workspace...</p>
       </div>
     );
   }
@@ -430,17 +430,17 @@ export default function GTMWorkspacePage({ navigate }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16 flex">
+    <div className="min-h-screen bg-gray-950 pt-16 flex">
       {/* Sidebar */}
-      <aside className="hidden md:flex flex-col w-60 border-r border-gray-200 bg-white pt-6 pb-4 px-3 fixed top-16 bottom-0 left-0 z-30">
+      <aside className="hidden md:flex flex-col w-60 border-r border-gray-800/60 bg-gray-900 pt-6 pb-4 px-3 fixed top-16 bottom-0 left-0 z-30">
         <div className="px-3 mb-6">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-sm">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
               <Zap className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-sm font-bold text-gray-900">autoGTM</p>
-              <p className="text-[11px] text-gray-400">Workspace</p>
+              <p className="text-sm font-bold text-white">autoGTM</p>
+              <p className="text-[11px] text-gray-500">Workspace</p>
             </div>
           </div>
         </div>
@@ -452,25 +452,25 @@ export default function GTMWorkspacePage({ navigate }: Props) {
             return (
               <button key={item.key} onClick={() => setActiveTab(item.key)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                  isActive ? 'bg-blue-50 text-blue-700' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                  isActive ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50 border border-transparent'
                 }`}>
                 <Icon className="w-4 h-4" />
                 <span className="flex-1 text-left">{item.label}</span>
-                {item.badge ? <span className="text-[10px] font-bold bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full">{item.badge}</span> : null}
+                {item.badge ? <span className="text-[10px] font-bold bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded-full">{item.badge}</span> : null}
               </button>
             );
           })}
         </nav>
 
         {hasRunningJobs && (
-          <div className="mx-2 mb-3 p-3 bg-blue-50 border border-blue-100 rounded-lg">
+          <div className="mx-2 mb-3 p-3 bg-cyan-500/5 border border-cyan-500/20 rounded-lg">
             <div className="flex items-center gap-2 mb-1">
-              <Loader2 className="w-3 h-3 text-blue-600 animate-spin" />
-              <span className="text-[11px] font-semibold text-blue-700">{activeRuns.filter(r => r.status === 'running').length} agent(s) running</span>
+              <Loader2 className="w-3 h-3 text-cyan-400 animate-spin" />
+              <span className="text-[11px] font-semibold text-cyan-300">{activeRuns.filter(r => r.status === 'running').length} agent(s) running</span>
             </div>
             {activeRuns.filter(r => r.status === 'running').map(run => (
-              <div key={run.id} className="flex items-center gap-2 text-[10px] text-blue-500">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+              <div key={run.id} className="flex items-center gap-2 text-[10px] text-cyan-400/70">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
                 {run.type === 'search' ? 'Searching' : run.type === 'personalize' ? 'Personalizing' : 'Sequencing'}
                 {run.progress ? ` (${run.progress}%)` : ''}
               </div>
@@ -478,24 +478,23 @@ export default function GTMWorkspacePage({ navigate }: Props) {
           </div>
         )}
 
-        <div className="border-t border-gray-100 pt-4 mt-2 px-3">
+        <div className="border-t border-gray-800 pt-4 mt-2 px-3">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center">
-              <User className="w-3.5 h-3.5 text-gray-500" />
+            <div className="w-7 h-7 rounded-full bg-gray-800 flex items-center justify-center">
+              <User className="w-3.5 h-3.5 text-gray-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-gray-700 truncate">{customer.full_name}</p>
-              <p className="text-[10px] text-gray-400 truncate">{customer.email}</p>
+              <p className="text-xs font-semibold text-gray-200 truncate">{customer.full_name}</p>
+              <p className="text-[10px] text-gray-500 truncate">{customer.email}</p>
             </div>
           </div>
-          <button onClick={handleSignOut} className="flex items-center gap-2 text-xs text-gray-400 hover:text-gray-600 font-medium transition-colors">
+          <button onClick={handleSignOut} className="flex items-center gap-2 text-xs text-gray-500 hover:text-gray-300 font-medium transition-colors">
             <LogOut className="w-3.5 h-3.5" />Sign Out
           </button>
         </div>
 
-        {/* Powered by Explee */}
-        <div className="mt-3 px-3 pt-3 border-t border-gray-100">
-          <a href="https://explee.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[10px] text-gray-400 hover:text-gray-500 transition-colors">
+        <div className="mt-3 px-3 pt-3 border-t border-gray-800">
+          <a href="https://explee.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[10px] text-gray-600 hover:text-gray-400 transition-colors">
             <Zap className="w-3 h-3" />
             Powered by Explee
             <ExternalLink className="w-2.5 h-2.5" />
@@ -504,13 +503,13 @@ export default function GTMWorkspacePage({ navigate }: Props) {
       </aside>
 
       {/* Mobile tab bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40 flex safe-area-bottom">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 z-40 flex safe-area-bottom">
         {sidebarItems.map(item => {
           const Icon = item.icon;
           const isActive = activeTab === item.key;
           return (
             <button key={item.key} onClick={() => setActiveTab(item.key)}
-              className={`flex-1 flex flex-col items-center gap-1 py-3 text-[10px] font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-400'}`}>
+              className={`flex-1 flex flex-col items-center gap-1 py-3 text-[10px] font-medium transition-colors ${isActive ? 'text-cyan-400' : 'text-gray-500'}`}>
               <Icon className="w-4 h-4" />
               {item.label}
             </button>
@@ -523,45 +522,45 @@ export default function GTMWorkspacePage({ navigate }: Props) {
         {/* Toast */}
         {toast && (
           <div className={`mb-5 flex items-center gap-3 rounded-xl px-4 py-3 border animate-scale-in ${
-            toast.type === 'success' ? 'bg-emerald-50 border-emerald-200' :
-            toast.type === 'error' ? 'bg-red-50 border-red-200' :
-            'bg-amber-50 border-amber-200'
+            toast.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/30' :
+            toast.type === 'error' ? 'bg-red-500/10 border-red-500/30' :
+            'bg-amber-500/10 border-amber-500/30'
           }`}>
-            {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />}
-            {toast.type === 'error' && <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />}
-            {toast.type === 'warning' && <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />}
-            <p className={`text-sm font-medium flex-1 ${toast.type === 'success' ? 'text-emerald-800' : toast.type === 'error' ? 'text-red-800' : 'text-amber-800'}`}>{toast.message}</p>
-            <button onClick={() => setToast(null)} className="text-gray-400 hover:text-gray-600 text-lg leading-none">&times;</button>
+            {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />}
+            {toast.type === 'error' && <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />}
+            {toast.type === 'warning' && <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />}
+            <p className={`text-sm font-medium flex-1 ${toast.type === 'success' ? 'text-emerald-300' : toast.type === 'error' ? 'text-red-300' : 'text-amber-300'}`}>{toast.message}</p>
+            <button onClick={() => setToast(null)} className="text-gray-500 hover:text-gray-300 text-lg leading-none">&times;</button>
           </div>
         )}
 
         {/* Credit warning */}
         {lowCredits && customer.credits_remaining > 0 && (
-          <div className="mb-5 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
-            <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-            <p className="text-sm text-amber-800 font-medium">Low credits: <span className="font-bold">{customer.credits_remaining}</span> remaining. Consider upgrading to avoid interruption.</p>
+          <div className="mb-5 flex items-center gap-3 bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-3">
+            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+            <p className="text-sm text-amber-300 font-medium">Low credits: <span className="font-bold text-amber-200">{customer.credits_remaining}</span> remaining. Consider upgrading to avoid interruption.</p>
           </div>
         )}
         {customer.credits_remaining <= 0 && (
-          <div className="mb-5 flex items-center gap-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-            <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
-            <p className="text-sm text-red-800 font-medium">No credits remaining. Agent actions are paused until you upgrade.</p>
+          <div className="mb-5 flex items-center gap-3 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3">
+            <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+            <p className="text-sm text-red-300 font-medium">No credits remaining. Agent actions are paused until you upgrade.</p>
           </div>
         )}
 
         {/* API Key Banner */}
         {!isProvisioned && (
-          <div className="mb-5 bg-white border border-amber-200 rounded-xl p-5 shadow-sm">
+          <div className="mb-5 bg-gray-900 border border-amber-500/30 rounded-xl p-5">
             <div className="flex items-start gap-3">
-              <Key className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
+              <Key className="w-5 h-5 text-amber-400 mt-0.5 shrink-0" />
               <div className="flex-1">
-                <h3 className="text-sm font-bold text-gray-900 mb-1">Connect Your Explee API Key</h3>
-                <p className="text-xs text-gray-500 mb-3">Enter your Explee key to activate autonomous prospecting agents.</p>
+                <h3 className="text-sm font-bold text-white mb-1">Connect Your Explee API Key</h3>
+                <p className="text-xs text-gray-400 mb-3">Enter your Explee key to activate autonomous prospecting agents.</p>
                 <div className="flex gap-2">
                   <input type="password" value={apiKeyInput} onChange={e => setApiKeyInput(e.target.value)} placeholder="expl_xxxxxxxxxxxxxxxx"
-                    className="flex-1 max-w-sm px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                    className="flex-1 max-w-sm px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent" />
                   <button onClick={handleConnectApiKey} disabled={connectingKey || !apiKeyInput.trim()}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-sm font-bold rounded-lg transition-colors">
+                    className="flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white text-sm font-bold rounded-lg transition-colors">
                     {connectingKey ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Key className="w-3.5 h-3.5" />}Connect
                   </button>
                 </div>
@@ -575,69 +574,69 @@ export default function GTMWorkspacePage({ navigate }: Props) {
           <div className="space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h1 className="text-xl sm:text-2xl font-black text-gray-900">Welcome back, {customer.full_name.split(' ')[0]}</h1>
-                <p className="text-sm text-gray-500 mt-0.5">Your autonomous sales pipeline</p>
+                <h1 className="text-xl sm:text-2xl font-black text-white">Welcome back, {customer.full_name.split(' ')[0]}</h1>
+                <p className="text-sm text-gray-400 mt-0.5">Your autonomous sales pipeline</p>
               </div>
               <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full ${
-                isProvisioned ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-gray-100 text-gray-500 border border-gray-200'
+                isProvisioned ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' : 'bg-gray-800 text-gray-400 border border-gray-700'
               }`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${isProvisioned ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400'}`} />
+                <span className={`w-1.5 h-1.5 rounded-full ${isProvisioned ? 'bg-emerald-400 animate-pulse' : 'bg-gray-500'}`} />
                 {isProvisioned ? 'Connected' : 'Not Connected'}
               </span>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <StatCard icon={<Search className="w-4 h-4" />} iconBg="bg-blue-50 text-blue-600" label="Prospects" value={stats.prospectsFound.toLocaleString()} sub="Total discovered" />
-              <StatCard icon={<Send className="w-4 h-4" />} iconBg="bg-emerald-50 text-emerald-600" label="Emails Sent" value={stats.emailsSentToday.toLocaleString()} sub="All time" />
-              <StatCard icon={<TrendingUp className="w-4 h-4" />} iconBg="bg-teal-50 text-teal-600" label="Deliverability" value={`${stats.deliverability}%`} sub="Last 30 days" />
+              <StatCard icon={<Search className="w-4 h-4" />} iconBg="bg-blue-500/10 text-blue-400" label="Prospects" value={stats.prospectsFound.toLocaleString()} sub="Total discovered" />
+              <StatCard icon={<Send className="w-4 h-4" />} iconBg="bg-emerald-500/10 text-emerald-400" label="Emails Sent" value={stats.emailsSentToday.toLocaleString()} sub="All time" />
+              <StatCard icon={<TrendingUp className="w-4 h-4" />} iconBg="bg-teal-500/10 text-teal-400" label="Deliverability" value={`${stats.deliverability}%`} sub="Last 30 days" />
             </div>
 
             {/* ICP Section */}
-            <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
-              <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
-                <Target className="w-4 h-4 text-blue-600" />Target Audience (ICP)
+            <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+              <h2 className="text-sm font-bold text-white mb-1 flex items-center gap-2">
+                <Target className="w-4 h-4 text-cyan-400" />Target Audience (ICP)
               </h2>
-              <p className="text-xs text-gray-500 mb-4">Describe your ideal customer. AI agents will find and engage matching prospects.</p>
+              <p className="text-xs text-gray-400 mb-4">Describe your ideal customer. AI agents will find and engage matching prospects.</p>
               <textarea value={icpInput} onChange={e => setIcpInput(e.target.value)}
                 placeholder='e.g. "B2B SaaS companies, 10-200 employees, VP Sales or Head of Growth"'
-                rows={3} className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                rows={3} className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-sm text-gray-100 placeholder-gray-500 resize-none focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all" />
 
               <div className="mt-4">
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-semibold text-gray-700">Daily Budget</label>
-                  <span className="text-sm font-bold text-blue-600">{dailyBudget} emails/day <span className="text-gray-400 font-normal">(~${costEstimate}/day)</span></span>
+                  <label className="text-sm font-semibold text-gray-300">Daily Budget</label>
+                  <span className="text-sm font-bold text-cyan-400">{dailyBudget} emails/day <span className="text-gray-500 font-normal">(~${costEstimate}/day)</span></span>
                 </div>
                 <input type="range" min={5} max={500} step={5} value={dailyBudget} onChange={e => setDailyBudget(Number(e.target.value))}
-                  className="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow" />
-                <div className="flex justify-between text-[10px] text-gray-400 mt-1"><span>5/day</span><span>500/day</span></div>
+                  className="w-full h-1.5 bg-gray-700 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-cyan-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:shadow-cyan-500/30" />
+                <div className="flex justify-between text-[10px] text-gray-500 mt-1"><span>5/day</span><span>500/day</span></div>
               </div>
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-5">
                 <button onClick={handleUpdateICP} disabled={saving || !icpInput.trim()}
-                  className="flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-200 hover:bg-gray-50 disabled:opacity-40 text-gray-700 text-sm font-semibold rounded-lg transition-colors">
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-700 hover:bg-gray-800 disabled:opacity-40 text-gray-300 text-sm font-semibold rounded-lg transition-colors">
                   {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Target className="w-4 h-4" />}Save Audience
                 </button>
                 <button onClick={handleLaunchCampaign} disabled={launching || !icpInput.trim() || !isProvisioned || customer.credits_remaining <= 0}
-                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-bold rounded-lg transition-all shadow-sm">
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20">
                   {launching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}Launch Autonomous Campaign
                 </button>
               </div>
-              {!isProvisioned && <p className="text-[11px] text-amber-600 mt-2">Connect your API key above to use agents.</p>}
+              {!isProvisioned && <p className="text-[11px] text-amber-400 mt-2">Connect your API key above to use agents.</p>}
             </div>
 
             {/* Agent Actions */}
             {isProvisioned && (
-              <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
-                <h2 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-blue-600" />Agent Actions
+              <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+                <h2 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-cyan-400" />Agent Actions
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <AgentCard icon={<Search className="w-4 h-4" />} color="blue" title="Search Prospects" desc="Find companies and people matching your ICP.">
                     <div className="flex gap-1 mb-3">
                       {(['people', 'companies'] as const).map(t => (
                         <button key={t} onClick={() => setSearchType(t)}
-                          className={`text-[10px] font-semibold px-2.5 py-1 rounded-md capitalize transition-colors ${searchType === t ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500 hover:text-gray-700'}`}>{t}</button>
+                          className={`text-[10px] font-semibold px-2.5 py-1 rounded-md capitalize transition-colors ${searchType === t ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' : 'bg-gray-800 text-gray-500 hover:text-gray-300 border border-transparent'}`}>{t}</button>
                       ))}
                     </div>
                     <button onClick={handleSearchProspects} disabled={searching || !icpInput.trim() || customer.credits_remaining <= 0}
@@ -647,7 +646,7 @@ export default function GTMWorkspacePage({ navigate }: Props) {
                   </AgentCard>
 
                   <AgentCard icon={<Sparkles className="w-4 h-4" />} color="violet" title="Personalize" desc="Deep research for custom messaging.">
-                    {unpersonalizedCount > 0 && <p className="text-[10px] text-gray-500 mb-2"><span className="font-bold text-violet-600">{unpersonalizedCount}</span> awaiting research</p>}
+                    {unpersonalizedCount > 0 && <p className="text-[10px] text-gray-500 mb-2"><span className="font-bold text-violet-400">{unpersonalizedCount}</span> awaiting research</p>}
                     <button onClick={handleRunPersonalization} disabled={personalizing || unpersonalizedCount === 0 || customer.credits_remaining <= 0}
                       className="w-full flex items-center justify-center gap-2 px-3 py-2.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-white text-xs font-bold rounded-lg transition-colors">
                       {personalizing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}Personalize
@@ -655,7 +654,7 @@ export default function GTMWorkspacePage({ navigate }: Props) {
                   </AgentCard>
 
                   <AgentCard icon={<Send className="w-4 h-4" />} color="emerald" title="Launch Sequence" desc="Auto-send with 3 follow-ups, 2 days apart.">
-                    {readyForSequence > 0 && <p className="text-[10px] text-gray-500 mb-2"><span className="font-bold text-emerald-600">{readyForSequence}</span> ready for outreach</p>}
+                    {readyForSequence > 0 && <p className="text-[10px] text-gray-500 mb-2"><span className="font-bold text-emerald-400">{readyForSequence}</span> ready for outreach</p>}
                     <button onClick={handleLaunchSequence} disabled={launchingSequence || readyForSequence === 0 || customer.credits_remaining <= 0}
                       className="w-full flex items-center justify-center gap-2 px-3 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white text-xs font-bold rounded-lg transition-colors">
                       {launchingSequence ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}Launch
@@ -667,20 +666,20 @@ export default function GTMWorkspacePage({ navigate }: Props) {
 
             {/* Active Runs */}
             {activeRuns.length > 0 && (
-              <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
-                <h3 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <RefreshCw className={`w-4 h-4 text-blue-600 ${hasRunningJobs ? 'animate-spin' : ''}`} />Active Runs
+              <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+                <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                  <RefreshCw className={`w-4 h-4 text-cyan-400 ${hasRunningJobs ? 'animate-spin' : ''}`} />Active Runs
                 </h3>
                 <div className="space-y-2">
                   {activeRuns.map(run => (
-                    <div key={run.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
-                      <span className={`w-2 h-2 rounded-full ${run.status === 'running' ? 'bg-blue-500 animate-pulse' : run.status === 'completed' ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                    <div key={run.id} className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg border border-gray-700/50">
+                      <span className={`w-2 h-2 rounded-full ${run.status === 'running' ? 'bg-cyan-400 animate-pulse' : run.status === 'completed' ? 'bg-emerald-400' : 'bg-red-400'}`} />
                       <div className="flex-1 min-w-0">
-                        <span className="text-xs font-semibold text-gray-700 capitalize">{run.type}</span>
-                        {run.result_count !== undefined && <span className="text-[10px] text-gray-400 ml-2">{run.result_count} results</span>}
+                        <span className="text-xs font-semibold text-gray-200 capitalize">{run.type}</span>
+                        {run.result_count !== undefined && <span className="text-[10px] text-gray-500 ml-2">{run.result_count} results</span>}
                       </div>
                       {run.progress !== undefined && run.status === 'running' && (
-                        <div className="w-14 h-1.5 bg-gray-200 rounded-full overflow-hidden"><div className="h-full bg-blue-500 rounded-full transition-all" style={{ width: `${run.progress}%` }} /></div>
+                        <div className="w-14 h-1.5 bg-gray-700 rounded-full overflow-hidden"><div className="h-full bg-cyan-500 rounded-full transition-all" style={{ width: `${run.progress}%` }} /></div>
                       )}
                       <RunStatusBadge status={run.status} />
                     </div>
@@ -690,21 +689,21 @@ export default function GTMWorkspacePage({ navigate }: Props) {
             )}
 
             {/* Activity */}
-            <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
-              <h3 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2"><Activity className="w-4 h-4 text-blue-600" />Activity</h3>
+            <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+              <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2"><Activity className="w-4 h-4 text-cyan-400" />Activity</h3>
               {activityFeed.length === 0 ? (
-                <p className="text-sm text-gray-400 text-center py-6">No activity yet.</p>
+                <p className="text-sm text-gray-500 text-center py-6">No activity yet.</p>
               ) : (
                 <div className="space-y-2.5">
                   {activityFeed.slice(0, 10).map((item, i) => (
                     <div key={i} className="flex items-center gap-3">
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${item.type === 'campaign' ? 'bg-blue-50' : item.type === 'search' ? 'bg-teal-50' : 'bg-gray-50'}`}>
-                        {item.type === 'campaign' && <Zap className="w-3 h-3 text-blue-600" />}
-                        {item.type === 'search' && <Search className="w-3 h-3 text-teal-600" />}
-                        {item.type === 'system' && <CheckCircle2 className="w-3 h-3 text-emerald-600" />}
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${item.type === 'campaign' ? 'bg-blue-500/10' : item.type === 'search' ? 'bg-teal-500/10' : 'bg-emerald-500/10'}`}>
+                        {item.type === 'campaign' && <Zap className="w-3 h-3 text-blue-400" />}
+                        {item.type === 'search' && <Search className="w-3 h-3 text-teal-400" />}
+                        {item.type === 'system' && <CheckCircle2 className="w-3 h-3 text-emerald-400" />}
                       </div>
-                      <p className="text-xs text-gray-600 flex-1 min-w-0 truncate">{item.text}</p>
-                      <span className="text-[10px] text-gray-400 shrink-0">{item.time}</span>
+                      <p className="text-xs text-gray-300 flex-1 min-w-0 truncate">{item.text}</p>
+                      <span className="text-[10px] text-gray-500 shrink-0">{item.time}</span>
                     </div>
                   ))}
                 </div>
@@ -717,29 +716,29 @@ export default function GTMWorkspacePage({ navigate }: Props) {
         {activeTab === 'prospects' && (
           <div className="space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <h1 className="text-xl font-black text-gray-900">Prospects</h1>
+              <h1 className="text-xl font-black text-white">Prospects</h1>
               <div className="flex items-center gap-2">
                 {isProvisioned && (
                   <button onClick={handleSearchProspects} disabled={searching || !icpInput.trim() || customer.credits_remaining <= 0}
-                    className="flex items-center gap-1.5 px-3 py-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 text-white text-xs font-bold rounded-lg transition-colors">
+                    className="flex items-center gap-1.5 px-3 py-2 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-white text-xs font-bold rounded-lg transition-colors">
                     {searching ? <Loader2 className="w-3 h-3 animate-spin" /> : <Search className="w-3 h-3" />}Search More
                   </button>
                 )}
-                <span className="text-xs text-gray-400">{prospects.length} total</span>
+                <span className="text-xs text-gray-500">{prospects.length} total</span>
               </div>
             </div>
 
             {prospects.length === 0 ? (
-              <div className="bg-white border border-gray-200 rounded-xl p-10 text-center shadow-sm">
-                <Users className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                <h3 className="text-sm font-bold text-gray-700 mb-1">No prospects yet</h3>
-                <p className="text-xs text-gray-400 mb-4">Use Search Prospects to discover leads matching your ICP.</p>
-                <button onClick={() => setActiveTab('dashboard')} className="text-blue-600 text-sm font-semibold hover:text-blue-500">Go to Dashboard</button>
+              <div className="bg-gray-900 border border-gray-800 rounded-xl p-10 text-center">
+                <Users className="w-10 h-10 text-gray-600 mx-auto mb-3" />
+                <h3 className="text-sm font-bold text-gray-300 mb-1">No prospects yet</h3>
+                <p className="text-xs text-gray-500 mb-4">Use Search Prospects to discover leads matching your ICP.</p>
+                <button onClick={() => setActiveTab('dashboard')} className="text-cyan-400 text-sm font-semibold hover:text-cyan-300">Go to Dashboard</button>
               </div>
             ) : (
               <>
                 {isProvisioned && (unpersonalizedCount > 0 || readyForSequence > 0) && (
-                  <div className="flex flex-wrap items-center gap-2 p-3 bg-white border border-gray-200 rounded-lg shadow-sm">
+                  <div className="flex flex-wrap items-center gap-2 p-3 bg-gray-900 border border-gray-800 rounded-lg">
                     {unpersonalizedCount > 0 && (
                       <button onClick={handleRunPersonalization} disabled={personalizing || customer.credits_remaining <= 0}
                         className="flex items-center gap-1.5 px-3 py-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-white text-xs font-bold rounded-lg transition-colors">
@@ -752,34 +751,34 @@ export default function GTMWorkspacePage({ navigate }: Props) {
                         {launchingSequence ? <Loader2 className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}Sequence {readyForSequence}
                       </button>
                     )}
-                    <ArrowRight className="w-3 h-3 text-gray-300" />
-                    <span className="text-[10px] text-gray-400">Pipeline: Search &rarr; Personalize &rarr; Sequence</span>
+                    <ArrowRight className="w-3 h-3 text-gray-600" />
+                    <span className="text-[10px] text-gray-500">Pipeline: Search &rarr; Personalize &rarr; Sequence</span>
                   </div>
                 )}
 
-                <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b border-gray-100 bg-gray-50/50">
-                          <th className="text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-5 py-3">Name</th>
-                          <th className="text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-5 py-3">Company</th>
-                          <th className="text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-5 py-3 hidden sm:table-cell">Email</th>
-                          <th className="text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-5 py-3">Status</th>
-                          <th className="text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-5 py-3">Pipeline</th>
+                        <tr className="border-b border-gray-800 bg-gray-800/30">
+                          <th className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-5 py-3">Name</th>
+                          <th className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-5 py-3">Company</th>
+                          <th className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-5 py-3 hidden sm:table-cell">Email</th>
+                          <th className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-5 py-3">Status</th>
+                          <th className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-5 py-3">Pipeline</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-50">
+                      <tbody className="divide-y divide-gray-800/50">
                         {prospects.map((p, i) => (
-                          <tr key={i} className="hover:bg-gray-50/50 transition-colors">
+                          <tr key={i} className="hover:bg-gray-800/30 transition-colors">
                             <td className="px-5 py-3">
                               <div className="flex items-center gap-2">
-                                <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center"><User className="w-3.5 h-3.5 text-gray-400" /></div>
-                                <div><span className="text-sm text-gray-900 font-medium">{p.name}</span>{p.title && <p className="text-[10px] text-gray-400">{p.title}</p>}</div>
+                                <div className="w-7 h-7 rounded-full bg-gray-800 flex items-center justify-center"><User className="w-3.5 h-3.5 text-gray-500" /></div>
+                                <div><span className="text-sm text-gray-100 font-medium">{p.name}</span>{p.title && <p className="text-[10px] text-gray-500">{p.title}</p>}</div>
                               </div>
                             </td>
-                            <td className="px-5 py-3"><div className="flex items-center gap-1.5"><Building2 className="w-3 h-3 text-gray-300" /><span className="text-sm text-gray-600">{p.company}</span></div></td>
-                            <td className="px-5 py-3 text-sm text-gray-500 hidden sm:table-cell">{p.email || '-'}</td>
+                            <td className="px-5 py-3"><div className="flex items-center gap-1.5"><Building2 className="w-3 h-3 text-gray-600" /><span className="text-sm text-gray-300">{p.company}</span></div></td>
+                            <td className="px-5 py-3 text-sm text-gray-400 hidden sm:table-cell">{p.email || '-'}</td>
                             <td className="px-5 py-3"><StatusBadge status={p.status} /></td>
                             <td className="px-5 py-3"><PipelineBadges personalized={!!p.personalized} sequenceStatus={p.sequence_status} /></td>
                           </tr>
@@ -797,43 +796,43 @@ export default function GTMWorkspacePage({ navigate }: Props) {
         {activeTab === 'campaigns' && (
           <div className="space-y-5">
             <div className="flex items-center justify-between">
-              <h1 className="text-xl font-black text-gray-900">Campaigns</h1>
-              <button onClick={() => setActiveTab('dashboard')} className="flex items-center gap-1.5 text-xs text-blue-600 font-semibold hover:text-blue-500">
+              <h1 className="text-xl font-black text-white">Campaigns</h1>
+              <button onClick={() => setActiveTab('dashboard')} className="flex items-center gap-1.5 text-xs text-cyan-400 font-semibold hover:text-cyan-300">
                 <Play className="w-3 h-3" />New Campaign
               </button>
             </div>
 
             {campaigns.length === 0 ? (
-              <div className="bg-white border border-gray-200 rounded-xl p-10 text-center shadow-sm">
-                <Zap className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                <h3 className="text-sm font-bold text-gray-700 mb-1">No campaigns yet</h3>
-                <p className="text-xs text-gray-400 mb-4">Define your ICP and launch your first campaign.</p>
-                <button onClick={() => setActiveTab('dashboard')} className="text-blue-600 text-sm font-semibold hover:text-blue-500">Go to Dashboard</button>
+              <div className="bg-gray-900 border border-gray-800 rounded-xl p-10 text-center">
+                <Zap className="w-10 h-10 text-gray-600 mx-auto mb-3" />
+                <h3 className="text-sm font-bold text-gray-300 mb-1">No campaigns yet</h3>
+                <p className="text-xs text-gray-500 mb-4">Define your ICP and launch your first campaign.</p>
+                <button onClick={() => setActiveTab('dashboard')} className="text-cyan-400 text-sm font-semibold hover:text-cyan-300">Go to Dashboard</button>
               </div>
             ) : (
               <div className="space-y-3">
                 {campaigns.map(campaign => (
-                  <div key={campaign.id} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:border-gray-300 transition-colors">
+                  <div key={campaign.id} className="bg-gray-900 border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-sm font-bold text-gray-900 truncate">{campaign.name}</h3>
+                          <h3 className="text-sm font-bold text-white truncate">{campaign.name}</h3>
                           <CampaignStatusBadge status={campaign.status} />
                         </div>
-                        <p className="text-xs text-gray-400 truncate">{campaign.icp_definition || 'No ICP'}</p>
+                        <p className="text-xs text-gray-500 truncate">{campaign.icp_definition || 'No ICP'}</p>
                       </div>
                       <div className="flex items-center gap-5 text-xs">
-                        <div className="text-center"><p className="text-gray-400">Prospects</p><p className="font-bold text-gray-700">{campaign.prospects_found || 0}</p></div>
-                        <div className="text-center"><p className="text-gray-400">Emails</p><p className="font-bold text-gray-700">{campaign.emails_sent || 0}</p></div>
-                        <div className="text-center"><p className="text-gray-400">Created</p><p className="font-bold text-gray-700">{new Date(campaign.created_at).toLocaleDateString()}</p></div>
+                        <div className="text-center"><p className="text-gray-500">Prospects</p><p className="font-bold text-gray-200">{campaign.prospects_found || 0}</p></div>
+                        <div className="text-center"><p className="text-gray-500">Emails</p><p className="font-bold text-gray-200">{campaign.emails_sent || 0}</p></div>
+                        <div className="text-center"><p className="text-gray-500">Created</p><p className="font-bold text-gray-200">{new Date(campaign.created_at).toLocaleDateString()}</p></div>
                       </div>
                     </div>
                     {campaign.explee_run_id && (
-                      <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2">
-                        <Clock className="w-3 h-3 text-gray-300" />
-                        <span className="text-[10px] text-gray-400 font-mono">Run: {campaign.explee_run_id}</span>
+                      <div className="mt-3 pt-3 border-t border-gray-800 flex items-center gap-2">
+                        <Clock className="w-3 h-3 text-gray-600" />
+                        <span className="text-[10px] text-gray-500 font-mono">Run: {campaign.explee_run_id}</span>
                         {activeRuns.find(r => r.id === campaign.explee_run_id)?.status === 'running' && (
-                          <span className="flex items-center gap-1 text-[10px] text-blue-600"><Loader2 className="w-2.5 h-2.5 animate-spin" /> Running</span>
+                          <span className="flex items-center gap-1 text-[10px] text-cyan-400"><Loader2 className="w-2.5 h-2.5 animate-spin" /> Running</span>
                         )}
                       </div>
                     )}
@@ -847,39 +846,39 @@ export default function GTMWorkspacePage({ navigate }: Props) {
         {/* ===== SETTINGS ===== */}
         {activeTab === 'settings' && (
           <div className="space-y-5">
-            <h1 className="text-xl font-black text-gray-900">Settings</h1>
+            <h1 className="text-xl font-black text-white">Settings</h1>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
-              <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2"><Key className="w-4 h-4 text-blue-600" />Explee API</h3>
+            <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+              <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2"><Key className="w-4 h-4 text-cyan-400" />Explee API</h3>
               <div className="space-y-2">
-                <SettingsRow label="Status" value={isProvisioned ? 'Active' : 'Not Connected'} valueClass={isProvisioned ? 'text-emerald-600' : 'text-amber-600'} />
+                <SettingsRow label="Status" value={isProvisioned ? 'Active' : 'Not Connected'} valueClass={isProvisioned ? 'text-emerald-400' : 'text-amber-400'} />
                 {customer.explee_customer_id && <SettingsRow label="Customer ID" value={customer.explee_customer_id} mono />}
                 <SettingsRow label="API Key" value={customer.explee_api_key ? `${customer.explee_api_key.slice(0, 8)}...` : 'Not set'} mono />
               </div>
               {!isProvisioned && (
                 <div className="mt-4 flex gap-2">
                   <input type="password" value={apiKeyInput} onChange={e => setApiKeyInput(e.target.value)} placeholder="expl_xxxxxxxxxxxxxxxx"
-                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
                   <button onClick={handleConnectApiKey} disabled={connectingKey || !apiKeyInput.trim()}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 text-white text-sm font-semibold rounded-lg transition-colors">
+                    className="flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-white text-sm font-semibold rounded-lg transition-colors">
                     {connectingKey ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle2 className="w-3.5 h-3.5" />}Save
                   </button>
                 </div>
               )}
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
-              <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2"><User className="w-4 h-4 text-blue-600" />Account</h3>
+            <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+              <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2"><User className="w-4 h-4 text-cyan-400" />Account</h3>
               <div className="space-y-2">
                 <SettingsRow label="Name" value={customer.full_name} />
                 <SettingsRow label="Email" value={customer.email} />
-                <SettingsRow label="Credits" value={customer.credits_remaining.toLocaleString()} valueClass={lowCredits ? 'text-amber-600 font-bold' : 'text-blue-600 font-bold'} />
+                <SettingsRow label="Credits" value={customer.credits_remaining.toLocaleString()} valueClass={lowCredits ? 'text-amber-400 font-bold' : 'text-cyan-400 font-bold'} />
                 <SettingsRow label="Daily Budget" value={`${customer.daily_budget} emails/day`} />
               </div>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
-              <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2"><Mail className="w-4 h-4 text-blue-600" />Notifications</h3>
+            <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+              <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2"><Mail className="w-4 h-4 text-cyan-400" />Notifications</h3>
               <div className="space-y-2">
                 <ToggleRow label="Email when meetings are booked" defaultOn />
                 <ToggleRow label="Weekly performance reports" defaultOn />
@@ -892,7 +891,7 @@ export default function GTMWorkspacePage({ navigate }: Props) {
 
         {/* Powered by Explee (mobile footer) */}
         <div className="md:hidden mt-8 text-center">
-          <a href="https://explee.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-[11px] text-gray-400 hover:text-gray-500 transition-colors">
+          <a href="https://explee.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-[11px] text-gray-600 hover:text-gray-400 transition-colors">
             <Zap className="w-3 h-3" />Powered by Explee<ExternalLink className="w-2.5 h-2.5" />
           </a>
         </div>
@@ -903,26 +902,26 @@ export default function GTMWorkspacePage({ navigate }: Props) {
 
 function StatCard({ icon, iconBg, label, value, sub }: { icon: React.ReactNode; iconBg: string; label: string; value: string; sub: string }) {
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+    <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
       <div className="flex items-center gap-3 mb-3">
         <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${iconBg}`}>{icon}</div>
-        <span className="text-xs font-medium text-gray-500">{label}</span>
+        <span className="text-xs font-medium text-gray-400">{label}</span>
       </div>
-      <div className="text-2xl font-black text-gray-900">{value}</div>
-      <p className="text-[11px] text-gray-400 mt-1">{sub}</p>
+      <div className="text-2xl font-black text-white">{value}</div>
+      <p className="text-[11px] text-gray-500 mt-1">{sub}</p>
     </div>
   );
 }
 
 function AgentCard({ icon, color, title, desc, children }: { icon: React.ReactNode; color: string; title: string; desc: string; children: React.ReactNode }) {
-  const iconBg = color === 'blue' ? 'bg-blue-50 text-blue-600' : color === 'violet' ? 'bg-violet-50 text-violet-600' : 'bg-emerald-50 text-emerald-600';
+  const iconBg = color === 'blue' ? 'bg-blue-500/10 text-blue-400' : color === 'violet' ? 'bg-violet-500/10 text-violet-400' : 'bg-emerald-500/10 text-emerald-400';
   return (
-    <div className="border border-gray-100 rounded-lg p-4 bg-gray-50/50">
+    <div className="border border-gray-700/50 rounded-lg p-4 bg-gray-800/30">
       <div className="flex items-center gap-2 mb-2">
         <div className={`w-6 h-6 rounded flex items-center justify-center ${iconBg}`}>{icon}</div>
-        <h3 className="text-sm font-bold text-gray-900">{title}</h3>
+        <h3 className="text-sm font-bold text-white">{title}</h3>
       </div>
-      <p className="text-[11px] text-gray-500 mb-3">{desc}</p>
+      <p className="text-[11px] text-gray-400 mb-3">{desc}</p>
       {children}
     </div>
   );
@@ -930,11 +929,11 @@ function AgentCard({ icon, color, title, desc, children }: { icon: React.ReactNo
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
-    contacted: 'bg-blue-50 text-blue-700 border-blue-200',
-    replied: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    bounced: 'bg-red-50 text-red-700 border-red-200',
-    researched: 'bg-violet-50 text-violet-700 border-violet-200',
-    new: 'bg-gray-50 text-gray-600 border-gray-200',
+    contacted: 'bg-blue-500/10 text-blue-300 border-blue-500/30',
+    replied: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+    bounced: 'bg-red-500/10 text-red-300 border-red-500/30',
+    researched: 'bg-violet-500/10 text-violet-300 border-violet-500/30',
+    new: 'bg-gray-800 text-gray-400 border-gray-700',
   };
   return <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full border ${styles[status] || styles.new}`}>{status.toUpperCase()}</span>;
 }
@@ -942,11 +941,11 @@ function StatusBadge({ status }: { status: string }) {
 function PipelineBadges({ personalized, sequenceStatus }: { personalized: boolean; sequenceStatus?: string }) {
   return (
     <div className="flex items-center gap-1">
-      <span className={`w-5 h-5 rounded flex items-center justify-center ${personalized ? 'bg-violet-50' : 'bg-gray-50'}`}>
-        <Sparkles className={`w-2.5 h-2.5 ${personalized ? 'text-violet-500' : 'text-gray-300'}`} />
+      <span className={`w-5 h-5 rounded flex items-center justify-center ${personalized ? 'bg-violet-500/10' : 'bg-gray-800'}`}>
+        <Sparkles className={`w-2.5 h-2.5 ${personalized ? 'text-violet-400' : 'text-gray-600'}`} />
       </span>
-      <span className={`w-5 h-5 rounded flex items-center justify-center ${sequenceStatus === 'active' ? 'bg-emerald-50' : 'bg-gray-50'}`}>
-        <Send className={`w-2.5 h-2.5 ${sequenceStatus === 'active' ? 'text-emerald-500' : 'text-gray-300'}`} />
+      <span className={`w-5 h-5 rounded flex items-center justify-center ${sequenceStatus === 'active' ? 'bg-emerald-500/10' : 'bg-gray-800'}`}>
+        <Send className={`w-2.5 h-2.5 ${sequenceStatus === 'active' ? 'text-emerald-400' : 'text-gray-600'}`} />
       </span>
     </div>
   );
@@ -954,29 +953,29 @@ function PipelineBadges({ personalized, sequenceStatus }: { personalized: boolea
 
 function CampaignStatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
-    active: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    paused: 'bg-amber-50 text-amber-700 border-amber-200',
-    draft: 'bg-gray-50 text-gray-600 border-gray-200',
-    completed: 'bg-blue-50 text-blue-700 border-blue-200',
-    failed: 'bg-red-50 text-red-700 border-red-200',
+    active: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+    paused: 'bg-amber-500/10 text-amber-300 border-amber-500/30',
+    draft: 'bg-gray-800 text-gray-400 border-gray-700',
+    completed: 'bg-blue-500/10 text-blue-300 border-blue-500/30',
+    failed: 'bg-red-500/10 text-red-300 border-red-500/30',
   };
   return <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full border ${styles[status] || styles.draft}`}>{status.toUpperCase()}</span>;
 }
 
 function RunStatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
-    running: 'bg-blue-50 text-blue-700 border-blue-200',
-    completed: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    failed: 'bg-red-50 text-red-700 border-red-200',
+    running: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30',
+    completed: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
+    failed: 'bg-red-500/10 text-red-300 border-red-500/30',
   };
   return <span className={`inline-flex items-center text-[10px] font-bold px-1.5 py-0.5 rounded border ${styles[status] || styles.running}`}>{status.toUpperCase()}</span>;
 }
 
 function SettingsRow({ label, value, mono, valueClass }: { label: string; value: string; mono?: boolean; valueClass?: string }) {
   return (
-    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-      <span className="text-xs text-gray-500">{label}</span>
-      <span className={`text-xs ${mono ? 'font-mono' : 'font-medium'} ${valueClass || 'text-gray-700'}`}>{value}</span>
+    <div className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg border border-gray-700/50">
+      <span className="text-xs text-gray-400">{label}</span>
+      <span className={`text-xs ${mono ? 'font-mono' : 'font-medium'} ${valueClass || 'text-gray-200'}`}>{value}</span>
     </div>
   );
 }
@@ -984,9 +983,9 @@ function SettingsRow({ label, value, mono, valueClass }: { label: string; value:
 function ToggleRow({ label, defaultOn = true }: { label: string; defaultOn?: boolean }) {
   const [on, setOn] = useState(defaultOn);
   return (
-    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-      <span className="text-xs text-gray-700">{label}</span>
-      <button onClick={() => setOn(!on)} className={`w-9 h-5 rounded-full relative transition-colors ${on ? 'bg-blue-600' : 'bg-gray-300'}`}>
+    <div className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg border border-gray-700/50">
+      <span className="text-xs text-gray-300">{label}</span>
+      <button onClick={() => setOn(!on)} className={`w-9 h-5 rounded-full relative transition-colors ${on ? 'bg-cyan-600' : 'bg-gray-600'}`}>
         <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-all ${on ? 'right-0.5' : 'left-0.5'}`} />
       </button>
     </div>
