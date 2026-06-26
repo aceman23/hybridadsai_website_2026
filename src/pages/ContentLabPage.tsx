@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   Plus, Trash2, Loader2, FolderOpen, Link2, CheckCircle2,
-  Sparkles, Clock, ChevronDown, ExternalLink, X, FileText,
+  Sparkles, Clock, ChevronDown, ExternalLink, X, FileText, LogIn,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { callClaude } from '../components/content-lab/api';
@@ -16,11 +16,13 @@ import type {
   ContentProject, ContentSource, ContentSession, GeneratingPost,
 } from '../components/content-lab/types';
 import type { Page } from '../App';
+import type { User } from '@supabase/supabase-js';
 
 interface Props { navigate: (page: Page) => void; }
 
 export default function ContentLabPage({ navigate }: Props) {
-  void navigate;
+  const [user, setUser] = useState<User | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
   const [projects, setProjects] = useState<ContentProject[]>([]);
   const [currentId, setCurrentId] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -28,7 +30,18 @@ export default function ContentLabPage({ navigate }: Props) {
   const [newName, setNewName] = useState('');
   const [creating, setCreating] = useState(false);
 
-  useEffect(() => { loadProjects(); }, []);
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setAuthChecked(true);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => { if (user) loadProjects(); }, [user]);
 
   async function loadProjects() {
     const { data } = await supabase
@@ -46,7 +59,7 @@ export default function ContentLabPage({ navigate }: Props) {
     setCreating(true);
     const { data, error } = await supabase
       .from('content_projects')
-      .insert({ name })
+      .insert({ name, user_id: user!.id })
       .select()
       .single();
     if (!error && data) {
@@ -68,10 +81,32 @@ export default function ContentLabPage({ navigate }: Props) {
 
   const current = projects.find(p => p.id === currentId) || null;
 
-  if (!loaded) {
+  if (!authChecked || (!loaded && user)) {
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <Loader2 className="w-6 h-6 text-cyan-400 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <div className="text-center max-w-sm mx-4">
+          <div className="w-16 h-16 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl flex items-center justify-center mx-auto mb-5">
+            <LogIn className="w-7 h-7 text-cyan-400" />
+          </div>
+          <h2 className="text-lg font-bold text-white mb-2">Sign in to Content Lab</h2>
+          <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+            Create an account or sign in to start generating social media content.
+          </p>
+          <button
+            onClick={() => navigate('home')}
+            className="px-6 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-sm font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20"
+          >
+            Go to Sign In
+          </button>
+        </div>
       </div>
     );
   }
