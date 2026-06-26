@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hybrid Ads — Social Content Lab</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --bg:#f0f2f8;
+  --surface:#ffffff;
+  --surface2:#f7f8fc;
+  --border:#e2e6f0;
+  --border2:#d0d5e8;
+  --accent:#6c3fc5;
+  --accent-light:#ede8fb;
+  --accent-dark:#5530a8;
+  --green:#1db87a;
+  --green-light:#e6f8f1;
+  --green-dark:#17a06a;
+  --text:#1a1a2e;
+  --text2:#4a4a6a;
+  --muted:#8888aa;
+  --danger:#e5344a;
+  --danger-light:#fdeef0;
+  --shadow:0 1px 3px rgba(100,80,180,.08),0 4px 16px rgba(100,80,180,.06);
+  --shadow-md:0 4px 20px rgba(100,80,180,.12),0 1px 4px rgba(100,80,180,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;font-size:14px;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--accent);}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{animation:fadeIn .25s ease both;}
+.card-hover:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.btn-primary:hover{background:var(--accent-dark)!important;}
+.btn-green:hover{background:var(--green-dark)!important;}
+.btn-outline:hover{border-color:var(--accent)!important;color:var(--accent)!important;background:var(--accent-light)!important;}
+.btn-ghost:hover{background:var(--surface2)!important;color:var(--accent)!important;}
+.source-card:hover{border-color:var(--accent)!important;box-shadow:0 0 0 3px var(--accent-light)!important;}
+.project-item:hover{background:var(--surface2)!important;}
+.tab-btn:hover{color:var(--accent)!important;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent)!important;box-shadow:0 0 0 3px var(--accent-light)!important;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ── Storage ─────────────────────────────────────────────────────────
+const storage = window.storage;
+async function safeGet(k){try{const r=await storage.get(k);return r?JSON.parse(r.value):null;}catch{return null;}}
+async function safeSet(k,v){try{await storage.set(k,JSON.stringify(v));return true;}catch{return false;}}
+async function safeDel(k){try{await storage.delete(k);}catch{}}
+async function safeList(p){try{const r=await storage.list(p);return r?r.keys:[];}catch{return[];}}
+
+// ── Claude API ──────────────────────────────────────────────────────
+async function claude(prompt, maxTokens=1000){
+  const res = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-6',max_tokens:maxTokens,
+      tools:[{type:'web_search_20250305',name:'web_search'}],
+      messages:[{role:'user',content:prompt}]
+    })
+  });
+  const data = await res.json();
+  if(data.error) throw new Error(data.error.message);
+  const t = data.content.find(b=>b.type==='text');
+  return t ? t.text.trim() : '';
+}
+
+// ── Constants ───────────────────────────────────────────────────────
+const CHAR_LIMITS={LinkedIn:3000,'Twitter/X':280,Instagram:2200,Facebook:63206};
+const PLATFORM_ASPECT={LinkedIn:'16:9 landscape, professional editorial',
+  'Twitter/X':'16:9 or 1:1 square, bold scroll-stopping','Instagram':'1:1 square or 4:5 portrait','Facebook':'16:9 landscape'};
+const BRAND=`Hybrid Ads (hybridads.ai) — AI systems integrator and paid ads agency. Google, Meta, TikTok. 2M+ leads generated. 
+Voice: smart, direct, data-confident. Not salesy. Performance-first. Never: "game-changer","unlock","unleash","hustle","revolutionize".
+LinkedIn: 2-3 hashtags. Twitter/X: 1-2 max. Instagram: 5-7 hashtags.`;
+const BUILTIN_DATA=`Motion Creative Benchmarks 2026 — 578,750 creatives, 6,015 accounts, $1.29B spend, Sep 2025–Jan 2026.
+Key findings:
+• ~5% of ads are winners (10x account median spend, min $500)
+• 55% of total spend → winners; 28% mid-range; 17% losers
+• Enterprise: 64% spend to winners. Micro (<$10K/mo): 23%
+• Hit rate: Micro 4%, Small 6.4%, Medium 8.1%, Large 8.6%, Enterprise 8.8%
+• Top 25% Large-tier: 31.1 creatives/week vs 11.2 avg (2.8×)
+• Enterprise top 25%: 54.6/week vs 18.8 avg; 10.4 winners/mo vs 3.9
+• Mid-range ads: 38-46% of portfolios — stability layer
+• Text-forward assets (text-only, product+text) win more than expected
+• Winning hooks: immediacy, price framing, urgency, product newness
+• High hit rate can mean insufficient testing`;
+const TONES={authoritative:'authoritative, confident, data-led',provocative:'provocative and contrarian — challenges assumptions',
+  educational:'educational and clear — explains the why',conversational:'conversational and direct — smart colleague sharing a finding'};
+const FORMATS={'stat-hook':'Lead with a striking data point, unpack the implication, end with a sharp takeaway.',
+  'myth-bust':'Open naming a misconception, flip with data. "Most think X. The data says Y."',
+  listicle:'Numbered list, 3-5 tight points, each one insight.',
+  question:'Open with a rhetorical question creating tension, answer with data.',
+  story:'Short scenario or analogy illustrating the data. Relatable for performance marketers.'};
+const PLATFORM_NOTES={LinkedIn:'Professional audience. 150-400 words. Line breaks for scanability. 2-3 hashtags.',
+  'Twitter/X':'Under 280 chars. One sharp idea. 1-2 hashtags max.',
+  Instagram:'Hook in first line (before "more" fold). 5-7 hashtags at end.',
+  Facebook:'Like LinkedIn but slightly more casual. Question at end drives comments.'};
+const PLATFORM_COLORS={LinkedIn:'#0077b5','Twitter/X':'#000000',Instagram:'#e1306c',Facebook:'#1877f2'};
+
+// ── Helpers ─────────────────────────────────────────────────────────
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+async function genImgPrompt(postText, platform){
+  try{
+    return await claude(`Expert Grok Aurora image prompt engineer. Write ONE prompt for this ${platform} post:
+"""${postText}"""
+Brand: Hybrid Ads — clean, modern, professional. Light/white backgrounds with purple (#6c3fc5) and green (#1db87a) accents. 
+Think modern SaaS marketing, editorial photography, clean data visualization. 
+Avoid: dark/gloomy aesthetics, stock clichés.
+Aspect: ${PLATFORM_ASPECT[platform]||'16:9'}
+Output ONLY the prompt text. 2-4 sentences. No labels.`,300);
+  }catch{return 'Error generating image prompt.';}
+}
+
+// ── Design tokens as JS ─────────────────────────────────────────────
+const T = {
+  surface:{background:'var(--surface)',borderRadius:12,boxShadow:'var(--shadow)',border:'1px solid var(--border)'},
+  label:{fontSize:11,fontWeight:600,color:'var(--muted)',textTransform:'uppercase',letterSpacing:.8,marginBottom:6},
+  input:{background:'var(--surface)',border:'1px solid var(--border)',color:'var(--text)',fontFamily:'Inter,sans-serif',fontSize:14,padding:'10px 14px',borderRadius:8,outline:'none',width:'100%',transition:'all .15s'},
+  select:{background:'var(--surface)',border:'1px solid var(--border)',color:'var(--text)',fontFamily:'Inter,sans-serif',fontSize:14,padding:'10px 14px',borderRadius:8,outline:'none',cursor:'pointer',transition:'all .15s',appearance:'none'},
+  btnPrimary:{background:'var(--accent)',color:'#fff',border:'none',fontFamily:'Inter,sans-serif',fontSize:14,fontWeight:600,padding:'10px 20px',borderRadius:8,cursor:'pointer',display:'flex',alignItems:'center',gap:6,transition:'background .15s',whiteSpace:'nowrap'},
+  btnGreen:{background:'var(--green)',color:'#fff',border:'none',fontFamily:'Inter,sans-serif',fontSize:14,fontWeight:600,padding:'10px 20px',borderRadius:8,cursor:'pointer',display:'flex',alignItems:'center',gap:6,transition:'background .15s',whiteSpace:'nowrap'},
+  btnOutline:{background:'var(--surface)',border:'1px solid var(--border2)',color:'var(--text2)',fontFamily:'Inter,sans-serif',fontSize:13,fontWeight:500,padding:'8px 14px',borderRadius:7,cursor:'pointer',transition:'all .15s'},
+  btnGhost:{background:'transparent',border:'none',color:'var(--muted)',fontFamily:'Inter,sans-serif',fontSize:12,padding:'5px 10px',borderRadius:6,cursor:'pointer',transition:'all .15s'},
+  pill:(active)=>({padding:'6px 14px',borderRadius:20,border:'1px solid',borderColor:active?'var(--accent)':'var(--border2)',fontSize:13,fontWeight:500,cursor:'pointer',background:active?'var(--accent-light)':'var(--surface)',color:active?'var(--accent)':'var(--text2)',transition:'all .15s',whiteSpace:'nowrap'}),
+  badge:{fontSize:11,fontWeight:600,padding:'3px 9px',borderRadius:20,display:'inline-block'},
+  spinner:{width:16,height:16,border:'2px solid var(--border)',borderTopColor:'var(--accent)',borderRadius:'50%',animation:'spin .8s linear infinite',flexShrink:0},
+};
+
+// ══════════════════════════════════════════════════════════════════
+//  App
+// ══════════════════════════════════════════════════════════════════
+function App(){
+  const [projects,setProjects]=useState([]);
+  const [currentId,setCurrentId]=useState(null);
+  const [loaded,setLoaded]=useState(false);
+  const [modal,setModal]=useState(false);
+  const [newName,setNewName]=useState('');
+
+  useEffect(()=>{loadProjects();},[]);
+
+  async function loadProjects(){
+    const keys=await safeList('proj:');
+    const ps=[];
+    for(const k of keys){const p=await safeGet(k);if(p)ps.push(p);}
+    ps.sort((a,b)=>b.updatedAt-a.updatedAt);
+    setProjects(ps);
+    if(ps.length>0)setCurrentId(ps[0].id);
+    setLoaded(true);
+  }
+  async function createProject(){
+    const name=newName.trim()||'New Project';
+    const id='proj_'+Date.now();
+    const proj={id,name,createdAt:Date.now(),updatedAt:Date.now(),sources:[]};
+    await safeSet(`proj:${id}`,proj);
+    setProjects(p=>[proj,...p]);
+    setCurrentId(id);setModal(false);setNewName('');
+  }
+  async function deleteProject(id){
+    if(!confirm('Delete this project and all its history?'))return;
+    await safeDel(`proj:${id}`);
+    const keys=await safeList(`sess:${id}:`);
+    for(const k of keys)await safeDel(k);
+    const next=projects.filter(p=>p.id!==id);
+    setProjects(next);
+    setCurrentId(next[0]?.id||null);
+  }
+  async function updateProject(proj){
+    proj.updatedAt=Date.now();
+    await safeSet(`proj:${proj.id}`,proj);
+    setProjects(prev=>prev.map(p=>p.id===proj.id?proj:p));
+  }
+
+  const current=projects.find(p=>p.id===currentId)||null;
+
+  if(!loaded)return(
+    <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100vh',flexDirection:'column',gap:12}}>
+      <div style={T.spinner}/>
+      <span style={{fontSize:13,color:'var(--muted)'}}>Loading workspace…</span>
+    </div>
+  );
+
+  return(
+    <div style={{display:'flex',flexDirection:'column',height:'100vh'}}>
+      {/* ── Header ── */}
+      <header style={{background:'var(--surface)',borderBottom:'1px solid var(--border)',padding:'0 24px',display:'flex',alignItems:'center',gap:16,height:60,flexShrink:0,boxShadow:'0 1px 4px rgba(100,80,180,.06)'}}>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          {/* Logo mark */}
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="7" fill="var(--accent)"/>
+            <path d="M7 14l5 5 9-9" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span style={{fontWeight:700,fontSize:16,color:'var(--accent)'}}>hybridads</span>
+          <span style={{fontWeight:400,fontSize:16,color:'var(--text2)'}}>.ai</span>
+        </div>
+        <div style={{width:1,height:24,background:'var(--border)',margin:'0 4px'}}/>
+        <span style={{fontSize:14,fontWeight:600,color:'var(--text)'}}>Social Content Lab</span>
+        <div style={{...T.badge,background:'var(--green-light)',color:'var(--green)',marginLeft:4}}>Beta</div>
+        <div style={{marginLeft:'auto',display:'flex',alignItems:'center',gap:10}}>
+          {current&&<span style={{fontSize:13,color:'var(--muted)',fontWeight:500}}>{current.name}</span>}
+          <button className="btn-primary" style={{...T.btnPrimary,fontSize:13,padding:'7px 14px'}} onClick={()=>setModal(true)}>+ New Project</button>
+        </div>
+      </header>
+
+      <div style={{display:'flex',flex:1,overflow:'hidden'}}>
+        {/* ── Projects sidebar ── */}
+        <div style={{width:220,background:'var(--surface)',borderRight:'1px solid var(--border)',display:'flex',flexDirection:'column',flexShrink:0}}>
+          <div style={{padding:'16px 14px 10px',borderBottom:'1px solid var(--border)'}}>
+            <div style={T.label}>Projects</div>
+          </div>
+          <div style={{flex:1,overflowY:'auto',padding:'10px 10px'}}>
+            {projects.length===0&&(
+              <div style={{padding:16,fontSize:13,color:'var(--muted)',textAlign:'center',lineHeight:1.6}}>
+                No projects yet.<br/>Create one to start.
+              </div>
+            )}
+            {projects.map(p=>(
+              <div key={p.id} className="project-item" onClick={()=>setCurrentId(p.id)}
+                style={{padding:'9px 12px',borderRadius:8,cursor:'pointer',marginBottom:2,
+                  background:p.id===currentId?'var(--accent-light)':'transparent',
+                  color:p.id===currentId?'var(--accent)':'var(--text)',
+                  fontWeight:p.id===currentId?600:400,fontSize:13,
+                  display:'flex',alignItems:'center',justifyContent:'space-between',transition:'all .15s'}}>
+                <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.name}</span>
+                {p.id===currentId&&(
+                  <button style={{...T.btnGhost,padding:'2px 6px',fontSize:11,color:'var(--danger)',flexShrink:0}}
+                    onClick={e=>{e.stopPropagation();deleteProject(p.id);}}>✕</button>
+                )}
+              </div>
+            ))}
+          </div>
+          <div style={{padding:'10px',borderTop:'1px solid var(--border)'}}>
+            <button className="btn-primary" style={{...T.btnPrimary,width:'100%',justifyContent:'center',fontSize:13}} onClick={()=>setModal(true)}>+ New Project</button>
+          </div>
+        </div>
+
+        {/* ── Main ── */}
+        {!current?(
+          <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:16}}>
+            <div style={{width:64,height:64,background:'var(--accent-light)',borderRadius:16,display:'flex',alignItems:'center',justifyContent:'center',fontSize:28}}>✦</div>
+            <div style={{fontSize:18,fontWeight:600,color:'var(--text)'}}>Create your first project</div>
+            <div style={{fontSize:14,color:'var(--muted)',maxWidth:300,textAlign:'center',lineHeight:1.6}}>Organise your content generation by campaign, client, or topic.</div>
+            <button className="btn-primary" style={T.btnPrimary} onClick={()=>setModal(true)}>+ New Project</button>
+          </div>
+        ):(
+          <ProjectWorkspace key={currentId} project={current} onUpdate={updateProject}/>
+        )}
+      </div>
+
+      {/* ── New project modal ── */}
+      {modal&&(
+        <div style={{position:'fixed',inset:0,background:'rgba(26,26,46,.4)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:100,backdropFilter:'blur(3px)'}} onClick={()=>setModal(false)}>
+          <div style={{...T.surface,padding:28,width:420,maxWidth:'90vw'}} onClick={e=>e.stopPropagation()}>
+            <div style={{fontSize:18,fontWeight:700,marginBottom:4}}>New Project</div>
+            <div style={{fontSize:13,color:'var(--muted)',marginBottom:20}}>Name it by campaign, client, or content theme.</div>
+            <input style={T.input} placeholder="e.g. Q3 Campaign, Client X, Hook Testing…"
+              value={newName} onChange={e=>setNewName(e.target.value)}
+              onKeyDown={e=>e.key==='Enter'&&createProject()} autoFocus/>
+            <div style={{display:'flex',gap:10,marginTop:16}}>
+              <button className="btn-primary" style={T.btnPrimary} onClick={createProject}>Create Project</button>
+              <button className="btn-outline" style={T.btnOutline} onClick={()=>setModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  Project Workspace
+// ══════════════════════════════════════════════════════════════════
+function ProjectWorkspace({project,onUpdate}){
+  const [sources,setSources]=useState(project.sources||[]);
+  const [activeSourceIds,setActiveSourceIds]=useState(['__builtin__']);
+  const [sessions,setSessions]=useState([]);
+  const [sessionsLoaded,setSessionsLoaded]=useState(false);
+  const [currentSessionId,setCurrentSessionId]=useState(null);
+  const [tab,setTab]=useState('generate');
+  const [addingSource,setAddingSource]=useState(false);
+  const [srcUrl,setSrcUrl]=useState('');
+  const [srcNote,setSrcNote]=useState('');
+  const [fetchingSrc,setFetchingSrc]=useState(false);
+  const [srcError,setSrcError]=useState('');
+
+  useEffect(()=>{loadSessions();},[project.id]);
+
+  async function loadSessions(){
+    const keys=await safeList(`sess:${project.id}:`);
+    const ss=[];
+    for(const k of keys){const s=await safeGet(k);if(s)ss.push(s);}
+    ss.sort((a,b)=>b.createdAt-a.createdAt);
+    setSessions(ss);setSessionsLoaded(true);
+  }
+  async function saveSession(s){
+    await safeSet(`sess:${project.id}:${s.id}`,s);
+    setSessions(prev=>{
+      const exists=prev.find(x=>x.id===s.id);
+      return (exists?prev.map(x=>x.id===s.id?s:x):[s,...prev]).sort((a,b)=>b.createdAt-a.createdAt);
+    });
+  }
+  async function deleteSession(sid){
+    await safeDel(`sess:${project.id}:${sid}`);
+    setSessions(prev=>prev.filter(s=>s.id!==sid));
+    if(currentSessionId===sid)setCurrentSessionId(null);
+  }
+
+  async function addSource(){
+    const url=srcUrl.trim();if(!url)return;
+    setFetchingSrc(true);setSrcError('');
+    try{
+      const urlObj=new URL(url.startsWith('http')?url:'https://'+url);
+      const finalUrl=urlObj.toString();
+      const summary=await claude(
+        `Fetch and extract key facts, statistics, insights and main arguments from this URL that would be useful for social media content writing: ${finalUrl}\n\nStructured summary:\n1. One-sentence description\n2. Key data points & statistics (bullets)\n3. Main themes/topics\n4. Content tone/angle\n\nBe thorough. If you cannot access the page, say so clearly.`,1500
+      );
+      const src={id:'src_'+Date.now(),url:finalUrl,domain:urlObj.hostname.replace('www.',''),note:srcNote.trim(),summary,addedAt:Date.now()};
+      const newSources=[...sources,src];
+      setSources(newSources);
+      setActiveSourceIds(prev=>[...prev,src.id]);
+      await onUpdate({...project,sources:newSources});
+      setSrcUrl('');setSrcNote('');setAddingSource(false);
+    }catch(err){setSrcError(err.message||'Failed to fetch source.');}
+    setFetchingSrc(false);
+  }
+  async function removeSource(sid){
+    const ns=sources.filter(s=>s.id!==sid);
+    setSources(ns);setActiveSourceIds(prev=>prev.filter(id=>id!==sid));
+    await onUpdate({...project,sources:ns});
+  }
+  function toggleSource(sid){setActiveSourceIds(prev=>prev.includes(sid)?prev.filter(id=>id!==sid):[...prev,sid]);}
+
+  const activeSources=sources.filter(s=>activeSourceIds.includes(s.id));
+  const hasBuiltin=activeSourceIds.includes('__builtin__');
+
+  function buildSourceCtx(){
+    let ctx='';
+    if(hasBuiltin)ctx+=`\n\n=== SOURCE: Motion Creative Benchmarks 2026 ===\n${BUILTIN_DATA}`;
+    activeSources.filter(s=>s.id!=='__builtin__').forEach(src=>{
+      ctx+=`\n\n=== SOURCE: ${src.note||src.domain} (${src.url}) ===\n${src.summary}`;
+    });
+    return ctx;
+  }
+
+  const TABS=[{id:'generate',label:'✦ Generate'},{id:'history',label:`⏱ History (${sessions.length})`}];
+
+  return(
+    <div style={{flex:1,display:'flex',overflow:'hidden'}}>
+      {/* ── Sources panel ── */}
+      <div style={{width:256,background:'var(--surface)',borderRight:'1px solid var(--border)',display:'flex',flexDirection:'column',flexShrink:0}}>
+        <div style={{padding:'16px 14px 10px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+          <div style={T.label}>Sources</div>
+          <button className="btn-outline" style={{...T.btnOutline,padding:'4px 10px',fontSize:12}} onClick={()=>setAddingSource(true)}>+ Add</button>
+        </div>
+
+        <div style={{flex:1,overflowY:'auto',padding:'10px 10px'}}>
+          {/* Built-in */}
+          <SourceCard active={activeSourceIds.includes('__builtin__')} onClick={()=>toggleSource('__builtin__')}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
+              <span style={{...T.badge,background:'var(--accent-light)',color:'var(--accent)',fontSize:10}}>Built-in</span>
+              {activeSourceIds.includes('__builtin__')&&<span style={{color:'var(--green)',fontSize:12}}>✓</span>}
+            </div>
+            <div style={{fontSize:13,fontWeight:600,marginBottom:2,lineHeight:1.3}}>Motion Creative Benchmarks 2026</div>
+            <div style={{fontSize:11,color:'var(--muted)'}}>$1.29B spend · 578K creatives</div>
+          </SourceCard>
+
+          {sources.map(src=>(
+            <SourceCard key={src.id} active={activeSourceIds.includes(src.id)} onClick={()=>toggleSource(src.id)}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
+                <span style={{fontSize:11,fontWeight:600,color:'var(--accent)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:130}}>{src.domain}</span>
+                <div style={{display:'flex',gap:4}}>
+                  {activeSourceIds.includes(src.id)&&<span style={{color:'var(--green)',fontSize:12}}>✓</span>}
+                  <button style={{...T.btnGhost,padding:'1px 5px',fontSize:11,color:'var(--danger)'}}
+                    onClick={e=>{e.stopPropagation();removeSource(src.id);}}>✕</button>
+                </div>
+              </div>
+              <div style={{fontSize:13,fontWeight:600,marginBottom:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{src.note||src.url.replace(/^https?:\/\//,'').slice(0,36)}</div>
+              <div style={{fontSize:11,color:'var(--muted)'}}>{new Date(src.addedAt).toLocaleDateString()}</div>
+            </SourceCard>
+          ))}
+
+          {sources.length===0&&!addingSource&&(
+            <div style={{padding:'12px 4px',fontSize:12,color:'var(--muted)',lineHeight:1.6}}>
+              Add any URL — reports, articles, blog posts — and Claude will extract the key insights for content generation.
+            </div>
+          )}
+        </div>
+
+        {/* Add source form */}
+        {addingSource&&(
+          <div style={{padding:'14px 12px',borderTop:'1px solid var(--border)',background:'var(--surface2)'}}>
+            <div style={{...T.label,marginBottom:8}}>Add Source URL</div>
+            {srcError&&<div style={{fontSize:12,color:'var(--danger)',background:'var(--danger-light)',padding:'7px 10px',borderRadius:6,marginBottom:8}}>{srcError}</div>}
+            <input style={{...T.input,marginBottom:8,fontSize:13}} placeholder="https://example.com/article"
+              value={srcUrl} onChange={e=>setSrcUrl(e.target.value)} onKeyDown={e=>e.key==='Enter'&&!fetchingSrc&&addSource()} autoFocus/>
+            <input style={{...T.input,marginBottom:10,fontSize:13}} placeholder="Label (optional)"
+              value={srcNote} onChange={e=>setSrcNote(e.target.value)}/>
+            <div style={{display:'flex',gap:8}}>
+              <button className="btn-primary" style={{...T.btnPrimary,fontSize:13,flex:1,justifyContent:'center'}} onClick={addSource} disabled={fetchingSrc}>
+                {fetchingSrc?<><div style={T.spinner}/>Fetching…</>:'+ Add Source'}
+              </button>
+              <button className="btn-outline" style={{...T.btnOutline,padding:'8px 12px'}} onClick={()=>{setAddingSource(false);setSrcError('');}}>✕</button>
+            </div>
+          </div>
+        )}
+        {!addingSource&&(
+          <div style={{padding:'10px',borderTop:'1px solid var(--border)'}}>
+            <button className="btn-outline" style={{...T.btnOutline,width:'100%',textAlign:'center',justifyContent:'center',display:'flex'}} onClick={()=>setAddingSource(true)}>+ Add URL Source</button>
+          </div>
+        )}
+      </div>
+
+      {/* ── Main area ── */}
+      <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',background:'var(--bg)'}}>
+        {/* Tabs */}
+        <div style={{background:'var(--surface)',borderBottom:'1px solid var(--border)',display:'flex',gap:0,flexShrink:0}}>
+          {TABS.map(t=>(
+            <button key={t.id} className="tab-btn" onClick={()=>setTab(t.id)}
+              style={{padding:'14px 22px',fontSize:13,fontWeight:tab===t.id?600:400,background:'transparent',border:'none',cursor:'pointer',
+                color:tab===t.id?'var(--accent)':'var(--muted)',
+                borderBottom:tab===t.id?'2px solid var(--accent)':'2px solid transparent',transition:'all .15s'}}>
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {tab==='generate'&&(
+          <GenerateTab project={project} activeSources={activeSources} hasBuiltin={hasBuiltin}
+            sourceCtx={buildSourceCtx()} onSessionSaved={s=>{saveSession(s);setCurrentSessionId(s.id);setTab('history');}}/>
+        )}
+        {tab==='history'&&(
+          <HistoryTab sessions={sessions} loaded={sessionsLoaded} currentId={currentSessionId}
+            onSelect={setCurrentSessionId} onDelete={deleteSession}/>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Source Card component ────────────────────────────────────────
+function SourceCard({active,onClick,children}){
+  return(
+    <div className="source-card" onClick={onClick}
+      style={{padding:'12px',borderRadius:10,border:'1px solid',
+        borderColor:active?'var(--accent)':'var(--border2)',
+        marginBottom:8,cursor:'pointer',
+        background:active?'var(--accent-light)':'var(--surface2)',
+        boxShadow:active?'0 0 0 3px rgba(108,63,197,.12)':'none',
+        transition:'all .15s'}}>
+      {children}
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  Generate Tab
+// ══════════════════════════════════════════════════════════════════
+function GenerateTab({project,activeSources,hasBuiltin,sourceCtx,onSessionSaved}){
+  const [platforms,setPlatforms]=useState(['LinkedIn','Twitter/X','Instagram']);
+  const [tone,setTone]=useState('authoritative');
+  const [format,setFormat]=useState('stat-hook');
+  const [postCount,setPostCount]=useState(2);
+  const [topic,setTopic]=useState('');
+  const [sessionName,setSessionName]=useState('');
+  const [generating,setGenerating]=useState(false);
+  const [posts,setPosts]=useState([]);
+  const [error,setError]=useState('');
+
+  function togglePlatform(p){setPlatforms(prev=>prev.includes(p)?prev.filter(x=>x!==p):[...prev,p]);}
+
+  async function generate(){
+    if(platforms.length===0){setError('Select at least one platform.');return;}
+    if(activeSources.length===0&&!hasBuiltin){setError('Select at least one source.');return;}
+    setError('');setGenerating(true);setPosts([]);
+
+    const topicStr=topic.trim()||'key insights from the selected sources';
+    const jobs=[];
+    platforms.forEach(platform=>{for(let i=0;i<postCount;i++)jobs.push({platform,index:i,id:`${platform}-${i}`});});
+    setPosts(jobs.map(j=>({...j,text:null,imgPrompt:null,loading:true,imgLoading:true})));
+
+    const results=await Promise.all(jobs.map(async(job)=>{
+      const prompt=`Social media writer for Hybrid Ads.\n${BRAND}\n\nSOURCE MATERIAL:\n${sourceCtx}\n\nTASK: Write post #${job.index+1} of ${postCount} for ${job.platform}.\nTopic: ${topicStr}\nTone: ${TONES[tone]}\nFormat: ${FORMATS[format]}\nPlatform: ${PLATFORM_NOTES[job.platform]}\nChar limit: ${CHAR_LIMITS[job.platform]}\n${postCount>1?'Make this post distinct — different angle and hook from others in this batch.':''}\n\nOutput ONLY the post text. No labels.`;
+      try{const text=await claude(prompt);return{...job,text,loading:false};}
+      catch(err){return{...job,text:`Error: ${err.message}`,loading:false};}
+    }));
+
+    setPosts(results.map(r=>({...r,imgPrompt:null,imgLoading:true})));
+    setGenerating(false);
+
+    const imgResults=await Promise.all(results.map(async(r,i)=>{
+      const imgPrompt=await genImgPrompt(r.text,r.platform);
+      return{idx:i,imgPrompt};
+    }));
+    setPosts(prev=>prev.map((p,i)=>{
+      const f=imgResults.find(r=>r.idx===i);
+      return f?{...p,imgPrompt:f.imgPrompt,imgLoading:false}:{...p,imgLoading:false};
+    }));
+
+    const session={
+      id:'sess_'+Date.now(),createdAt:Date.now(),
+      name:sessionName.trim()||`${topicStr.slice(0,40)} — ${new Date().toLocaleDateString()}`,
+      sourceSummaries:activeSources.map(s=>({id:s.id,label:s.note||s.domain,url:s.url}))
+        .concat(hasBuiltin?[{id:'__builtin__',label:'Motion Benchmarks 2026',url:''}]:[]),
+      tone,format,postCount,platforms:[...platforms],topic:topicStr,
+      posts:results.map((r,i)=>({platform:r.platform,text:r.text,imgPrompt:imgResults.find(ir=>ir.idx===i)?.imgPrompt||''})),
+    };
+    onSessionSaved(session);
+  }
+
+  const noSources=activeSources.length===0&&!hasBuiltin;
+
+  return(
+    <div style={{flex:1,overflowY:'auto',padding:'28px 32px'}}>
+      {/* Source chips */}
+      {!noSources&&(
+        <div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:20,alignItems:'center'}}>
+          <span style={{fontSize:12,color:'var(--muted)',fontWeight:500}}>Generating from:</span>
+          {hasBuiltin&&<span style={{...T.badge,background:'var(--accent-light)',color:'var(--accent)'}}>Benchmarks 2026</span>}
+          {activeSources.filter(s=>s.id!=='__builtin__').map(s=>(
+            <span key={s.id} style={{...T.badge,background:'var(--green-light)',color:'var(--green)'}}>{s.note||s.domain}</span>
+          ))}
+        </div>
+      )}
+      {noSources&&<div style={{fontSize:13,color:'var(--danger)',background:'var(--danger-light)',padding:'10px 14px',borderRadius:8,marginBottom:20}}>No sources selected. Toggle sources in the panel on the left.</div>}
+
+      {/* Form grid */}
+      <div style={{...T.surface,padding:24,marginBottom:24}}>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20}}>
+          <div>
+            <div style={T.label}>Session Label <span style={{fontWeight:400,textTransform:'none',fontSize:11}}>(optional)</span></div>
+            <input style={T.input} placeholder="e.g. LinkedIn Week 12, Hook Tests…" value={sessionName} onChange={e=>setSessionName(e.target.value)}/>
+          </div>
+          <div>
+            <div style={T.label}>Topic / Focus <span style={{fontWeight:400,textTransform:'none',fontSize:11}}>(optional — leave blank to let Claude pick)</span></div>
+            <input style={T.input} placeholder="e.g. winner rarity, creative volume, hook tactics…" value={topic} onChange={e=>setTopic(e.target.value)}/>
+          </div>
+        </div>
+
+        <div style={{marginBottom:20}}>
+          <div style={T.label}>Platforms</div>
+          <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+            {['LinkedIn','Twitter/X','Instagram','Facebook'].map(p=>(
+              <div key={p} style={T.pill(platforms.includes(p))} onClick={()=>togglePlatform(p)}>
+                <span style={{marginRight:4,fontSize:12}}>
+                  {p==='LinkedIn'?'💼':p==='Twitter/X'?'𝕏':p==='Instagram'?'📸':'👥'}
+                </span>{p}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{display:'flex',gap:16,flexWrap:'wrap',alignItems:'flex-end'}}>
+          <div style={{flex:1,minWidth:160}}>
+            <div style={T.label}>Tone</div>
+            <select style={{...T.select,width:'100%'}} value={tone} onChange={e=>setTone(e.target.value)}>
+              <option value="authoritative">Authoritative & Data-Led</option>
+              <option value="provocative">Provocative / Contrarian</option>
+              <option value="educational">Educational / Explainer</option>
+              <option value="conversational">Conversational</option>
+            </select>
+          </div>
+          <div style={{flex:1,minWidth:160}}>
+            <div style={T.label}>Post Format</div>
+            <select style={{...T.select,width:'100%'}} value={format} onChange={e=>setFormat(e.target.value)}>
+              <option value="stat-hook">Stat Hook + Insight</option>
+              <option value="myth-bust">Myth Bust</option>
+              <option value="listicle">Numbered List</option>
+              <option value="question">Question Opener</option>
+              <option value="story">Short Story / Case</option>
+            </select>
+          </div>
+          <div style={{minWidth:140}}>
+            <div style={T.label}>Posts per Platform</div>
+            <select style={{...T.select,width:'100%'}} value={postCount} onChange={e=>setPostCount(Number(e.target.value))}>
+              <option value={1}>1 post</option><option value={2}>2 posts</option><option value={3}>3 posts</option>
+            </select>
+          </div>
+          <button className="btn-green" style={{...T.btnGreen,padding:'11px 24px',opacity:generating?.6:1}} onClick={generate} disabled={generating||noSources}>
+            {generating?<><div style={{...T.spinner,borderTopColor:'#fff'}}/>Generating…</>:<>✦ Generate Content</>}
+          </button>
+        </div>
+      </div>
+
+      {error&&<div style={{fontSize:13,color:'var(--danger)',background:'var(--danger-light)',padding:'10px 14px',borderRadius:8,marginBottom:20}}>{error}</div>}
+
+      {/* Post cards */}
+      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(360px,1fr))',gap:20}}>
+        {posts.map((p,i)=>(
+          <PostCard key={p.id} post={p} index={i} tone={tone} format={format} sourceCtx={sourceCtx}
+            onUpdate={updated=>setPosts(prev=>prev.map((x,xi)=>xi===i?updated:x))}/>
+        ))}
+      </div>
+
+      {posts.length===0&&!generating&&(
+        <div style={{textAlign:'center',padding:'60px 20px',color:'var(--muted)'}}>
+          <div style={{width:56,height:56,background:'var(--accent-light)',borderRadius:14,display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,margin:'0 auto 16px'}}>✦</div>
+          <div style={{fontSize:17,fontWeight:600,color:'var(--text)',marginBottom:6}}>Ready to generate</div>
+          <div style={{fontSize:14,lineHeight:1.6}}>Select your sources, configure your options,<br/>and click Generate Content.</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  Post Card
+// ══════════════════════════════════════════════════════════════════
+function PostCard({post,tone,format,sourceCtx,onUpdate}){
+  const [imgOpen,setImgOpen]=useState(false);
+  const [copiedPost,setCopiedPost]=useState(false);
+  const [copiedImg,setCopiedImg]=useState(false);
+  const textRef=useRef(null);
+  const imgRef=useRef(null);
+
+  const limit=CHAR_LIMITS[post.platform]||3000;
+  const textLen=(post.text||'').length;
+  const over=textLen>limit;
+  const platformColor=PLATFORM_COLORS[post.platform]||'var(--accent)';
+
+  async function regenPost(){
+    onUpdate({...post,loading:true,imgLoading:true});
+    const prompt=`Social media writer for Hybrid Ads.\n${BRAND}\n\nSOURCE MATERIAL:\n${sourceCtx}\n\nWrite a NEW, DIFFERENT post for ${post.platform}.\nTone: ${TONES[tone]}\nFormat: ${FORMATS[format]}\nPlatform: ${PLATFORM_NOTES[post.platform]}\nChar limit: ${limit}\nOutput ONLY the post text.`;
+    try{
+      const text=await claude(prompt);
+      const imgPrompt=await genImgPrompt(text,post.platform);
+      onUpdate({...post,text,imgPrompt,loading:false,imgLoading:false});
+    }catch(err){onUpdate({...post,text:`Error: ${err.message}`,loading:false,imgLoading:false});}
+  }
+  async function regenImg(){
+    onUpdate({...post,imgLoading:true});
+    const currentText=textRef.current?.innerText||post.text;
+    const imgPrompt=await genImgPrompt(currentText,post.platform);
+    onUpdate({...post,imgPrompt,imgLoading:false});
+  }
+  async function copyPost(){
+    await navigator.clipboard.writeText(textRef.current?.innerText||post.text||'').catch(()=>{});
+    setCopiedPost(true);setTimeout(()=>setCopiedPost(false),2000);
+  }
+  async function copyImg(){
+    await navigator.clipboard.writeText(imgRef.current?.innerText||post.imgPrompt||'').catch(()=>{});
+    setCopiedImg(true);setTimeout(()=>setCopiedImg(false),2000);
+  }
+
+  return(
+    <div className="card-hover fade-in" style={{...T.surface,overflow:'hidden',transition:'all .2s',display:'flex',flexDirection:'column'}}>
+      {/* Header */}
+      <div style={{padding:'12px 16px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',gap:10,background:'var(--surface2)'}}>
+        <div style={{width:8,height:8,borderRadius:'50%',background:platformColor,flexShrink:0}}/>
+        <span style={{fontSize:12,fontWeight:700,color:'var(--text)',letterSpacing:.3}}>{post.platform}</span>
+        <span style={{...T.badge,background:'var(--accent-light)',color:'var(--accent)',marginLeft:'auto',fontSize:10}}>{format.replace(/-/g,' ')}</span>
+      </div>
+
+      {/* Body */}
+      <div contentEditable={!post.loading} suppressContentEditableWarning ref={textRef}
+        style={{padding:16,fontSize:14,lineHeight:1.7,whiteSpace:'pre-wrap',minHeight:110,outline:'none',color:'var(--text)',flex:1,cursor:post.loading?'default':'text'}}>
+        {post.loading
+          ?<div style={{display:'flex',alignItems:'center',gap:10,color:'var(--muted)',fontSize:13}}><div style={T.spinner}/>Writing for {post.platform}…</div>
+          :post.text}
+      </div>
+
+      {/* Footer */}
+      <div style={{padding:'10px 16px',borderTop:'1px solid var(--border)',display:'flex',gap:8,alignItems:'center',background:'var(--surface2)'}}>
+        <button className="btn-primary" style={{...T.btnPrimary,fontSize:12,padding:'6px 14px'}} onClick={copyPost}>{copiedPost?'✓ Copied!':'Copy'}</button>
+        <button className="btn-outline" style={{...T.btnOutline,fontSize:12,padding:'6px 12px'}} onClick={regenPost} disabled={post.loading}>↺ Regenerate</button>
+        <span style={{marginLeft:'auto',fontSize:12,fontWeight:500,color:over?'var(--danger)':'var(--muted)'}}>{textLen}/{limit}</span>
+      </div>
+
+      {/* Grok Aurora prompt */}
+      <div style={{borderTop:'1px solid var(--border)'}}>
+        <div onClick={()=>setImgOpen(o=>!o)}
+          style={{display:'flex',alignItems:'center',gap:8,padding:'10px 16px',cursor:'pointer',fontSize:12,fontWeight:500,color:'var(--muted)',background:'var(--surface)',transition:'color .15s',userSelect:'none'}}>
+          <span style={{fontSize:10,transition:'transform .2s',display:'inline-block',transform:imgOpen?'rotate(90deg)':'none'}}>▶</span>
+          Grok Aurora Image Prompt
+          <span style={{...T.badge,background:'linear-gradient(135deg,#ff6b35,#ff9f43)',color:'#fff',fontSize:9,marginLeft:'auto'}}>Aurora</span>
+        </div>
+        {imgOpen&&(
+          <div style={{padding:'14px 16px',background:'var(--surface2)',borderTop:'1px solid var(--border)'}}>
+            {post.imgLoading
+              ?<div style={{display:'flex',gap:8,alignItems:'center',color:'var(--muted)',fontSize:13}}><div style={T.spinner}/>Generating image prompt…</div>
+              :<>
+                <div contentEditable suppressContentEditableWarning ref={imgRef}
+                  style={{fontSize:13,lineHeight:1.6,color:'var(--text2)',outline:'none',marginBottom:12}}>{post.imgPrompt}</div>
+                <div style={{display:'flex',gap:8,alignItems:'center'}}>
+                  <button className="btn-outline" style={{...T.btnOutline,fontSize:12,padding:'6px 12px'}} onClick={copyImg}>{copiedImg?'✓ Copied!':'Copy prompt'}</button>
+                  <button className="btn-outline" style={{...T.btnOutline,fontSize:12,padding:'6px 12px'}} onClick={regenImg}>↺ New prompt</button>
+                  <span style={{marginLeft:'auto',fontSize:11,color:'var(--muted)'}}>For Grok Aurora / Aurora HD</span>
+                </div>
+              </>}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  History Tab
+// ══════════════════════════════════════════════════════════════════
+function HistoryTab({sessions,loaded,currentId,onSelect,onDelete}){
+  const current=sessions.find(s=>s.id===currentId);
+  if(!loaded)return<div style={{padding:40,textAlign:'center',color:'var(--muted)',fontSize:13}}>Loading history…</div>;
+  if(sessions.length===0)return(
+    <div style={{padding:60,textAlign:'center',color:'var(--muted)'}}>
+      <div style={{width:48,height:48,background:'var(--accent-light)',borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,margin:'0 auto 12px'}}>⏱</div>
+      <div style={{fontSize:14,fontWeight:500,marginBottom:6,color:'var(--text)'}}>No history yet</div>
+      <div style={{fontSize:13,lineHeight:1.6}}>Generate some content and sessions will appear here.</div>
+    </div>
+  );
+
+  return(
+    <div style={{display:'flex',flex:1,overflow:'hidden'}}>
+      {/* Session list */}
+      <div style={{width:264,borderRight:'1px solid var(--border)',overflowY:'auto',background:'var(--surface)',flexShrink:0}}>
+        {sessions.map(s=>(
+          <div key={s.id} onClick={()=>onSelect(s.id)}
+            style={{padding:'14px 16px',borderBottom:'1px solid var(--border)',cursor:'pointer',
+              background:s.id===currentId?'var(--accent-light)':'var(--surface)',
+              borderLeft:`3px solid ${s.id===currentId?'var(--accent)':'transparent'}`,transition:'all .15s'}}>
+            <div style={{fontSize:13,fontWeight:600,marginBottom:4,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',color:s.id===currentId?'var(--accent)':'var(--text)'}}>{s.name}</div>
+            <div style={{fontSize:11,color:'var(--muted)',marginBottom:6}}>{new Date(s.createdAt).toLocaleString()}</div>
+            <div style={{display:'flex',gap:4,flexWrap:'wrap'}}>
+              {s.platforms?.map(p=><span key={p} style={{...T.badge,fontSize:9,background:'var(--surface2)',color:'var(--text2)',border:'1px solid var(--border)'}}>{p}</span>)}
+              <span style={{...T.badge,fontSize:9,background:'var(--green-light)',color:'var(--green)'}}>{s.posts?.length||0} posts</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Detail */}
+      <div style={{flex:1,overflowY:'auto',padding:'28px 32px',background:'var(--bg)'}}>
+        {!current?(
+          <div style={{textAlign:'center',padding:40,color:'var(--muted)',fontSize:13}}>Select a session from the list to review.</div>
+        ):(
+          <div className="fade-in">
+            <div style={{display:'flex',alignItems:'flex-start',gap:12,marginBottom:24}}>
+              <div style={{flex:1}}>
+                <div style={{fontSize:20,fontWeight:700,marginBottom:4}}>{current.name}</div>
+                <div style={{fontSize:12,color:'var(--muted)'}}>{new Date(current.createdAt).toLocaleString()} · {current.tone} · {current.format?.replace(/-/g,' ')}</div>
+              </div>
+              <button style={{...T.btnOutline,fontSize:12,color:'var(--danger)',borderColor:'rgba(229,52,74,.3)',padding:'7px 14px'}}
+                onClick={()=>onDelete(current.id)}>Delete</button>
+            </div>
+
+            <div style={{marginBottom:24}}>
+              <div style={T.label}>Sources Used</div>
+              <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                {(current.sourceSummaries||[]).map(s=>(
+                  <a key={s.id} href={s.url||'#'} target="_blank" rel="noreferrer"
+                    style={{...T.badge,background:'var(--accent-light)',color:'var(--accent)',textDecoration:'none',fontSize:12}}>{s.label}</a>
+                ))}
+              </div>
+            </div>
+
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(360px,1fr))',gap:20}}>
+              {(current.posts||[]).map((p,i)=><SavedPostCard key={i} post={p}/>)}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Saved Post Card ─────────────────────────────────────────────
+function SavedPostCard({post}){
+  const [imgOpen,setImgOpen]=useState(false);
+  const [copied,setCopied]=useState(false);
+  const [copiedImg,setCopiedImg]=useState(false);
+  const limit=CHAR_LIMITS[post.platform]||3000;
+  const platformColor=PLATFORM_COLORS[post.platform]||'var(--accent)';
+  async function copy(text,setter){await navigator.clipboard.writeText(text).catch(()=>{});setter(true);setTimeout(()=>setter(false),2000);}
+  return(
+    <div style={{...T.surface,overflow:'hidden'}}>
+      <div style={{padding:'12px 16px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',gap:10,background:'var(--surface2)'}}>
+        <div style={{width:8,height:8,borderRadius:'50%',background:platformColor,flexShrink:0}}/>
+        <span style={{fontSize:12,fontWeight:700,letterSpacing:.3}}>{post.platform}</span>
+        <span style={{...T.badge,background:'var(--green-light)',color:'var(--green)',fontSize:10,marginLeft:'auto'}}>saved</span>
+      </div>
+      <div style={{padding:16,fontSize:14,lineHeight:1.7,whiteSpace:'pre-wrap',color:'var(--text)',minHeight:100}}>{post.text}</div>
+      <div style={{padding:'10px 16px',borderTop:'1px solid var(--border)',display:'flex',gap:8,alignItems:'center',background:'var(--surface2)'}}>
+        <button className="btn-primary" style={{...T.btnPrimary,fontSize:12,padding:'6px 14px'}} onClick={()=>copy(post.text,setCopied)}>{copied?'✓ Copied!':'Copy'}</button>
+        <span style={{marginLeft:'auto',fontSize:12,color:'var(--muted)'}}>{(post.text||'').length}/{limit}</span>
+      </div>
+      {post.imgPrompt&&(
+        <div style={{borderTop:'1px solid var(--border)'}}>
+          <div onClick={()=>setImgOpen(o=>!o)}
+            style={{display:'flex',alignItems:'center',gap:8,padding:'10px 16px',cursor:'pointer',fontSize:12,fontWeight:500,color:'var(--muted)',background:'var(--surface)',userSelect:'none'}}>
+            <span style={{fontSize:10,transition:'transform .2s',display:'inline-block',transform:imgOpen?'rotate(90deg)':'none'}}>▶</span>
+            Grok Aurora Image Prompt
+            <span style={{...T.badge,background:'linear-gradient(135deg,#ff6b35,#ff9f43)',color:'#fff',fontSize:9,marginLeft:'auto'}}>Aurora</span>
+          </div>
+          {imgOpen&&(
+            <div style={{padding:'14px 16px',background:'var(--surface2)',borderTop:'1px solid var(--border)'}}>
+              <div style={{fontSize:13,lineHeight:1.6,color:'var(--text2)',marginBottom:10}}>{post.imgPrompt}</div>
+              <button className="btn-outline" style={{...T.btnOutline,fontSize:12,padding:'6px 12px'}} onClick={()=>copy(post.imgPrompt,setCopiedImg)}>{copiedImg?'✓ Copied!':'Copy prompt'}</button>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
