@@ -17,10 +17,11 @@ const SocialMediaGeneratorPage = lazy(() => import('./pages/SocialMediaGenerator
 const GTMServicePage = lazy(() => import('./pages/GTMServicePage'));
 const GTMSuccessPage = lazy(() => import('./pages/GTMSuccessPage'));
 const GTMWorkspacePage = lazy(() => import('./pages/GTMWorkspacePage'));
+const ContentLabPage = lazy(() => import('./pages/ContentLabPage'));
 
-export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace';
+export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace' | 'content-lab';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace', 'content-lab'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -100,6 +101,12 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     description:
       'Manage your AI Sales Team, define your ideal customers, track campaigns, and monitor credits from your personalized workspace.',
     path: 'gtm-workspace',
+  },
+  'content-lab': {
+    title: 'Social Content Lab – AI Content Generator | Hybrid Ads',
+    description:
+      'Generate platform-optimized social media content powered by Claude AI. Multi-project workspace with URL source extraction, tone control, and Grok Aurora image prompts.',
+    path: 'content-lab',
   },
 };
 
@@ -188,6 +195,7 @@ function App() {
       case 'gtm-service': return <GTMServicePage navigate={navigate} />;
       case 'gtm-success': return <GTMSuccessPage navigate={navigate} />;
       case 'gtm-workspace': return <GTMWorkspacePage navigate={navigate} />;
+      case 'content-lab': return <ContentLabPage navigate={navigate} />;
       default: return <HomePage navigate={navigate} />;
     }
   };

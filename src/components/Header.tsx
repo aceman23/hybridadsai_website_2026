@@ -25,6 +25,7 @@ const navLinks: NavLink[] = [
     page: 'gtm-service',
     children: [
       { label: 'AI Sales Team', page: 'gtm-service' },
+      { label: 'Content Lab', page: 'content-lab' },
       { label: 'AI Agents', page: 'nemo-claw' },
       { label: 'AI Score', page: 'ai-score' },
     ],
@@ -80,7 +81,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
     timeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
   };
 
-  const isAiServicesSection = currentPage === 'gtm-service' || currentPage === 'nemo-claw' || currentPage === 'ai-score';
+  const isAiServicesSection = currentPage === 'gtm-service' || currentPage === 'nemo-claw' || currentPage === 'ai-score' || currentPage === 'content-lab';
   const isAboutSection = currentPage === 'about' || currentPage === 'case-studies';
 
   const isDropdownActive = (link: NavLink) => {
