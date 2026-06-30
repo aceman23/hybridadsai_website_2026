@@ -96,7 +96,7 @@ export default function ContentLabPage({ navigate }: Props) {
           <div className="w-16 h-16 bg-cyan-500/10 border border-cyan-500/20 rounded-2xl flex items-center justify-center mx-auto mb-5">
             <LogIn className="w-7 h-7 text-cyan-400" />
           </div>
-          <h2 className="text-lg font-bold text-white mb-2">Sign in to Content Lab</h2>
+          <h2 className="text-lg font-bold text-white mb-2">Sign in to AI Content Lab</h2>
           <p className="text-sm text-gray-400 mb-6 leading-relaxed">
             Create an account or sign in to start generating social media content.
           </p>
@@ -121,7 +121,7 @@ export default function ContentLabPage({ navigate }: Props) {
               <Sparkles className="w-3.5 h-3.5 text-white" />
             </div>
             <div>
-              <p className="text-sm font-bold text-white">Content Lab</p>
+              <p className="text-sm font-bold text-white">AI Content Lab</p>
               <p className="text-[10px] text-gray-500">Social Generator</p>
             </div>
           </div>

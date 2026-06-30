@@ -103,7 +103,7 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     path: 'gtm-workspace',
   },
   'content-lab': {
-    title: 'Social Content Lab – AI Content Generator | Hybrid Ads',
+    title: 'AI Content Lab – AI Content Generator | Hybrid Ads',
     description:
       'Generate platform-optimized social media content powered by Claude AI. Multi-project workspace with URL source extraction, tone control, and Grok Aurora image prompts.',
     path: 'content-lab',

@@ -25,7 +25,7 @@ const navLinks: NavLink[] = [
     page: 'gtm-service',
     children: [
       { label: 'AI Sales Team', page: 'gtm-service' },
-      { label: 'Content Lab', page: 'content-lab' },
+      { label: 'AI Content Lab', page: 'content-lab' },
       { label: 'AI Agents', page: 'nemo-claw' },
       { label: 'AI Score', page: 'ai-score' },
     ],
