@@ -18,10 +18,12 @@ const GTMServicePage = lazy(() => import('./pages/GTMServicePage'));
 const GTMSuccessPage = lazy(() => import('./pages/GTMSuccessPage'));
 const GTMWorkspacePage = lazy(() => import('./pages/GTMWorkspacePage'));
 const ContentLabPage = lazy(() => import('./pages/ContentLabPage'));
+const SignInPage = lazy(() => import('./pages/SignInPage'));
+const SignUpPage = lazy(() => import('./pages/SignUpPage'));
 
-export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace' | 'content-lab';
+export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace' | 'content-lab' | 'sign-in' | 'sign-up';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace', 'content-lab'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace', 'content-lab', 'sign-in', 'sign-up'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -107,6 +109,18 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     description:
       'Generate platform-optimized social media content powered by Claude AI. Multi-project workspace with URL source extraction, tone control, and Grok Aurora image prompts.',
     path: 'content-lab',
+  },
+  'sign-in': {
+    title: 'Sign In – Hybrid Ads',
+    description:
+      'Sign in to your Hybrid Ads account to access your AI workspace, sales team, content lab, and analytics dashboard.',
+    path: 'sign-in',
+  },
+  'sign-up': {
+    title: 'Create Account – Hybrid Ads',
+    description:
+      'Create your free Hybrid Ads account. Access AI-powered sales automation, content generation, and ad performance analytics.',
+    path: 'sign-up',
   },
 };
 
@@ -196,9 +210,13 @@ function App() {
       case 'gtm-success': return <GTMSuccessPage navigate={navigate} />;
       case 'gtm-workspace': return <GTMWorkspacePage navigate={navigate} />;
       case 'content-lab': return <ContentLabPage navigate={navigate} />;
+      case 'sign-in': return <SignInPage navigate={navigate} />;
+      case 'sign-up': return <SignUpPage navigate={navigate} />;
       default: return <HomePage navigate={navigate} />;
     }
   };
+
+  const isAuthPage = currentPage === 'sign-in' || currentPage === 'sign-up';
 
   return (
     <ErrorBoundary>
@@ -209,13 +227,13 @@ function App() {
         >
           Skip to main content
         </a>
-        <Header currentPage={currentPage} navigate={navigate} />
+        {!isAuthPage && <Header currentPage={currentPage} navigate={navigate} />}
         <main id="main-content" className="flex-grow" tabIndex={-1}>
           <Suspense fallback={<div className="min-h-screen" />}>
             {renderPage()}
           </Suspense>
         </main>
-        <Footer navigate={navigate} />
+        {!isAuthPage && <Footer navigate={navigate} />}
       </div>
     </ErrorBoundary>
   );

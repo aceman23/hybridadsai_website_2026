@@ -101,11 +101,17 @@ export default function ContentLabPage({ navigate }: Props) {
             Create an account or sign in to start generating social media content.
           </p>
           <button
-            onClick={() => navigate('home')}
+            onClick={() => navigate('sign-in')}
             className="px-6 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-sm font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20"
           >
-            Go to Sign In
+            Sign In
           </button>
+          <p className="text-xs text-gray-500 mt-4">
+            Don't have an account?{' '}
+            <button onClick={() => navigate('sign-up')} className="text-cyan-400 hover:text-cyan-300 font-semibold">
+              Create one
+            </button>
+          </p>
         </div>
       </div>
     );
