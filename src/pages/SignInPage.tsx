@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Loader2, Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight, Zap } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { getAuthDestination } from '../lib/auth-utils';
 import type { Page } from '../App';
 
 interface Props {
@@ -15,8 +16,11 @@ export default function SignInPage({ navigate }: Props) {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate('gtm-workspace');
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (session) {
+        const dest = await getAuthDestination(session.access_token);
+        navigate(dest);
+      }
     });
   }, [navigate]);
 
@@ -31,7 +35,9 @@ export default function SignInPage({ navigate }: Props) {
         password,
       });
       if (signInError) throw signInError;
-      navigate('gtm-workspace');
+      const { data: { session } } = await supabase.auth.getSession();
+      const dest = session ? await getAuthDestination(session.access_token) : 'gtm-service';
+      navigate(dest);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Something went wrong';
       if (message.includes('Invalid login credentials')) {

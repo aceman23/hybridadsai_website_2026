@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Loader2, Mail, Lock, User, Eye, EyeOff, AlertCircle, ArrowRight, CheckCircle2, Zap } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { getAuthDestination } from '../lib/auth-utils';
 import type { Page } from '../App';
 
 interface Props {
@@ -17,8 +18,11 @@ export default function SignUpPage({ navigate }: Props) {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) navigate('gtm-workspace');
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (session) {
+        const dest = await getAuthDestination(session.access_token);
+        navigate(dest);
+      }
     });
   }, [navigate]);
 
@@ -41,7 +45,9 @@ export default function SignUpPage({ navigate }: Props) {
       });
       if (signUpError) throw signUpError;
       setSuccess(true);
-      setTimeout(() => navigate('gtm-workspace'), 1500);
+      const { data: { session } } = await supabase.auth.getSession();
+      const dest = session ? await getAuthDestination(session.access_token) : 'gtm-service';
+      setTimeout(() => navigate(dest), 1500);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Something went wrong';
       if (message.includes('already registered')) {
@@ -76,7 +82,7 @@ export default function SignUpPage({ navigate }: Props) {
           </div>
           <h2 className="text-2xl font-bold text-white mb-3">Account created!</h2>
           <p className="text-gray-400 leading-relaxed mb-6">
-            Welcome to Hybrid Ads. Redirecting you to your workspace...
+            Welcome to Hybrid Ads. Redirecting you now...
           </p>
           <Loader2 className="w-5 h-5 text-cyan-400 animate-spin mx-auto" />
         </div>

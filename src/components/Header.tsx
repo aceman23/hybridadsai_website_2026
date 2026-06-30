@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Menu, X, ChevronDown, Zap, LogIn } from 'lucide-react';
 import type { Page } from '../App';
 import { supabase } from '../lib/supabase';
+import { getAuthDestination } from '../lib/auth-utils';
 
 interface HeaderProps {
   currentPage: Page;
@@ -45,15 +46,26 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [workspaceDest, setWorkspaceDest] = useState<Page>('gtm-service');
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setIsLoggedIn(!!session);
+      if (session) {
+        const dest = await getAuthDestination(session.access_token);
+        setWorkspaceDest(dest);
+      }
     });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setIsLoggedIn(!!session);
+      if (session) {
+        const dest = await getAuthDestination(session.access_token);
+        setWorkspaceDest(dest);
+      } else {
+        setWorkspaceDest('gtm-service');
+      }
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -185,7 +197,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
 
           <div className="hidden md:flex items-center gap-3">
             <button
-              onClick={() => navigate(isLoggedIn ? 'gtm-workspace' : 'sign-in')}
+              onClick={() => navigate(isLoggedIn ? workspaceDest : 'sign-in')}
               className={`flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                 currentPage === 'gtm-workspace'
                   ? 'bg-blue-600 text-white shadow-sm shadow-blue-200'
@@ -276,7 +288,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
             <button
               onClick={() => {
                 setMobileOpen(false);
-                navigate(isLoggedIn ? 'gtm-workspace' : 'sign-in');
+                navigate(isLoggedIn ? workspaceDest : 'sign-in');
               }}
               className="flex items-center justify-center gap-2 w-full text-sm font-semibold text-gray-700 border border-gray-200 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
