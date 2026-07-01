@@ -8,6 +8,7 @@ import {
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
 import SignupModal from '../components/gtm/SignupModal';
+import { supabase } from '../lib/supabase';
 
 interface Props {
   navigate: (page: Page) => void;
@@ -111,7 +112,7 @@ export default function GTMServicePage({ navigate }: Props) {
     }
   }, []);
 
-  const handleCtaClick = (tier: 'starter' | 'growth' = 'starter') => {
+  const handleCtaClick = async (tier: 'starter' | 'growth' = 'starter') => {
     setSelectedTier(tier);
     const w = window as unknown as { gtag?: (...args: unknown[]) => void };
     if (w.gtag) {
@@ -120,7 +121,12 @@ export default function GTMServicePage({ navigate }: Props) {
         event_label: tier === 'growth' ? 'ai_sales_growth_299' : 'ai_sales_starter_149',
       });
     }
-    setShowSignup(true);
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      handleAuthSuccess(session.access_token);
+    } else {
+      setShowSignup(true);
+    }
   };
 
   const handleAuthSuccess = async (accessToken: string) => {
