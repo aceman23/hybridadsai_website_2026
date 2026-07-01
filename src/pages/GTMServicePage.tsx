@@ -123,14 +123,15 @@ export default function GTMServicePage({ navigate }: Props) {
     }
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
-      handleAuthSuccess(session.access_token);
+      handleAuthSuccess(session.access_token, tier);
     } else {
       setShowSignup(true);
     }
   };
 
-  const handleAuthSuccess = async (accessToken: string) => {
+  const handleAuthSuccess = async (accessToken: string, tier?: 'starter' | 'growth') => {
     setShowSignup(false);
+    const checkoutTier = tier ?? selectedTier;
     try {
       const res = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-gtm-checkout`,
@@ -140,7 +141,7 @@ export default function GTMServicePage({ navigate }: Props) {
             Authorization: `Bearer ${accessToken}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ tier: selectedTier }),
+          body: JSON.stringify({ tier: checkoutTier }),
         }
       );
       const data = await res.json();
