@@ -197,7 +197,16 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
 
           <div className="hidden md:flex items-center gap-3">
             <button
-              onClick={() => navigate(isLoggedIn ? workspaceDest : 'sign-in')}
+              onClick={() => {
+                if (isLoggedIn && workspaceDest === 'gtm-service') {
+                  if (currentPage === 'gtm-service') {
+                    document.getElementById('pricing-cards')?.scrollIntoView({ behavior: 'smooth' });
+                    return;
+                  }
+                  sessionStorage.setItem('gtm_scroll_pricing', '1');
+                }
+                navigate(isLoggedIn ? workspaceDest : 'sign-in');
+              }}
               className={`flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                 currentPage === 'gtm-workspace'
                   ? 'bg-blue-600 text-white shadow-sm shadow-blue-200'
@@ -300,6 +309,13 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
             <button
               onClick={() => {
                 setMobileOpen(false);
+                if (isLoggedIn && workspaceDest === 'gtm-service') {
+                  if (currentPage === 'gtm-service') {
+                    document.getElementById('pricing-cards')?.scrollIntoView({ behavior: 'smooth' });
+                    return;
+                  }
+                  sessionStorage.setItem('gtm_scroll_pricing', '1');
+                }
                 navigate(isLoggedIn ? workspaceDest : 'sign-in');
               }}
               className="flex items-center justify-center gap-2 w-full text-sm font-semibold text-gray-700 border border-gray-200 px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors"
