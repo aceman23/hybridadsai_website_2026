@@ -106,7 +106,7 @@ export default function GTMServicePage({ navigate }: Props) {
     if (shouldScroll) {
       sessionStorage.removeItem('gtm_scroll_pricing');
       requestAnimationFrame(() => {
-        document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('pricing-cards')?.scrollIntoView({ behavior: 'smooth' });
       });
     }
   }, []);
@@ -270,6 +270,7 @@ export default function GTMServicePage({ navigate }: Props) {
           </AnimateIn>
 
           {/* Pricing Header */}
+          <div id="pricing-cards" className="scroll-mt-8" />
           <AnimateIn delay={100}>
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-black text-white mb-3">
