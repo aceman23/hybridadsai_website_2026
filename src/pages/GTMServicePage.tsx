@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Bot, Search, Users, Sparkles, Target, RefreshCw, Mail,
   Code2, Calendar, ArrowRight, CheckCircle2, Zap, Shield,
@@ -100,6 +100,16 @@ export default function GTMServicePage({ navigate }: Props) {
   const [videoError, setVideoError] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [selectedTier, setSelectedTier] = useState<'starter' | 'growth'>('starter');
+
+  useEffect(() => {
+    const shouldScroll = sessionStorage.getItem('gtm_scroll_pricing');
+    if (shouldScroll) {
+      sessionStorage.removeItem('gtm_scroll_pricing');
+      requestAnimationFrame(() => {
+        document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+  }, []);
 
   const handleCtaClick = (tier: 'starter' | 'growth' = 'starter') => {
     setSelectedTier(tier);

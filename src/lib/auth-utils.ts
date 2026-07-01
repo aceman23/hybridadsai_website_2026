@@ -20,5 +20,6 @@ export async function getAuthDestination(accessToken: string): Promise<Page> {
   } catch {
     // Fall through to default
   }
+  sessionStorage.setItem('gtm_scroll_pricing', '1');
   return 'gtm-service';
 }
