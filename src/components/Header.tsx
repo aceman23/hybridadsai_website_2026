@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Menu, X, ChevronDown, Zap, LogIn } from 'lucide-react';
+import { Menu, X, ChevronDown, Zap, LogIn, LogOut } from 'lucide-react';
 import type { Page } from '../App';
 import { supabase } from '../lib/supabase';
 import { getAuthDestination } from '../lib/auth-utils';
@@ -207,6 +207,18 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
               {isLoggedIn ? <Zap className="w-4 h-4" /> : <LogIn className="w-4 h-4" />}
               {isLoggedIn ? 'Workspace' : 'Sign In'}
             </button>
+            {isLoggedIn && (
+              <button
+                onClick={async () => {
+                  await supabase.auth.signOut();
+                  navigate('home');
+                }}
+                className="flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-lg text-gray-500 border border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
+            )}
             <a
               href="https://calendly.com/hybridadsai"
               target="_blank"
@@ -295,6 +307,19 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
               {isLoggedIn ? <Zap className="w-4 h-4" /> : <LogIn className="w-4 h-4" />}
               {isLoggedIn ? 'Workspace' : 'Sign In'}
             </button>
+            {isLoggedIn && (
+              <button
+                onClick={async () => {
+                  setMobileOpen(false);
+                  await supabase.auth.signOut();
+                  navigate('home');
+                }}
+                className="flex items-center justify-center gap-2 w-full text-sm font-semibold text-red-600 border border-red-200 bg-red-50 px-4 py-3 rounded-lg hover:bg-red-100 transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </button>
+            )}
             <a
               href="https://calendly.com/hybridadsai"
               target="_blank"
