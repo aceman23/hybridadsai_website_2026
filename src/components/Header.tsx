@@ -24,8 +24,8 @@ const navLinks: NavLink[] = [
     label: 'AI Services',
     page: 'gtm-service',
     children: [
-      { label: 'AI Sales Team', page: 'gtm-service' },
-      { label: 'AI Content Lab', page: 'content-lab' },
+      { label: 'AI Sales Team', page: 'gtm-service', badge: 'Beta', badgeColor: 'bg-amber-500' },
+      { label: 'AI Content Lab', page: 'content-lab', badge: 'Beta', badgeColor: 'bg-amber-500' },
       { label: 'AI Agents', page: 'nemo-claw' },
       { label: 'AI Score', page: 'ai-score' },
     ],
@@ -162,13 +162,18 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
                           setOpenDropdown(null);
                         }}
                         role="menuitem"
-                        className={`w-full text-left px-4 py-2.5 text-sm font-semibold transition-colors ${
+                        className={`w-full text-left px-4 py-2.5 text-sm font-semibold transition-colors flex items-center gap-2 ${
                           currentPage === child.page
                             ? 'text-blue-600 bg-blue-50'
                             : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                         }`}
                       >
                         {child.label}
+                        {child.badge && (
+                          <span className={`text-[10px] ${child.badgeColor ?? 'bg-cyan-500'} text-white font-bold px-1.5 py-0.5 rounded-full leading-none`}>
+                            {child.badge}
+                          </span>
+                        )}
                       </button>
                     ))}
                   </div>

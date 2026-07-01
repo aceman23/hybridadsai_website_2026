@@ -430,7 +430,17 @@ export default function GTMWorkspacePage({ navigate }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-950 pt-16 flex">
+    <div className="min-h-screen bg-gray-950 pt-16 flex flex-col">
+      {/* Beta banner */}
+      <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-b border-amber-500/20">
+        <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-center gap-2.5 text-sm">
+          <span className="bg-amber-500 text-white text-[10px] font-extrabold tracking-wider uppercase px-2 py-0.5 rounded-full">Beta</span>
+          <p className="text-amber-200/90 font-medium">
+            autoGTM Workspace is in beta. Features may change and we welcome your feedback!
+          </p>
+        </div>
+      </div>
+      <div className="flex flex-1">
       {/* Sidebar */}
       <aside className="hidden md:flex flex-col w-60 border-r border-gray-800/60 bg-gray-900 pt-6 pb-4 px-3 fixed top-16 bottom-0 left-0 z-30">
         <div className="px-3 mb-6">
@@ -896,6 +906,7 @@ export default function GTMWorkspacePage({ navigate }: Props) {
           </a>
         </div>
       </main>
+      </div>
     </div>
   );
 }
