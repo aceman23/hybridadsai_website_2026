@@ -8,10 +8,16 @@ import { callClaude } from '../components/content-lab/api';
 import PostCard from '../components/content-lab/PostCard';
 import SavedPostCard from '../components/content-lab/SavedPostCard';
 import {
-  BUILTIN_DATA, BRAND, TONES, FORMATS,
+  BRAND, TONES, FORMATS, MOTION_SECTIONS,
   PLATFORM_NOTES, CHAR_LIMITS, PLATFORM_ASPECT,
   ALL_PLATFORMS,
 } from '../components/content-lab/constants';
+import type { MotionSection } from '../components/content-lab/constants';
+import {
+  pickNextSection, pickNextUrlSection, extractSourceSections,
+  buildSourceCtx as buildCtx,
+} from '../components/content-lab/sections';
+import type { SourceSection } from '../components/content-lab/sections';
 import type {
   ContentProject, ContentSource, ContentSession, GeneratingPost,
 } from '../components/content-lab/types';
@@ -319,6 +325,8 @@ function ProjectWorkspace({ project }: { project: ContentProject }) {
         true
       );
 
+      const sections = await extractSourceSections(finalUrl, summary);
+
       const { data, error } = await supabase
         .from('content_sources')
         .insert({
@@ -327,6 +335,7 @@ function ProjectWorkspace({ project }: { project: ContentProject }) {
           domain: urlObj.hostname.replace('www.', ''),
           note: srcNote.trim(),
           summary,
+          sections,
         })
         .select()
         .single();
@@ -375,17 +384,29 @@ function ProjectWorkspace({ project }: { project: ContentProject }) {
     if (currentSessionId === sid) setCurrentSessionId(null);
   }
 
+  const [usedSectionIds, setUsedSectionIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from('content_projects')
+      .select('used_section_ids')
+      .eq('id', project.id)
+      .single()
+      .then(({ data }) => {
+        if (data?.used_section_ids) setUsedSectionIds(data.used_section_ids);
+      });
+  }, [project.id]);
+
+  async function updateUsedSections(newIds: string[]) {
+    setUsedSectionIds(newIds);
+    await supabase
+      .from('content_projects')
+      .update({ used_section_ids: newIds })
+      .eq('id', project.id);
+  }
+
   const activeSources = sources.filter(s => activeSourceIds.includes(s.id));
   const hasBuiltin = activeSourceIds.includes('__builtin__');
-
-  const buildSourceCtx = useCallback(() => {
-    let ctx = '';
-    if (hasBuiltin) ctx += `\n\n=== SOURCE: Motion Creative Benchmarks 2026 ===\n${BUILTIN_DATA}`;
-    activeSources.forEach(src => {
-      ctx += `\n\n=== SOURCE: ${src.note || src.domain} (${src.url}) ===\n${src.summary}`;
-    });
-    return ctx;
-  }, [activeSources, hasBuiltin]);
 
   return (
     <div className="flex flex-1 overflow-hidden">
@@ -437,7 +458,9 @@ function ProjectWorkspace({ project }: { project: ContentProject }) {
                 {src.note || src.url.replace(/^https?:\/\//, '').slice(0, 36)}
               </p>
               <p className="text-[10px] text-gray-500 mt-0.5">
-                {new Date(src.added_at).toLocaleDateString()}
+                {(src.sections?.length || 0) > 0
+                  ? `${src.sections.length} angles`
+                  : new Date(src.added_at).toLocaleDateString()}
               </p>
             </SourceCard>
           ))}
@@ -541,7 +564,8 @@ function ProjectWorkspace({ project }: { project: ContentProject }) {
             project={project}
             activeSources={activeSources}
             hasBuiltin={hasBuiltin}
-            sourceCtx={buildSourceCtx()}
+            usedSectionIds={usedSectionIds}
+            onSectionUsed={updateUsedSections}
             onSessionSaved={saveSession}
           />
         )}
@@ -587,13 +611,15 @@ function GenerateTab({
   project,
   activeSources,
   hasBuiltin,
-  sourceCtx,
+  usedSectionIds,
+  onSectionUsed,
   onSessionSaved,
 }: {
   project: ContentProject;
   activeSources: ContentSource[];
   hasBuiltin: boolean;
-  sourceCtx: string;
+  usedSectionIds: string[];
+  onSectionUsed: (ids: string[]) => void;
   onSessionSaved: (session: Omit<ContentSession, 'id' | 'created_at'>) => void;
 }) {
   const [platforms, setPlatforms] = useState<string[]>(['LinkedIn', 'Twitter/X', 'Instagram']);
@@ -605,6 +631,40 @@ function GenerateTab({
   const [generating, setGenerating] = useState(false);
   const [posts, setPosts] = useState<GeneratingPost[]>([]);
   const [error, setError] = useState('');
+
+  const [pickedSection, setPickedSection] = useState<MotionSection | null>(null);
+  const [pickedUrlSections, setPickedUrlSections] = useState<
+    Array<{ source: ContentSource; section: SourceSection }>
+  >([]);
+  const [sourceCtx, setSourceCtx] = useState('');
+
+  const previewSections = useCallback(() => {
+    let picked: MotionSection | null = null;
+    if (hasBuiltin) {
+      picked = pickNextSection(usedSectionIds);
+    }
+    setPickedSection(picked);
+
+    const urlPicked: Array<{ source: ContentSource; section: SourceSection }> = [];
+    for (const src of activeSources) {
+      const srcSections = (src.sections || []) as SourceSection[];
+      if (srcSections.length > 0) {
+        const sec = pickNextUrlSection(srcSections, usedSectionIds);
+        urlPicked.push({ source: src, section: sec });
+      }
+    }
+    setPickedUrlSections(urlPicked);
+
+    const ctx = buildCtx(
+      picked,
+      urlPicked.map(u => ({ source: { note: u.source.note, domain: u.source.domain, url: u.source.url }, section: u.section }))
+    );
+    setSourceCtx(ctx);
+  }, [hasBuiltin, activeSources, usedSectionIds]);
+
+  useEffect(() => {
+    previewSections();
+  }, [previewSections]);
 
   function togglePlatform(p: string) {
     setPlatforms(prev =>
@@ -619,7 +679,14 @@ function GenerateTab({
     setGenerating(true);
     setPosts([]);
 
-    const topicStr = topic.trim() || 'key insights from the selected sources';
+    const lockedSection = pickedSection;
+    const lockedUrlSections = [...pickedUrlSections];
+    const lockedCtx = sourceCtx;
+
+    const topicStr = topic.trim() || lockedSection?.angle || 'key insights from the selected sources';
+    const sectionDirective = lockedSection
+      ? `\nYou MUST write specifically about this section: ${lockedSection.title}. Angle: ${lockedSection.angle}. Do NOT write a generic overview. Stay tightly focused on the data in this section.`
+      : '';
     const jobs: Array<{ platform: string; index: number; id: string }> = [];
     platforms.forEach(platform => {
       for (let i = 0; i < postCount; i++) {
@@ -631,7 +698,7 @@ function GenerateTab({
 
     const results = await Promise.all(
       jobs.map(async job => {
-        const prompt = `Social media writer for Hybrid Ads.\n${BRAND}\n\nSOURCE MATERIAL:\n${sourceCtx}\n\nTASK: Write post #${job.index + 1} of ${postCount} for ${job.platform}.\nTopic: ${topicStr}\nTone: ${TONES[tone]}\nFormat: ${FORMATS[format]}\nPlatform: ${PLATFORM_NOTES[job.platform]}\nChar limit: ${CHAR_LIMITS[job.platform]}\n${postCount > 1 ? 'Make this post distinct — different angle and hook from others in this batch.' : ''}\n\nOutput ONLY the post text. No labels.`;
+        const prompt = `Social media writer for Hybrid Ads.\n${BRAND}\n\nSOURCE MATERIAL:\n${lockedCtx}\n\nTASK: Write post #${job.index + 1} of ${postCount} for ${job.platform}.\nTopic: ${topicStr}\nTone: ${TONES[tone]}\nFormat: ${FORMATS[format]}\nPlatform: ${PLATFORM_NOTES[job.platform]}\nChar limit: ${CHAR_LIMITS[job.platform]}\n${postCount > 1 ? 'Make this post distinct — different angle and hook from others in this batch.' : ''}${sectionDirective}\n\nOutput ONLY the post text. No labels.`;
         try {
           const text = await callClaude(prompt);
           return { ...job, text, loading: false };
@@ -665,6 +732,11 @@ function GenerateTab({
       })
     );
 
+    const newUsedIds = [...usedSectionIds];
+    if (lockedSection) newUsedIds.push(lockedSection.id);
+    for (const u of lockedUrlSections) newUsedIds.push(u.section.id);
+    onSectionUsed(newUsedIds);
+
     const sessionData: Omit<ContentSession, 'id' | 'created_at'> = {
       project_id: project.id,
       name: sessionName.trim() || `${topicStr.slice(0, 40)} -- ${new Date().toLocaleDateString()}`,
@@ -677,6 +749,8 @@ function GenerateTab({
         ...(hasBuiltin ? [{ id: '__builtin__', label: 'Motion Benchmarks 2026', url: '' }] : []),
         ...activeSources.map(s => ({ id: s.id, label: s.note || s.domain, url: s.url })),
       ],
+      section_used: lockedSection ? { id: lockedSection.id, title: lockedSection.title, category: lockedSection.category } : undefined,
+      url_sections_used: lockedUrlSections.length > 0 ? lockedUrlSections.map(u => ({ id: u.section.id, title: u.section.title })) : undefined,
       posts: results.map((r, i) => ({
         platform: r.platform,
         text: r.text || '',
@@ -684,28 +758,58 @@ function GenerateTab({
       })),
     };
     onSessionSaved(sessionData);
+
+    previewSections();
   }
 
   const noSources = activeSources.length === 0 && !hasBuiltin;
+  const totalSections = MOTION_SECTIONS.length;
+  const usedBuiltinCount = usedSectionIds.filter(id => MOTION_SECTIONS.some(s => s.id === id)).length;
+  const cycleProgress = Math.min(usedBuiltinCount, totalSections);
 
   return (
     <div className="flex-1 overflow-y-auto p-6">
-      {/* Active source chips */}
-      {!noSources && (
-        <div className="flex gap-2 flex-wrap mb-5 items-center">
-          <span className="text-xs text-gray-500 font-medium">Generating from:</span>
-          {hasBuiltin && (
-            <span className="text-[10px] font-semibold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
-              Benchmarks 2026
+      {/* Section preview banner */}
+      {!noSources && (pickedSection || pickedUrlSections.length > 0) && (
+        <div className="bg-gray-900 border border-cyan-500/20 rounded-xl p-4 mb-5">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Next section to cover</span>
+            <span className="text-[10px] text-gray-500">
+              {cycleProgress} of {totalSections} used
             </span>
+          </div>
+          {/* Progress bar */}
+          <div className="w-full h-1 bg-gray-800 rounded-full mb-3 overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full transition-all duration-500"
+              style={{ width: `${(cycleProgress / totalSections) * 100}%` }}
+            />
+          </div>
+          {pickedSection && (
+            <div className="flex items-start gap-2.5 mb-2">
+              <span className="text-[9px] font-bold text-cyan-400 bg-cyan-500/10 px-1.5 py-0.5 rounded shrink-0 mt-0.5">
+                {pickedSection.category}
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-white">{pickedSection.title}</p>
+                <p className="text-xs text-gray-400 mt-0.5 leading-relaxed">{pickedSection.angle}</p>
+              </div>
+            </div>
           )}
-          {activeSources.map(s => (
-            <span key={s.id} className="text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-              {s.note || s.domain}
-            </span>
+          {pickedUrlSections.map(({ source, section }) => (
+            <div key={section.id} className="flex items-start gap-2.5 mt-2 pt-2 border-t border-gray-800">
+              <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded shrink-0 mt-0.5">
+                URL Source
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-white">{section.title}</p>
+                <p className="text-[10px] text-gray-500">{source.note || source.domain}</p>
+              </div>
+            </div>
           ))}
         </div>
       )}
+
       {noSources && (
         <div className="text-sm text-red-300 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-lg mb-5">
           No sources selected. Toggle sources in the panel on the left.
@@ -728,12 +832,12 @@ function GenerateTab({
           </div>
           <div>
             <label className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider block mb-1.5">
-              Topic / Focus <span className="normal-case font-normal">(optional)</span>
+              Override Topic <span className="normal-case font-normal">(blank = use picked section angle)</span>
             </label>
             <input
               value={topic}
               onChange={e => setTopic(e.target.value)}
-              placeholder="e.g. winner rarity, creative volume, hook tactics..."
+              placeholder={pickedSection?.angle?.slice(0, 60) || 'e.g. winner rarity, creative volume...'}
               className="w-full px-3 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
             />
           </div>
@@ -946,6 +1050,21 @@ function HistoryTab({
                 <p className="text-xs text-gray-500">
                   {new Date(current.created_at).toLocaleString()} -- {current.tone} -- {current.format?.replace(/-/g, ' ')}
                 </p>
+                {current.section_used && (
+                  <div className="flex items-center gap-1.5 mt-1.5">
+                    <span className="text-[9px] font-bold text-cyan-400 bg-cyan-500/10 px-1.5 py-0.5 rounded">Section used</span>
+                    <span className="text-[11px] text-gray-300 font-medium">{current.section_used.title}</span>
+                  </div>
+                )}
+                {current.url_sections_used && current.url_sections_used.length > 0 && (
+                  <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                    {current.url_sections_used.map((us: { id: string; title: string }) => (
+                      <span key={us.id} className="text-[9px] font-semibold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+                        {us.title}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
               <button
                 onClick={() => onDelete(current.id)}
