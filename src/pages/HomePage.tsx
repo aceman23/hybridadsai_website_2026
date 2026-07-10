@@ -61,6 +61,17 @@ const recentProjects = [
     screenshot: true,
   },
   {
+    name: 'Lifeverse',
+    url: 'https://www.lifeverse.com',
+    category: 'SaaS',
+    tag: 'SaaS',
+    tagColor: 'bg-sky-100 text-sky-700',
+    desc: 'AI-powered faith community platform featuring 1Stayz — an agentic AI shepherd care system that helps churches retain first-time visitors, plus Kingdom OS, Instant Marketplace, and Holy Land XR.',
+    stack: ['React', 'Supabase', 'AI Agents', 'Resend'],
+    img: '/images/projects/Screenshot_2026-07-09_at_10.06.25_PM.png',
+    screenshot: true,
+  },
+  {
     name: 'mySomaLabs',
     url: 'https://mysomalabs.com',
     category: 'SaaS',
