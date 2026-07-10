@@ -20,10 +20,11 @@ const GTMWorkspacePage = lazy(() => import('./pages/GTMWorkspacePage'));
 const ContentLabPage = lazy(() => import('./pages/ContentLabPage'));
 const SignInPage = lazy(() => import('./pages/SignInPage'));
 const SignUpPage = lazy(() => import('./pages/SignUpPage'));
+const AIVisibilityPage = lazy(() => import('./pages/AIVisibilityPage'));
 
-export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace' | 'content-lab' | 'sign-in' | 'sign-up';
+export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'ai-visibility' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace' | 'content-lab' | 'sign-in' | 'sign-up';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace', 'content-lab', 'sign-in', 'sign-up'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'ai-visibility', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace', 'content-lab', 'sign-in', 'sign-up'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -61,6 +62,12 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     description:
       'Discover how ChatGPT, Gemini, Copilot, Grok & Perplexity describe your business. Get your free AI Publisher Score and visibility report in seconds.',
     path: 'ai-score',
+  },
+  'ai-visibility': {
+    title: 'Become the Business AI Recommends | AI Visibility by Hybrid Ads',
+    description:
+      'Hybrid Ads makes local service businesses visible in ChatGPT, Perplexity, Gemini & Google AI Overviews — so AI recommends you, sends you booked jobs, and lowers your cost per lead.',
+    path: 'ai-visibility',
   },
   privacy: {
     title: 'Privacy Policy – HybridAds.ai',
@@ -202,6 +209,7 @@ function App() {
       case 'case-studies': return <CaseStudiesPage navigate={navigate} />;
       case 'ai-agency': return <AIAgencyPage navigate={navigate} />;
       case 'ai-score': return <AIScorePage navigate={navigate} />;
+      case 'ai-visibility': return <AIVisibilityPage navigate={navigate} />;
       case 'privacy': return <PrivacyPolicyPage navigate={navigate} />;
       case 'terms': return <TermsOfServicePage navigate={navigate} />;
       case 'nemo-claw': return <NemoClawPage navigate={navigate} />;

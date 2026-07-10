@@ -69,6 +69,7 @@ export default function Footer({ navigate }: FooterProps) {
                   <span className="text-xs bg-emerald-600 text-white font-bold px-1.5 py-0.5 rounded-full leading-none">New</span>
                 </button>
               </li>
+              <li><button onClick={() => navigate('ai-visibility')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">AI Visibility</button></li>
               <li><button onClick={() => navigate('dashboard')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">Ad Performance</button></li>
               <li><button onClick={() => navigate('about')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">About Us</button></li>
               <li><button onClick={() => navigate('case-studies')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">Case Studies</button></li>

@@ -26,6 +26,7 @@ const navLinks: NavLink[] = [
     children: [
       { label: 'AI Sales Team', page: 'gtm-service', badge: 'Beta', badgeColor: 'bg-amber-500' },
       { label: 'AI Content Lab', page: 'content-lab', badge: 'Beta', badgeColor: 'bg-amber-500' },
+      { label: 'AI Visibility', page: 'ai-visibility' },
       { label: 'AI Agents', page: 'nemo-claw' },
       { label: 'AI Score', page: 'ai-score' },
     ],
