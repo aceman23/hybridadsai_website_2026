@@ -246,65 +246,60 @@ export default function AIVisibilityPage({ navigate }: Props) {
       </section>
 
       {/* ── KNOWLEDGE CATALOG ── */}
-      <section className="max-w-5xl mx-auto px-5 py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-              The Knowledge Catalog: everything AI needs to trust and recommend you
-            </h2>
-            <p className="text-base text-gray-500 leading-relaxed mb-8">
-              A structured database of everything your business knows — the foundation modern AI systems pull from:
-            </p>
-            <ul className="space-y-3.5">
-              {[
-                'Transparent pricing information',
-                'Services offered and service areas',
-                'Frequently asked questions from real calls',
-                'Policies and processes',
-                'Expertise, licensing, and credentials',
-                'Reviews and testimonials',
-                'Answers to the specific questions customers ask AI',
-              ].map(item => (
-                <li key={item} className="flex items-start gap-3">
-                  <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0 mt-0.5" />
-                  <span className="text-gray-600 text-sm">{item}</span>
-                </li>
-              ))}
-            </ul>
+      <section className="max-w-6xl mx-auto px-5 py-24">
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full mb-6">
+            <Database className="w-3.5 h-3.5 text-blue-600" />
+            <span className="text-xs font-semibold text-blue-600 uppercase tracking-wide">Knowledge Catalog</span>
           </div>
-          <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 lg:p-10">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shadow-lg shadow-blue-200">
-                <Database className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-gray-900">Knowledge Catalog</p>
-                <p className="text-xs text-gray-500">Your AI-readable foundation</p>
-              </div>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            Everything AI needs to trust and recommend you
+          </h2>
+          <p className="text-base text-gray-500 leading-relaxed max-w-2xl mx-auto">
+            A structured foundation of everything your business knows — the data modern AI systems pull from when deciding who to name.
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+          {[
+            { icon: '💲', title: 'Pricing Data', desc: 'Transparent pricing so AI can confidently cite your rates when customers ask "how much does it cost?"' },
+            { icon: '📍', title: 'Service Areas', desc: 'Every city and neighborhood you serve, structured so AI knows your coverage when asked for local pros.' },
+            { icon: '💬', title: 'Customer FAQs', desc: 'Real questions from real calls — the exact queries customers type into AI, answered in your words.' },
+            { icon: '📋', title: 'Policies & Processes', desc: 'How you work, what to expect, guarantees — the trust signals AI weighs when choosing a recommendation.' },
+            { icon: '🏆', title: 'Credentials & Expertise', desc: 'Licensing, certifications, years of experience — proof that tells AI you are qualified and trustworthy.' },
+            { icon: '⭐', title: 'Reviews & Testimonials', desc: 'Social proof structured as machine-readable data so AI surfaces your reputation, not just your name.' },
+          ].map(item => (
+            <div
+              key={item.title}
+              className="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-50/80 transition-all"
+            >
+              <div className="text-2xl mb-4">{item.icon}</div>
+              <h3 className="text-sm font-bold text-gray-900 mb-2">{item.title}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
             </div>
-            <div className="space-y-3">
-              {['Pricing Data', 'Service Areas', 'Customer FAQs', 'Credentials', 'Reviews', 'Schema Markup'].map(
-                (label, i) => (
-                  <div
-                    key={label}
-                    className="flex items-center gap-3 px-4 py-3 bg-white border border-gray-200 rounded-lg"
-                  >
-                    <div
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: ['#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'][i] }}
-                    />
-                    <span className="text-sm text-gray-700 font-medium">{label}</span>
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 ml-auto" />
-                  </div>
-                )
-              )}
-            </div>
-            <div className="mt-6 pt-5 border-t border-gray-200">
-              <p className="text-sm text-gray-700 font-semibold text-center">
+          ))}
+        </div>
+
+        <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 sm:p-10 overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl" />
+          <div className="relative flex flex-col sm:flex-row items-center gap-6 sm:gap-10">
+            <div className="flex-1 text-center sm:text-left">
+              <p className="text-lg sm:text-xl font-bold text-white mb-2">
                 Today, your website is the front-end.
-                <br />
-                <span className="text-blue-600">Tomorrow, your knowledge catalog is the foundation.</span>
               </p>
+              <p className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                Tomorrow, your knowledge catalog is the foundation.
+              </p>
+            </div>
+            <div className="shrink-0">
+              <button
+                onClick={() => navigate('ai-score')}
+                className="inline-flex items-center gap-2 px-7 py-3.5 bg-white hover:bg-gray-100 text-gray-900 font-bold rounded-xl transition-colors text-sm"
+              >
+                See what's missing
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
