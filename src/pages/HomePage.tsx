@@ -1,4 +1,4 @@
-import { ArrowRight, Plus, ChevronUp, Bot, Mic, Smartphone, Globe, Brain, ExternalLink, Search, TrendingUp, AlertTriangle, CheckCircle, Zap, Shield, Lock, Activity } from 'lucide-react';
+import { ArrowRight, Plus, ChevronUp, Bot, Mic, Smartphone, Globe, Brain, ExternalLink, Search, TrendingUp, AlertTriangle, CheckCircle, Zap, Shield, Lock, Activity, Eye, Database, BarChart3 } from 'lucide-react';
 import { useState, useRef } from 'react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
@@ -780,6 +780,133 @@ export default function HomePage({ navigate }: HomePageProps) {
                     {['NemoClaw', 'NeMo Agent Toolkit', 'Nemotron 120B', 'OpenTelemetry'].map(t => (
                       <span key={t} className="bg-white/5 border border-white/10 text-gray-400 text-xs px-2 py-0.5 rounded-full">{t}</span>
                     ))}
+                  </div>
+                </div>
+              </div>
+            </AnimateIn>
+          </div>
+        </div>
+      </section>
+
+      {/* ── AI VISIBILITY SERVICE ── */}
+      <section className="py-24 bg-white border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <AnimateIn>
+                <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 text-sm font-semibold px-4 py-1.5 rounded-full mb-5">
+                  <Eye className="w-3.5 h-3.5" />
+                  AI Visibility Service
+                </div>
+              </AnimateIn>
+              <AnimateIn delay={80}>
+                <h2 className="text-4xl font-black text-gray-900 mb-5 leading-tight">
+                  Become the Business{' '}
+                  <span className="text-blue-600">AI Recommends</span>
+                </h2>
+              </AnimateIn>
+              <AnimateIn delay={160}>
+                <p className="text-gray-500 text-base leading-relaxed mb-8">
+                  Your customers now ask ChatGPT, Perplexity, and Google's AI{' '}
+                  <span className="text-gray-800 font-medium">"Who's the best [service] near me?"</span>{' '}
+                  and get one answer. We make sure that answer is you — through structured data, knowledge catalogs, and ongoing AI Share of Voice monitoring.
+                </p>
+              </AnimateIn>
+              <AnimateIn delay={220}>
+                <div className="space-y-4 mb-10">
+                  {[
+                    {
+                      icon: Search,
+                      title: 'AI Visibility Audit',
+                      desc: 'See exactly where you stand across ChatGPT, Perplexity, Gemini, and Google AI Overviews.',
+                    },
+                    {
+                      icon: Database,
+                      title: 'Knowledge Catalog Build',
+                      desc: 'We build the structured foundation AI consumes: pricing, FAQs, service areas, credentials, and schema.',
+                    },
+                    {
+                      icon: BarChart3,
+                      title: 'AI Share of Voice Monitoring',
+                      desc: 'Track how often AI recommends you vs. competitors — and watch your visibility compound monthly.',
+                    },
+                  ].map(item => (
+                    <div key={item.title} className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
+                        <item.icon className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm font-bold text-gray-900 mb-0.5">{item.title}</h3>
+                        <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </AnimateIn>
+              <AnimateIn delay={300} variant="fade">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => navigate('ai-score')}
+                    className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-7 py-3.5 rounded-xl transition-colors shadow-lg shadow-blue-200 text-sm"
+                  >
+                    Get Your Free AI Visibility Check
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => navigate('ai-visibility')}
+                    className="inline-flex items-center justify-center gap-2 border border-gray-300 text-gray-600 hover:text-gray-900 hover:border-gray-400 font-semibold px-7 py-3.5 rounded-xl transition-colors text-sm"
+                  >
+                    Learn more
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </AnimateIn>
+            </div>
+
+            <AnimateIn delay={200} variant="fade">
+              <div className="relative">
+                <div className="absolute -inset-4 bg-gradient-to-br from-blue-100/60 via-transparent to-cyan-100/40 rounded-3xl blur-2xl" />
+                <div className="relative bg-white border border-gray-200 rounded-2xl shadow-xl shadow-gray-200/50 overflow-hidden">
+                  <div className="bg-gray-50 border-b border-gray-100 px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shadow-md shadow-blue-200">
+                        <Eye className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-gray-900">AI Share of Voice</p>
+                        <p className="text-xs text-gray-500">Your business vs. competitors</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-6 space-y-4">
+                    {[
+                      { name: 'Your Business', pct: 62, color: 'bg-blue-600', label: 'text-blue-600' },
+                      { name: 'Competitor A', pct: 23, color: 'bg-gray-300', label: 'text-gray-500' },
+                      { name: 'Competitor B', pct: 11, color: 'bg-gray-200', label: 'text-gray-400' },
+                      { name: 'Others', pct: 4, color: 'bg-gray-100', label: 'text-gray-400' },
+                    ].map(row => (
+                      <div key={row.name}>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-sm font-medium text-gray-700">{row.name}</span>
+                          <span className={`text-sm font-bold ${row.label}`}>{row.pct}%</span>
+                        </div>
+                        <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                          <div className={`h-full ${row.color} rounded-full transition-all duration-700`} style={{ width: `${row.pct}%` }} />
+                        </div>
+                      </div>
+                    ))}
+                    <div className="pt-4 mt-2 border-t border-gray-100 grid grid-cols-3 gap-3 text-center">
+                      {[
+                        { val: '4/5', sub: 'AI platforms cite you' },
+                        { val: '62%', sub: 'share of voice' },
+                        { val: '+18%', sub: 'vs. last month' },
+                      ].map(s => (
+                        <div key={s.sub} className="bg-gray-50 rounded-xl py-3 px-2">
+                          <p className="text-lg font-black text-gray-900">{s.val}</p>
+                          <p className="text-[10px] text-gray-500 leading-tight mt-0.5">{s.sub}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
