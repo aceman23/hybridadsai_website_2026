@@ -137,54 +137,137 @@ export default function AIVisibilityPage({ navigate }: Props) {
       </section>
 
       {/* ── ANSWER CAPSULE ── */}
-      <section className="max-w-4xl mx-auto px-5 pb-20">
-        <article className="bg-blue-50 border border-blue-100 rounded-2xl p-8 sm:p-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-5">What is AI Visibility?</h2>
-          <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-            AI visibility is how often AI assistants like ChatGPT, Perplexity, Gemini, and Google AI Overviews recommend and cite your business when people ask them what company to hire. Unlike traditional SEO, which competes for a ranking on a results page, AI visibility competes to be{' '}
-            <em className="text-gray-900 font-medium not-italic">the source the AI trusts and names in its answer.</em>{' '}
-            For local service businesses, it's becoming the difference between being found and being invisible.
-          </p>
-        </article>
+      <section className="max-w-5xl mx-auto px-5 pb-24">
+        <div className="relative rounded-3xl overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900" />
+          <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/15 rounded-full blur-[100px]" />
+          <div className="absolute bottom-0 left-0 w-60 h-60 bg-cyan-500/10 rounded-full blur-[80px]" />
+          <div className="relative grid lg:grid-cols-2 gap-10 p-8 sm:p-12">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/10 rounded-full mb-6">
+                <Eye className="w-3.5 h-3.5 text-blue-400" />
+                <span className="text-xs font-semibold text-blue-300 uppercase tracking-wide">Definition</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-5 leading-tight">What is AI Visibility?</h2>
+              <p className="text-base text-gray-300 leading-relaxed mb-6">
+                AI visibility is how often AI assistants like ChatGPT, Perplexity, Gemini, and Google AI Overviews recommend and cite your business when people ask them what company to hire.
+              </p>
+              <p className="text-base text-gray-300 leading-relaxed">
+                Unlike traditional SEO, which competes for a ranking on a results page, AI visibility competes to be{' '}
+                <span className="text-white font-semibold">the source the AI trusts and names in its answer.</span>
+              </p>
+            </div>
+            <div className="flex flex-col justify-center gap-5">
+              {[
+                { label: 'SEO', desc: 'Compete for a link on a results page', faded: true },
+                { label: 'AI Visibility', desc: 'Become the answer AI gives directly', faded: false },
+              ].map(item => (
+                <div
+                  key={item.label}
+                  className={`rounded-2xl p-6 border transition-all ${
+                    item.faded
+                      ? 'bg-white/5 border-white/10'
+                      : 'bg-gradient-to-r from-blue-600/20 to-cyan-600/20 border-blue-500/30 shadow-lg shadow-blue-500/10'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    {item.faded ? (
+                      <Search className="w-5 h-5 text-gray-500" />
+                    ) : (
+                      <Eye className="w-5 h-5 text-blue-400" />
+                    )}
+                    <span className={`text-sm font-bold ${item.faded ? 'text-gray-400' : 'text-blue-300'}`}>
+                      {item.label}
+                    </span>
+                  </div>
+                  <p className={`text-sm ${item.faded ? 'text-gray-500' : 'text-gray-200'}`}>{item.desc}</p>
+                </div>
+              ))}
+              <p className="text-sm text-gray-400 leading-relaxed mt-1 pl-1">
+                For local service businesses, it's becoming the difference between being found and being invisible.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ── THE PROBLEM ── */}
       <section className="max-w-5xl mx-auto px-5 pb-24">
-        <div className="max-w-3xl">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-            AI is intercepting your customers before they ever reach your website
-          </h2>
-          <p className="text-base text-gray-500 leading-relaxed mb-6">
-            For twenty years, the game was simple: rank on Google, drive traffic to your site, capture the lead. That's changing fast.
-          </p>
-          <p className="text-base text-gray-500 leading-relaxed mb-8">
-            Today people describe their problem to an AI and get a direct recommendation — no list of ten blue links, no website visit. If your business isn't the one the AI names, you don't get the call. You're not competing for rankings anymore. You're competing to become the trusted source.
-          </p>
-
-          <ul className="space-y-4 mb-8">
-            <li className="flex items-start gap-3">
-              <div className="w-5 h-5 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-red-500 text-xs font-bold">!</span>
-              </div>
-              <p className="text-gray-600">
-                Industry analysts project traditional search volume will decline meaningfully as AI answers take over discovery.
-              </p>
-            </li>
-            <li className="flex items-start gap-3">
-              <div className="w-5 h-5 rounded-full bg-red-50 border border-red-200 flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-red-500 text-xs font-bold">!</span>
-              </div>
-              <p className="text-gray-600">
-                The businesses that win won't have the prettiest websites. They'll have the most complete, most trusted, machine-readable data.
-              </p>
-            </li>
-          </ul>
-
-          <blockquote className="border-l-4 border-blue-500 pl-6 py-2">
-            <p className="text-xl font-semibold text-gray-900 italic">
-              "If you don't publish it, AI has no reason to recommend you."
+        <div className="grid lg:grid-cols-5 gap-12 items-start">
+          <div className="lg:col-span-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 border border-red-200 rounded-full mb-6">
+              <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" />
+              <span className="text-xs font-semibold text-red-600 uppercase tracking-wide">The Shift</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 leading-tight">
+              AI is intercepting your customers before they ever reach your website
+            </h2>
+            <p className="text-base text-gray-500 leading-relaxed mb-5">
+              For twenty years, the game was simple: rank on Google, drive traffic to your site, capture the lead. That's changing fast.
             </p>
-          </blockquote>
+            <p className="text-base text-gray-500 leading-relaxed mb-8">
+              Today people describe their problem to an AI and get a direct recommendation — no list of ten blue links, no website visit. If your business isn't the one the AI names, you don't get the call. You're not competing for rankings anymore. You're competing to become the trusted source.
+            </p>
+
+            <div className="space-y-4 mb-10">
+              {[
+                'Industry analysts project traditional search volume will decline meaningfully as AI answers take over discovery.',
+                "The businesses that win won't have the prettiest websites. They'll have the most complete, most trusted, machine-readable data.",
+              ].map((text, i) => (
+                <div key={i} className="flex items-start gap-4 bg-red-50/60 border border-red-100 rounded-xl p-5">
+                  <div className="w-8 h-8 rounded-lg bg-red-100 border border-red-200 flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="text-red-600 text-sm font-bold">!</span>
+                  </div>
+                  <p className="text-sm text-gray-700 leading-relaxed">{text}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="relative bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl" />
+              <div className="relative">
+                <div className="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center mb-4">
+                  <MessageSquare className="w-5 h-5 text-blue-400" />
+                </div>
+                <p className="text-xl font-semibold text-white italic leading-relaxed">
+                  "If you don't publish it, AI has no reason to recommend you."
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-2 sticky top-32">
+            <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xl shadow-gray-200/50">
+              <div className="bg-gray-50 border-b border-gray-100 px-5 py-3 flex items-center gap-2">
+                <div className="flex gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-300" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-300" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-green-300" />
+                </div>
+                <span className="text-xs text-gray-400 ml-2">AI Assistant</span>
+              </div>
+              <div className="p-5 space-y-4">
+                <div className="bg-gray-100 rounded-xl rounded-tl-sm p-4">
+                  <p className="text-xs text-gray-400 font-medium mb-1.5">User</p>
+                  <p className="text-sm text-gray-700">"Who's the best plumber in Austin?"</p>
+                </div>
+                <div className="bg-blue-50 border border-blue-100 rounded-xl rounded-tr-sm p-4">
+                  <p className="text-xs text-blue-500 font-medium mb-1.5">AI Response</p>
+                  <p className="text-sm text-gray-700 leading-relaxed">
+                    Based on customer reviews, transparent pricing, and verified credentials, I'd recommend{' '}
+                    <span className="font-bold text-blue-600">[Your Business]</span> ...
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <p className="text-xs text-gray-500">Direct recommendation — no website visit needed</p>
+                </div>
+              </div>
+            </div>
+            <p className="text-center text-xs text-gray-400 mt-4">
+              This is what your customers see — make sure you're the answer.
+            </p>
+          </div>
         </div>
       </section>
 
