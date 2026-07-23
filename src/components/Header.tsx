@@ -14,7 +14,7 @@ interface NavLink {
   page: Page;
   badge?: string;
   badgeColor?: string;
-  children?: { label: string; page: Page }[];
+  children?: { label: string; page: Page; badge?: string; badgeColor?: string }[];
 }
 
 const navLinks: NavLink[] = [

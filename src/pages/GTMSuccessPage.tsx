@@ -13,7 +13,8 @@ export default function GTMSuccessPage({ navigate }: Props) {
   const [stage, setStage] = useState<Stage>('confirming');
   const [customerName, setCustomerName] = useState('');
   const [tier, setTier] = useState('starter');
-  const [attempts, setAttempts] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_attempts, setAttempts] = useState(0);
   const provisionedRef = useRef(false);
 
   useEffect(() => {

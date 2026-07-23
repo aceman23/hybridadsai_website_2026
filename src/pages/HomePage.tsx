@@ -408,8 +408,9 @@ function ProjectsSection({ navigate }: HomePageProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-400 hover:text-blue-600 transition-colors"
+                    aria-label={`Visit ${project.name} website`}
                   >
-                    <ExternalLink className="h-4 w-4" />
+                    <ExternalLink className="h-4 w-4" aria-hidden="true" />
                   </a>
                 </div>
                 <h3 className="font-black text-gray-900 mb-2">{project.name}</h3>
@@ -672,13 +673,13 @@ export default function HomePage({ navigate }: HomePageProps) {
                   )}
                 </button>
               </form>
-              <p className="text-center text-gray-400 text-xs mt-3">
+              <p className="text-center text-gray-600 text-xs mt-3">
                 Try:{' '}
                 {['starbucks.com', 'chipotle.com', 'yourwebsite.com'].map(u => (
                   <button
                     key={u}
                     onClick={() => setApsUrl(u)}
-                    className="text-gray-400 hover:text-cyan-600 transition-colors underline underline-offset-2 mx-1"
+                    className="text-gray-600 hover:text-cyan-700 transition-colors underline underline-offset-2 mx-1"
                   >
                     {u}
                   </button>
@@ -897,8 +898,8 @@ export default function HomePage({ navigate }: HomePageProps) {
                     {[
                       { name: 'Your Business', pct: 62, color: 'bg-blue-600', label: 'text-blue-600' },
                       { name: 'Competitor A', pct: 23, color: 'bg-gray-300', label: 'text-gray-500' },
-                      { name: 'Competitor B', pct: 11, color: 'bg-gray-200', label: 'text-gray-400' },
-                      { name: 'Others', pct: 4, color: 'bg-gray-100', label: 'text-gray-400' },
+                      { name: 'Competitor B', pct: 11, color: 'bg-gray-200', label: 'text-gray-600' },
+                      { name: 'Others', pct: 4, color: 'bg-gray-100', label: 'text-gray-600' },
                     ].map(row => (
                       <div key={row.name}>
                         <div className="flex items-center justify-between mb-1.5">
@@ -954,8 +955,7 @@ export default function HomePage({ navigate }: HomePageProps) {
             </div>
             <div>
               <AnimateIn>
-                <h2 className="text-4xl font-black text-gray-900 mb-2">Create Once Deploy</h2>
-                <h2 className="text-4xl font-black text-blue-600 mb-8">Everywhere</h2>
+                <h2 className="text-4xl font-black text-gray-900 mb-2">Create Once Deploy <span className="text-blue-600">Everywhere</span></h2>
               </AnimateIn>
               <div className="space-y-3">
                 {deployItems.map((item) => (
@@ -969,10 +969,7 @@ export default function HomePage({ navigate }: HomePageProps) {
             <div className="grid md:grid-cols-2 gap-16 items-center">
               <div>
                 <AnimateIn>
-                  <h2 className="text-4xl font-black text-gray-900 mb-2">Let Hybrid Ads Grow</h2>
-                  <h2 className="text-4xl font-black mb-8">
-                    <span className="text-blue-600">Your</span> Revenue
-                  </h2>
+                  <h2 className="text-4xl font-black text-gray-900 mb-8">Let Hybrid Ads Grow <span className="text-blue-600">Your</span> Revenue</h2>
                 </AnimateIn>
                 <div className="space-y-3">
                   {revenueItems.map((item) => (
@@ -1092,7 +1089,7 @@ export default function HomePage({ navigate }: HomePageProps) {
                 <div>
                   <div className="font-black text-gray-800 text-sm whitespace-pre-line mb-0.5">{t.logo}</div>
                   {t.logoSub && <div className="text-xs text-blue-600 font-medium mb-1">{t.logoSub}</div>}
-                  <div className="text-xs text-gray-400">{t.name}</div>
+                  <div className="text-xs text-gray-600">{t.name}</div>
                 </div>
               </div>
             ))}

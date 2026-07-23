@@ -58,20 +58,25 @@ function TweetCard({ tweet, user }: { tweet: Tweet; user: UserFeed['user'] }) {
       target="_blank"
       rel="noopener noreferrer"
       className="group flex flex-col bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-200 min-w-[280px] max-w-[320px] flex-shrink-0"
+      aria-label={`Tweet by ${user.name}: ${tweet.text.slice(0, 80)}`}
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2.5">
           <img
             src={user.profile_image_url}
-            alt={user.name}
+            alt=""
             className="w-9 h-9 rounded-full object-cover"
+            width="36"
+            height="36"
+            loading="lazy"
+            decoding="async"
           />
           <div className="min-w-0">
             <div className="text-sm font-semibold text-gray-900 truncate leading-tight">{user.name}</div>
-            <div className="text-xs text-gray-400 truncate">@{user.username}</div>
+            <div className="text-xs text-gray-600 truncate">@{user.username}</div>
           </div>
         </div>
-        <XIcon className="w-4 h-4 text-gray-300 group-hover:text-gray-400 transition-colors flex-shrink-0" />
+        <XIcon className="w-4 h-4 text-gray-400 group-hover:text-gray-500 transition-colors flex-shrink-0" />
       </div>
 
       <p className="text-sm text-gray-700 leading-relaxed flex-grow line-clamp-5 mb-4">
@@ -79,21 +84,21 @@ function TweetCard({ tweet, user }: { tweet: Tweet; user: UserFeed['user'] }) {
       </p>
 
       <div className="flex items-center justify-between pt-3 border-t border-gray-50">
-        <div className="flex items-center gap-4 text-xs text-gray-400">
-          <span className="flex items-center gap-1">
-            <Heart className="w-3.5 h-3.5" />
+        <div className="flex items-center gap-4 text-xs text-gray-600">
+          <span className="flex items-center gap-1" aria-label={`${tweet.public_metrics.like_count} likes`}>
+            <Heart className="w-3.5 h-3.5" aria-hidden="true" />
             {formatCount(tweet.public_metrics.like_count)}
           </span>
-          <span className="flex items-center gap-1">
-            <Repeat2 className="w-3.5 h-3.5" />
+          <span className="flex items-center gap-1" aria-label={`${tweet.public_metrics.retweet_count} reposts`}>
+            <Repeat2 className="w-3.5 h-3.5" aria-hidden="true" />
             {formatCount(tweet.public_metrics.retweet_count)}
           </span>
-          <span className="flex items-center gap-1">
-            <MessageCircle className="w-3.5 h-3.5" />
+          <span className="flex items-center gap-1" aria-label={`${tweet.public_metrics.reply_count} replies`}>
+            <MessageCircle className="w-3.5 h-3.5" aria-hidden="true" />
             {formatCount(tweet.public_metrics.reply_count)}
           </span>
         </div>
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-gray-600">
           {formatRelativeTime(tweet.created_at)}
         </span>
       </div>
@@ -103,7 +108,7 @@ function TweetCard({ tweet, user }: { tweet: Tweet; user: UserFeed['user'] }) {
 
 function SkeletonCard() {
   return (
-    <div className="flex flex-col bg-white border border-gray-100 rounded-2xl p-5 shadow-sm min-w-[280px] max-w-[320px] flex-shrink-0 animate-pulse">
+    <div className="flex flex-col bg-white border border-gray-100 rounded-2xl p-5 shadow-sm min-w-[280px] max-w-[320px] flex-shrink-0 animate-pulse" aria-hidden="true">
       <div className="flex items-center gap-2.5 mb-3">
         <div className="w-9 h-9 rounded-full bg-gray-100" />
         <div className="flex-1">
@@ -128,22 +133,27 @@ function FeedRow({ feed }: { feed: UserFeed }) {
         <div className="flex items-center gap-3">
           <img
             src={feed.user.profile_image_url}
-            alt={feed.user.name}
+            alt=""
             className="w-8 h-8 rounded-full object-cover ring-2 ring-white shadow-sm"
+            width="32"
+            height="32"
+            loading="lazy"
+            decoding="async"
           />
           <div>
             <span className="font-semibold text-gray-900 text-sm">{feed.user.name}</span>
-            <span className="text-gray-400 text-sm ml-1.5">@{feed.user.username}</span>
+            <span className="text-gray-600 text-sm ml-1.5">@{feed.user.username}</span>
           </div>
         </div>
         <a
           href={`https://x.com/${feed.user.username}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-gray-900 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 transition-colors"
+          aria-label={`Follow ${feed.user.name} on X`}
         >
           Follow
-          <ExternalLink className="w-3 h-3" />
+          <ExternalLink className="w-3 h-3" aria-hidden="true" />
         </a>
       </div>
 
@@ -165,10 +175,19 @@ export default function TwitterFeed() {
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
     const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+    if (!supabaseUrl || !supabaseKey) {
+      setError(true);
+      setLoading(false);
+      return;
+    }
+
     fetch(`${supabaseUrl}/functions/v1/fetch-tweets?usernames=hybridadsai,antona23`, {
       headers: { Authorization: `Bearer ${supabaseKey}` },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         if (data.feeds && data.feeds.length > 0) {
           setFeeds(data.feeds);
@@ -187,7 +206,7 @@ export default function TwitterFeed() {
 
   if (error) {
     return (
-      <section className="py-16 bg-gray-50 border-t border-gray-100">
+      <section className="py-16 bg-gray-50 border-t border-gray-100" aria-label="Social media links">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2.5 mb-10">
             <XIcon className="w-5 h-5 text-gray-900" />
@@ -201,6 +220,7 @@ export default function TwitterFeed() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex flex-col bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-gray-200 transition-all duration-200"
+                aria-label={`Follow ${account.name} on X`}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
@@ -209,12 +229,12 @@ export default function TwitterFeed() {
                     </div>
                     <div>
                       <div className="text-sm font-semibold text-gray-900">{account.name}</div>
-                      <div className="text-xs text-gray-400">@{account.username}</div>
+                      <div className="text-xs text-gray-600">@{account.username}</div>
                     </div>
                   </div>
-                  <ExternalLink className="w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors" />
+                  <ExternalLink className="w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors" aria-hidden="true" />
                 </div>
-                <p className="text-sm text-gray-500 leading-relaxed">{account.description}</p>
+                <p className="text-sm text-gray-600 leading-relaxed">{account.description}</p>
                 <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full w-fit transition-colors">
                   Follow on X
                 </div>
@@ -227,7 +247,7 @@ export default function TwitterFeed() {
   }
 
   return (
-    <section className="py-16 bg-gray-50 border-t border-gray-100">
+    <section className="py-16 bg-gray-50 border-t border-gray-100" aria-label="Latest posts on X">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-2.5 mb-10">
           <XIcon className="w-5 h-5 text-gray-900" />
@@ -235,7 +255,7 @@ export default function TwitterFeed() {
         </div>
 
         {loading ? (
-          <div className="space-y-10">
+          <div className="space-y-10" aria-label="Loading tweets">
             {[0, 1].map((row) => (
               <div key={row}>
                 <div className="flex items-center gap-2.5 mb-4">

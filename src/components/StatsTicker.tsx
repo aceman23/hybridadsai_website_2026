@@ -29,7 +29,7 @@ export default function StatsTicker() {
   const doubled = [...tickerItems, ...tickerItems];
 
   return (
-    <div className="bg-white/60 backdrop-blur-md border-y border-gray-200/60 overflow-hidden py-4">
+    <section aria-label="Platform growth achievements" className="bg-white/60 backdrop-blur-md border-y border-gray-200/60 overflow-hidden py-4">
       <div className="flex items-center">
         <div className="flex-shrink-0 bg-blue-600 text-white text-xs font-black px-4 py-2 z-10 relative whitespace-nowrap mr-4 rounded-r-full">
           2024 + 2025 ACHIEVEMENTS
@@ -38,6 +38,7 @@ export default function StatsTicker() {
           <div
             className="flex items-center gap-0 animate-ticker"
             style={{ width: 'max-content' }}
+            aria-hidden="true"
           >
             {doubled.map((item, i) => {
               const colors = platformColors[item.label] ?? { bg: 'bg-gray-700', text: 'text-white' };
@@ -46,15 +47,20 @@ export default function StatsTicker() {
                   <span className={`${colors.bg} ${colors.text} text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap`}>
                     {item.label}
                   </span>
-                  <span className="text-gray-500 text-sm whitespace-nowrap">{item.stat}</span>
+                  <span className="text-gray-600 text-sm whitespace-nowrap">{item.stat}</span>
                   <span className="text-gray-900 font-black text-sm whitespace-nowrap">{item.value}</span>
-                  <span className="text-gray-300 mx-2 text-lg">|</span>
+                  <span className="text-gray-300 mx-2 text-lg" aria-hidden="true">|</span>
                 </div>
               );
             })}
           </div>
+          <ul className="sr-only">
+            {tickerItems.map((item, i) => (
+              <li key={i}>{item.label} {item.stat}: {item.value}</li>
+            ))}
+          </ul>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

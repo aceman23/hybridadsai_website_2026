@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Download, Sparkles, AlertTriangle, ExternalLink, CheckCircle, AlertCircle, XCircle } from 'lucide-react';
+import { Download, Sparkles, AlertTriangle } from 'lucide-react';
 import type { AnalysisReport } from '../../types/aps';
 import ScoreCircle from './ScoreCircle';
 import ProgressBars from './ProgressBars';
@@ -62,7 +62,7 @@ export default function ReportView({ report }: Props) {
           disabled={downloading}
           className="flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium px-4 py-2 rounded-lg transition disabled:opacity-50"
         >
-          <Download className="w-4 h-4" />
+          <Download className="w-4 h-4" aria-hidden="true" />
           {downloading ? 'Generating...' : 'Download PDF'}
         </button>
       </div>
@@ -72,76 +72,28 @@ export default function ReportView({ report }: Props) {
           <div className="flex items-start justify-between">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <Sparkles className="w-5 h-5 text-blue-400" />
+                <Sparkles className="w-5 h-5 text-blue-400" aria-hidden="true" />
                 <span className="text-sm font-medium text-blue-300">AI Publisher Score</span>
               </div>
               <h3 className="text-lg font-bold">{report.url}</h3>
               <p className="text-sm text-gray-400 mt-1">Report generated {date}</p>
             </div>
-            <ScoreCircle score={report.score} size={80} />
+            <ScoreCircle score={report.overallScore} />
           </div>
         </div>
 
         <div className="p-6 sm:p-8 space-y-8">
           <div>
-            <h4 className="text-base font-bold text-gray-900 mb-4">Category Breakdown</h4>
-            <ProgressBars report={report} />
-          </div>
-
-          <div>
-            <h4 className="text-base font-bold text-gray-900 mb-4">Recommendations</h4>
-            <div className="space-y-3">
-              {report.recommendations.map((rec, i) => (
-                <div key={i} className="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-lg p-4">
-                  <Sparkles className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
-                  <p className="text-sm text-gray-700">{rec}</p>
-                </div>
-              ))}
-            </div>
+            <h4 className="text-base font-bold text-gray-900 mb-4">Platform Breakdown</h4>
+            <ProgressBars results={report.results} />
           </div>
 
           <div>
             <h4 className="text-base font-bold text-gray-900 mb-4">Detailed Data</h4>
             <DataTable report={report} />
           </div>
-
-          <div>
-            <h4 className="text-base font-bold text-gray-900 mb-4">AI Engine Visibility</h4>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {report.engines.map((engine) => (
-                <div key={engine.name} className="border border-gray-200 rounded-xl p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-gray-900">{engine.name}</span>
-                    <StatusIcon status={engine.status} />
-                  </div>
-                  <p className="text-sm text-gray-500">{engine.detail}</p>
-                  {engine.citationUrl && (
-                    <a
-                      href={engine.citationUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline mt-2"
-                    >
-                      View citation <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>
   );
-}
-
-function StatusIcon({ status }: { status: string }) {
-  switch (status) {
-    case 'cited':
-      return <CheckCircle className="w-5 h-5 text-emerald-500" />;
-    case 'mentioned':
-      return <AlertCircle className="w-5 h-5 text-amber-500" />;
-    default:
-      return <XCircle className="w-5 h-5 text-red-400" />;
-  }
 }
