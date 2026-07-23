@@ -386,6 +386,10 @@ function ProjectsSection({ navigate }: HomePageProps) {
                 <img
                   src={project.img}
                   alt={project.name}
+                  width="400"
+                  height="208"
+                  loading="lazy"
+                  decoding="async"
                   className={`transition-transform duration-500 group-hover:scale-105 ${
                     project.screenshot
                       ? 'w-full h-full object-contain object-top'
@@ -1017,6 +1021,10 @@ export default function HomePage({ navigate }: HomePageProps) {
                 src="/hybridAds_testimonial.png"
                 alt="HybridAds case study"
                 className="w-full object-cover"
+                width="600"
+                height="400"
+                loading="lazy"
+                decoding="async"
               />
               <div className="p-6 bg-slate-50">
                 <div className="grid grid-cols-2 gap-4 text-center">

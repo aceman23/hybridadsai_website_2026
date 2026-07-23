@@ -102,7 +102,7 @@ export default function SignUpPage({ navigate }: Props) {
             onClick={() => navigate('home')}
             className="flex items-center gap-3 group w-fit"
           >
-            <img src="/logo.png" alt="Hybrid Ads" className="h-16 w-auto" />
+            <img src="/logo.png" alt="Hybrid Ads" className="h-16 w-auto" width="64" height="64" />
           </button>
 
           <div className="max-w-md">
@@ -146,7 +146,7 @@ export default function SignUpPage({ navigate }: Props) {
           {/* Mobile logo */}
           <div className="lg:hidden flex justify-center mb-8">
             <button onClick={() => navigate('home')}>
-              <img src="/logo.png" alt="Hybrid Ads" className="h-14 w-auto" />
+              <img src="/logo.png" alt="Hybrid Ads" className="h-14 w-auto" width="56" height="56" />
             </button>
           </div>
 

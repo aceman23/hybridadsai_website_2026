@@ -121,7 +121,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
             className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg"
             aria-label="HybridAds.ai – go to homepage"
           >
-            <img src="/logo.png" alt="HybridAds.ai" className="h-28 w-auto" />
+            <img src="/logo.png" alt="HybridAds.ai" className="h-28 w-auto" width="112" height="112" fetchPriority="high" />
           </button>
 
           <nav className="hidden md:flex items-center space-x-7" aria-label="Main navigation">

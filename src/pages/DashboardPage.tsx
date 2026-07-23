@@ -73,6 +73,7 @@ export default function DashboardPage({ navigate }: DashboardPageProps) {
                 src="/AdPerformance_Icon.png"
                 alt="Ad Performance Dashboard"
                 className="w-full object-cover"
+                width="600" height="400" loading="lazy" decoding="async"
               />
               <div className="bg-gray-900 px-6 py-4 text-center">
                 <p className="font-black text-xl tracking-widest text-white uppercase">Ad Performance</p>
@@ -147,6 +148,7 @@ export default function DashboardPage({ navigate }: DashboardPageProps) {
                 src="/HybridAdsAnalyticsDashboard2.png"
                 alt="Digital Marketing Analytics"
                 className="w-full object-cover"
+                width="600" height="400" loading="lazy" decoding="async"
               />
             </div>
           </div>

@@ -28,7 +28,7 @@ export default function Footer({ navigate }: FooterProps) {
               className="mb-4 inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-lg"
               aria-label="Go to homepage"
             >
-              <img src="/logo.png" alt="HybridAds.ai" className="h-[120px] w-auto brightness-0 invert" />
+              <img src="/logo.png" alt="HybridAds.ai" className="h-[120px] w-auto brightness-0 invert" width="120" height="120" loading="lazy" decoding="async" />
             </button>
             <p className="text-sm leading-relaxed max-w-sm mt-2">
               AI Systems Integrators building intelligent automation for modern businesses — reducing digital labor costs and driving measurable returns across every channel.

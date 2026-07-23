@@ -1,5 +1,3 @@
-import html2canvas from 'html2canvas';
-
 export function getContrastColor(hex: string): string {
   try {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -38,6 +36,7 @@ export async function downloadCard(
   element: HTMLElement,
   filename: string
 ): Promise<void> {
+  const { default: html2canvas } = await import('html2canvas');
   const canvas = await html2canvas(element, {
     scale: 2,
     useCORS: true,

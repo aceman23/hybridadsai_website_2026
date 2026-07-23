@@ -212,6 +212,7 @@ export default function CaseStudiesPage({ navigate }: CaseStudiesPageProps) {
                   src={featured.img}
                   alt={`${featured.client} website`}
                   className="w-full object-cover"
+                  width="800" height="450" loading="lazy" decoding="async"
                 />
                 <div className="bg-gray-900 px-5 py-3 flex items-center justify-between">
                   <div>
@@ -350,6 +351,7 @@ export default function CaseStudiesPage({ navigate }: CaseStudiesPageProps) {
                   src={featured.summaryImg}
                   alt="KAR Limo LAX March 2026 Performance Summary"
                   className="w-full object-contain bg-white"
+                  width="600" height="400" loading="lazy" decoding="async"
                 />
               </div>
               <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-100">
@@ -357,6 +359,7 @@ export default function CaseStudiesPage({ navigate }: CaseStudiesPageProps) {
                   src={featured.chartImg}
                   alt="Website Performance Google Analytics - March 2026"
                   className="w-full object-contain bg-white"
+                  width="600" height="400" loading="lazy" decoding="async"
                 />
               </div>
             </div>

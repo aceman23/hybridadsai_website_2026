@@ -149,6 +149,10 @@ export default function AboutPage({ navigate }: AboutPageProps) {
               src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=700"
               alt="Team working"
               className="rounded-3xl object-cover w-full shadow-xl"
+              width="700"
+              height="467"
+              loading="lazy"
+              decoding="async"
             />
             <div>
               <AnimateIn><h2 className="text-4xl font-black text-gray-900 mb-5">Our Mission</h2></AnimateIn>
@@ -200,6 +204,10 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                       src={member.img}
                       alt={member.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      width="64"
+                      height="64"
+                      loading="lazy"
+                      decoding="async"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-slate-100 to-blue-50 flex items-center justify-center">
@@ -293,6 +301,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                     src="/OpenTranslateAI.png"
                     alt="OpenTranslateAI"
                     className="w-full object-contain object-top h-36 group-hover:scale-105 transition-transform duration-300 bg-gray-50"
+                    width="400" height="144" loading="lazy" decoding="async"
                   />
                 </div>
                 <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">OpenTranslateAI</div>
@@ -303,6 +312,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                     src="/Screenshot_2026-04-01_at_11.28.12_AM.png"
                     alt="KARLimoLax"
                     className="w-full object-contain object-top h-28 group-hover:scale-105 transition-transform duration-300 bg-gray-50"
+                    width="400" height="112" loading="lazy" decoding="async"
                   />
                 </div>
                 <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">KARLimoLax</div>
@@ -313,6 +323,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                     src="/AsterionDB.png"
                     alt="AsterionDB"
                     className="w-full object-contain object-top h-28 group-hover:scale-105 transition-transform duration-300 bg-gray-50"
+                    width="400" height="112" loading="lazy" decoding="async"
                   />
                 </div>
                 <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">AsterionDB</div>
@@ -323,6 +334,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                     src="/InferenceLearningHub.png"
                     alt="Inference Learning Hub"
                     className="w-full object-contain object-top h-28 group-hover:scale-105 transition-transform duration-300 bg-gray-50"
+                    width="400" height="112" loading="lazy" decoding="async"
                   />
                 </div>
                 <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">Inference Learning Hub</div>
@@ -333,6 +345,7 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                     src="/mySomaLabs.png"
                     alt="mySomaLabs"
                     className="w-full object-contain object-top h-28 group-hover:scale-105 transition-transform duration-300 bg-gray-50"
+                    width="400" height="112" loading="lazy" decoding="async"
                   />
                 </div>
                 <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">mySomaLabs</div>
