@@ -354,7 +354,7 @@ function ProjectsSection({ navigate }: HomePageProps) {
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(22);
       doc.setFont('helvetica', 'bold');
-      doc.text('Hybrid Ads — Project Portfolio', margin, 18);
+      doc.text("Anton Ansalmar's — Project Portfolio", margin, 18);
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
       doc.text('AI Systems Integrator & Paid Ads Agency | hybridads.ai', margin, 28);
