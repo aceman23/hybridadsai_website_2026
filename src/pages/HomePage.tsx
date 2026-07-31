@@ -1,5 +1,5 @@
-import { ArrowRight, Plus, ChevronUp, Bot, Mic, Smartphone, Globe, Brain, ExternalLink, Search, TrendingUp, AlertTriangle, CheckCircle, Zap, Shield, Lock, Activity, Eye, Database, BarChart3 } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { ArrowRight, Plus, ChevronUp, Bot, Mic, Smartphone, Globe, Brain, ExternalLink, Search, TrendingUp, AlertTriangle, CheckCircle, Zap, Shield, Lock, Activity, Eye, Database, BarChart3, Download } from 'lucide-react';
+import { useState, useRef, useCallback } from 'react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
 import StatsTicker from '../components/StatsTicker';
@@ -19,9 +19,9 @@ const recentProjects = [
   {
     name: 'BC Automation',
     url: 'https://bcautomation.com',
-    category: 'SaaS',
-    tag: 'SaaS',
-    tagColor: 'bg-sky-100 text-sky-700',
+    category: 'AI Platform',
+    tag: 'AI Platform',
+    tagColor: 'bg-emerald-100 text-emerald-700',
     desc: 'Advanced industrial automation engineering firm — modernizing legacy systems and deploying AI-powered intelligence to help manufacturers reduce downtime and achieve autonomy. DeltaV Specialist, ISA-99 Compliant, IEC 62443 Aligned.',
     stack: ['React', 'AI/ML', 'Industrial IoT', 'DeltaV'],
     img: '/images/projects/Screenshot_2026-07-31_at_1.35.50_PM.png',
@@ -321,6 +321,7 @@ function ProjectsSection({ navigate }: HomePageProps) {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [visible, setVisible] = useState(true);
   const [displayedCategory, setDisplayedCategory] = useState<string>('All');
+  const [pdfLoading, setPdfLoading] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleCategory = (cat: string) => {
@@ -333,6 +334,105 @@ function ProjectsSection({ navigate }: HomePageProps) {
       setVisible(true);
     }, 180);
   };
+
+  const downloadProjectsPdf = useCallback(async () => {
+    setPdfLoading(true);
+    try {
+      const { default: jsPDF } = await import('jspdf');
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const margin = 16;
+      const usable = pageWidth - margin * 2;
+      let y = margin;
+
+      const addPage = () => { doc.addPage(); y = margin; };
+      const checkSpace = (needed: number) => { if (y + needed > 280) addPage(); };
+
+      // Header
+      doc.setFillColor(30, 64, 175);
+      doc.rect(0, 0, pageWidth, 36, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(22);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Hybrid Ads — Project Portfolio', margin, 18);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.text('AI Systems Integrator & Paid Ads Agency | hybridads.ai', margin, 28);
+      doc.text(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), pageWidth - margin, 28, { align: 'right' });
+      y = 44;
+
+      doc.setTextColor(60, 60, 60);
+      doc.setFontSize(9);
+      doc.text(`${recentProjects.length} projects across SaaS, Mobile, iOS, Open Source, and AI Platform categories`, margin, y);
+      y += 10;
+
+      // Projects
+      for (let idx = 0; idx < recentProjects.length; idx++) {
+        const project = recentProjects[idx];
+        checkSpace(60);
+
+        // Project card background
+        doc.setFillColor(248, 250, 252);
+        doc.roundedRect(margin, y, usable, 50, 3, 3, 'F');
+        doc.setDrawColor(226, 232, 240);
+        doc.roundedRect(margin, y, usable, 50, 3, 3, 'S');
+
+        const cardY = y + 6;
+
+        // Category tag
+        doc.setFillColor(219, 234, 254);
+        doc.roundedRect(margin + 4, cardY, 28, 5, 1.5, 1.5, 'F');
+        doc.setFontSize(7);
+        doc.setTextColor(37, 99, 235);
+        doc.text(project.tag, margin + 6, cardY + 3.6);
+
+        // Project name
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(17, 24, 39);
+        doc.text(project.name, margin + 4, cardY + 13);
+
+        // Description
+        doc.setFontSize(8.5);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(107, 114, 128);
+        const descLines = doc.splitTextToSize(project.desc, usable - 8);
+        doc.text(descLines.slice(0, 3), margin + 4, cardY + 19);
+
+        // URL
+        const urlY = cardY + 19 + Math.min(descLines.length, 3) * 3.5 + 2;
+        doc.setFontSize(8);
+        doc.setTextColor(37, 99, 235);
+        doc.textWithLink(project.url, margin + 4, urlY, { url: project.url });
+
+        // Stack
+        doc.setFontSize(7.5);
+        doc.setTextColor(75, 85, 99);
+        const stackText = project.stack.join('  ·  ');
+        doc.text(stackText, margin + 4, urlY + 5);
+
+        y += 56;
+      }
+
+      // Footer
+      checkSpace(20);
+      y += 6;
+      doc.setDrawColor(200, 200, 200);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 7;
+      doc.setFontSize(9);
+      doc.setTextColor(100, 100, 100);
+      doc.text('Hybrid Ads — hybridads.ai | team@hybridads.ai', margin, y);
+      doc.setTextColor(37, 99, 235);
+      doc.textWithLink('Book a Call', pageWidth - margin, y, { url: 'https://calendly.com/hybridadsai', align: 'right' });
+
+      doc.save('HybridAds_Project_Portfolio.pdf');
+    } catch (e) {
+      console.error('PDF generation failed:', e);
+    } finally {
+      setPdfLoading(false);
+    }
+  }, []);
 
   const filtered = displayedCategory === 'All'
     ? recentProjects
@@ -357,6 +457,17 @@ function ProjectsSection({ navigate }: HomePageProps) {
             <p className="text-gray-500 max-w-xl mx-auto">
               From AI-powered mobile apps to open-source tools and high-traffic iOS apps with millions of users
             </p>
+          </AnimateIn>
+          <AnimateIn delay={150}>
+            <button
+              onClick={downloadProjectsPdf}
+              disabled={pdfLoading}
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="Download project portfolio as PDF"
+            >
+              <Download className="w-4 h-4" />
+              {pdfLoading ? 'Generating...' : 'Download Portfolio PDF'}
+            </button>
           </AnimateIn>
         </div>
 
