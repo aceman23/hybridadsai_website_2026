@@ -17,6 +17,17 @@ const PROJECT_CATEGORIES = ['All', 'SaaS', 'Mobile App', 'iOS App', 'Open Source
 
 const recentProjects = [
   {
+    name: 'BC Automation',
+    url: 'https://bcautomation.com',
+    category: 'SaaS',
+    tag: 'SaaS',
+    tagColor: 'bg-sky-100 text-sky-700',
+    desc: 'Advanced industrial automation engineering firm — modernizing legacy systems and deploying AI-powered intelligence to help manufacturers reduce downtime and achieve autonomy. DeltaV Specialist, ISA-99 Compliant, IEC 62443 Aligned.',
+    stack: ['React', 'AI/ML', 'Industrial IoT', 'DeltaV'],
+    img: '/images/projects/Screenshot_2026-07-31_at_1.35.50_PM.png',
+    screenshot: true,
+  },
+  {
     name: 'KARLimoLax',
     url: 'https://karlimolax.com',
     category: 'SaaS',
