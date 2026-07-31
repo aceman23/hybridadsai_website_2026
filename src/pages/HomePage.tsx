@@ -458,6 +458,7 @@ function ProjectsSection({ navigate }: HomePageProps) {
               From AI-powered mobile apps to open-source tools and high-traffic iOS apps with millions of users
             </p>
           </AnimateIn>
+          {/* Download button hidden for now
           <AnimateIn delay={150}>
             <button
               onClick={downloadProjectsPdf}
@@ -469,6 +470,7 @@ function ProjectsSection({ navigate }: HomePageProps) {
               {pdfLoading ? 'Generating...' : 'Download Portfolio PDF'}
             </button>
           </AnimateIn>
+          */}
         </div>
 
         <AnimateIn delay={200} variant="fade">
