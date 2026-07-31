@@ -22,7 +22,7 @@ const recentProjects = [
     category: 'AI Platform',
     tag: 'AI Platform',
     tagColor: 'bg-emerald-100 text-emerald-700',
-    desc: 'Advanced industrial automation engineering firm — modernizing legacy systems and deploying AI-powered intelligence to help manufacturers reduce downtime and achieve autonomy. DeltaV Specialist, ISA-99 Compliant, IEC 62443 Aligned.',
+    desc: 'Built 18 custom pages with a full admin panel featuring CMS content management, AI-powered image creation, real-time analytics dashboard, lead tracking, and dynamic service showcases — delivering a complete digital platform for an industrial automation firm.',
     stack: ['React', 'AI/ML', 'Industrial IoT', 'DeltaV'],
     img: '/images/projects/Screenshot_2026-07-31_at_1.35.50_PM.png',
     screenshot: true,
