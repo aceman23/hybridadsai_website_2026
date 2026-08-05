@@ -90,9 +90,79 @@ const projects = [
   },
 ];
 
+const faqItems = [
+  {
+    question: 'Why do most marketing agencies fail to deliver real ROI?',
+    answer:
+      'Traditional agencies rely on templated strategies and vanity metrics — impressions, clicks, reach — that look good in reports but never move the needle on revenue. Hybrid Ads ties every dollar of ad spend directly to measurable business outcomes like booked appointments, qualified leads, and actual sales. We build custom tracking pipelines so you see exactly which campaign produced which customer.',
+  },
+  {
+    question: 'How is Hybrid Ads different from a typical digital marketing agency?',
+    answer:
+      'We are an AI-first performance agency, not a creative shop that bolts on analytics as an afterthought. Every campaign is powered by proprietary AI systems that continuously optimize targeting, creative, and budget allocation in real time. Our team includes AI engineers and data scientists alongside growth strategists — a combination most agencies simply do not have.',
+  },
+  {
+    question: 'I have been burned by agencies that lock me into long contracts with no results — do you do that?',
+    answer:
+      'No. We do not rely on 12-month lock-in contracts to keep clients. Our engagements are results-driven: you stay because the numbers work, not because of fine print. We provide full transparency into spend, performance, and strategy so you always know exactly what you are paying for and what it is producing.',
+  },
+  {
+    question: 'Can you actually handle both paid ads and full website or app development?',
+    answer:
+      'Yes — and that is a core advantage. Most agencies outsource dev work or hand you a WordPress template. We build complete digital platforms in-house: custom websites, admin dashboards, CMS systems, analytics integrations, and AI-powered tools. For example, we recently delivered an 18-page platform with a full admin panel, CMS, AI image creation, and real-time analytics — all under one roof.',
+  },
+  {
+    question: 'How do you use AI in advertising and is it actually better than manual campaign management?',
+    answer:
+      'Our AI systems analyze thousands of data points per hour — audience behavior, bid landscapes, creative fatigue, conversion patterns — and adjust campaigns faster than any human team. This is not a chatbot writing ad copy. We build custom AI agents that manage budget pacing, identify winning creatives, and surface insights that would take a traditional media buyer days to find.',
+  },
+  {
+    question: 'What if my business is small — do you only work with large companies?',
+    answer:
+      'We work with businesses at every stage, from local service businesses generating their first leads online to e-commerce brands scaling past $400K per month. Our systems are built to be efficient at any budget level. A local body shop client saw a 602% increase in bookings through our campaigns — proof that smart strategy matters more than massive spend.',
+  },
+  {
+    question: 'Why do my current ads get a lot of clicks but very few actual customers?',
+    answer:
+      'Clicks without conversions usually mean one of three things: wrong audience targeting, a disconnect between the ad and the landing page, or no real conversion tracking in place. We audit the entire funnel — from impression to purchase — and fix every leak. Our campaigns are optimized for downstream revenue, not upstream vanity metrics.',
+  },
+  {
+    question: 'How do you make sure my business shows up in AI search results like ChatGPT, Perplexity, and Google AI Overviews?',
+    answer:
+      'AI search engines pull from structured, authoritative, and well-cited content. We optimize your digital presence with structured data markup, entity-rich content, FAQ schemas, and topical authority signals so that AI systems recognize and surface your brand. This is a fundamentally different discipline from traditional SEO — and most agencies have not caught up yet.',
+  },
+  {
+    question: 'What kind of reporting and transparency do you provide?',
+    answer:
+      'You get a real-time analytics dashboard — not a monthly PDF full of jargon. Our dashboards show live campaign performance, cost per acquisition, revenue attribution, and funnel health. We also provide custom AI-generated reports that highlight what is working, what is not, and exactly what we are doing about it.',
+  },
+  {
+    question: 'How fast can I expect to see results?',
+    answer:
+      'Most clients see measurable improvements within the first 2–4 weeks as our AI systems gather data and begin optimizing. Significant revenue impact typically materializes within 60–90 days depending on your industry, offer, and starting point. We set realistic benchmarks upfront and report against them honestly — no inflated promises.',
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+
 export default function AboutPage({ navigate }: AboutPageProps) {
   return (
     <div className="bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <section className="bg-gradient-to-br from-gray-900 to-blue-950 text-white py-20 md:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -351,6 +421,53 @@ export default function AboutPage({ navigate }: AboutPageProps) {
                 <div className="bg-gray-900 px-3 py-1.5 text-xs text-gray-300 font-medium">mySomaLabs</div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section – AI-search-optimized with FAQPage structured data */}
+      <section className="py-20 bg-slate-50" id="faq" itemScope itemType="https://schema.org/FAQPage">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <AnimateIn>
+              <h2 className="text-4xl font-black text-gray-900 mb-3">
+                Frequently Asked Questions
+              </h2>
+            </AnimateIn>
+            <AnimateIn delay={120}>
+              <p className="text-gray-500 max-w-2xl mx-auto">
+                Straight answers to the biggest frustrations businesses face with marketing agencies today
+              </p>
+            </AnimateIn>
+          </div>
+          <div className="space-y-4">
+            {faqItems.map((faq, i) => (
+              <AnimateIn key={i} delay={i * 60}>
+                <details
+                  className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden"
+                  itemScope
+                  itemProp="mainEntity"
+                  itemType="https://schema.org/Question"
+                >
+                  <summary className="flex items-center justify-between cursor-pointer px-6 py-5 text-left select-none list-none [&::-webkit-details-marker]:hidden">
+                    <h3 className="font-bold text-gray-900 pr-4 text-[15px] leading-snug" itemProp="name">
+                      {faq.question}
+                    </h3>
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-lg font-bold transition-transform duration-300 group-open:rotate-45">
+                      +
+                    </span>
+                  </summary>
+                  <div
+                    className="px-6 pb-6 text-gray-600 text-sm leading-relaxed border-t border-gray-50 pt-4"
+                    itemScope
+                    itemProp="acceptedAnswer"
+                    itemType="https://schema.org/Answer"
+                  >
+                    <div itemProp="text">{faq.answer}</div>
+                  </div>
+                </details>
+              </AnimateIn>
+            ))}
           </div>
         </div>
       </section>
