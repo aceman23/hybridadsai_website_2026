@@ -273,6 +273,62 @@ const testimonials = [
   },
 ];
 
+const homeFaqItems = [
+  {
+    question: 'What does Hybrid Ads actually do?',
+    answer:
+      'We are an AI-first performance agency that builds autonomous advertising systems, custom AI agents, RAG pipelines, voice AI, and full-stack digital products. We combine seasoned human strategists with proprietary AI platforms to cut digital labor costs and maximize returns across Google, Meta, TikTok, and LinkedIn.',
+  },
+  {
+    question: 'How is Hybrid Ads different from a traditional marketing agency?',
+    answer:
+      'Traditional agencies rely on manual campaign management and templated strategies. We build custom AI systems that analyze thousands of data points per hour — audience behavior, bid landscapes, creative fatigue, conversion patterns — and adjust campaigns faster than any human team. Our team includes AI engineers and data scientists alongside growth strategists.',
+  },
+  {
+    question: 'What is the AI Publisher Score and why should I check it?',
+    answer:
+      'The AI Publisher Score is our free tool that audits how your business appears across ChatGPT, Gemini, Copilot, Grok, and Perplexity. AI search engines are now where customers discover businesses — if they get your name, address, or category wrong, you are losing customers without knowing it. The score tells you exactly where you stand and what to fix.',
+  },
+  {
+    question: 'Do you only work with large companies or big budgets?',
+    answer:
+      'We work with businesses at every stage — from local service businesses generating their first leads online to e-commerce brands scaling past $400K per month. Our systems are built to be efficient at any budget level. A local body shop client saw a 602% increase in bookings through our campaigns.',
+  },
+  {
+    question: 'What platforms do you advertise on?',
+    answer:
+      'We manage campaigns across Google Ads, Meta (Facebook and Instagram), TikTok, LinkedIn, YouTube, and X (Twitter). Our AI systems optimize creative, targeting, and budget allocation across all platforms simultaneously so your spend works harder everywhere.',
+  },
+  {
+    question: 'Can you build websites and apps in addition to running ads?',
+    answer:
+      'Yes — and that is a core advantage. We build complete digital platforms in-house: custom websites, admin dashboards, mobile apps, AI-powered tools, and analytics integrations. For example, we recently delivered an 18-page platform with a full admin panel, CMS, AI image creation, and real-time analytics — all under one roof.',
+  },
+  {
+    question: 'How do you make my business visible to AI search engines like ChatGPT and Perplexity?',
+    answer:
+      'AI search engines pull from structured, authoritative, and well-cited content. We optimize your digital presence with structured data markup, entity-rich content, FAQ schemas, and topical authority signals so that AI systems recognize and surface your brand. This is a fundamentally different discipline from traditional SEO.',
+  },
+  {
+    question: 'How fast can I expect to see results?',
+    answer:
+      'Most clients see measurable improvements within the first 2 to 4 weeks as our AI systems gather data and begin optimizing. Significant revenue impact typically materializes within 60 to 90 days depending on your industry, offer, and starting point. We set realistic benchmarks upfront and report against them honestly.',
+  },
+];
+
+const homeFaqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: homeFaqItems.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+
 const deployItems = [
   {
     title: 'Deploy, manage and measure your ads to Google, TikTok, Facebook, YouTube and Instagram!',
@@ -606,6 +662,10 @@ export default function HomePage({ navigate }: HomePageProps) {
 
   return (
     <div className="bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqJsonLd) }}
+      />
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 py-20 md:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <AnimateIn>
@@ -1280,6 +1340,53 @@ export default function HomePage({ navigate }: HomePageProps) {
       </section>
 
       <TwitterFeed />
+
+      {/* FAQ Section – indexed by Google & AI search */}
+      <section className="py-20 bg-slate-50 border-t border-gray-100" id="faq" itemScope itemType="https://schema.org/FAQPage">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <AnimateIn>
+              <h2 className="text-4xl font-black text-gray-900 mb-3">
+                Frequently Asked Questions
+              </h2>
+            </AnimateIn>
+            <AnimateIn delay={120}>
+              <p className="text-gray-500 max-w-2xl mx-auto">
+                Everything you need to know about working with Hybrid Ads and our AI-powered approach
+              </p>
+            </AnimateIn>
+          </div>
+          <div className="space-y-4">
+            {homeFaqItems.map((faq, i) => (
+              <AnimateIn key={i} delay={i * 60}>
+                <details
+                  className="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden"
+                  itemScope
+                  itemProp="mainEntity"
+                  itemType="https://schema.org/Question"
+                >
+                  <summary className="flex items-center justify-between cursor-pointer px-6 py-5 text-left select-none list-none [&::-webkit-details-marker]:hidden">
+                    <h3 className="font-bold text-gray-900 pr-4 text-[15px] leading-snug" itemProp="name">
+                      {faq.question}
+                    </h3>
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-lg font-bold transition-transform duration-300 group-open:rotate-45">
+                      +
+                    </span>
+                  </summary>
+                  <div
+                    className="px-6 pb-6 text-gray-600 text-sm leading-relaxed border-t border-gray-50 pt-4"
+                    itemScope
+                    itemProp="acceptedAnswer"
+                    itemType="https://schema.org/Answer"
+                  >
+                    <div itemProp="text">{faq.answer}</div>
+                  </div>
+                </details>
+              </AnimateIn>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="bg-white py-20 border-t border-gray-100">
         <div className="max-w-3xl mx-auto px-4 text-center">
