@@ -155,8 +155,15 @@ function updateCanonical(path: string) {
   const canonical = document.getElementById('canonical-link') as HTMLLinkElement | null;
   const base = 'https://hybridads.ai/';
   if (canonical) {
-    canonical.href = path ? `${base}#${path}` : base;
+    canonical.href = path ? `${base}${path}` : base;
   }
+}
+
+function pageFromPath(pathname: string): { page: Page; notFound: boolean } {
+  const slug = pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+  if (!slug) return { page: 'home', notFound: false };
+  if ((KNOWN_PAGES as string[]).includes(slug)) return { page: slug as Page, notFound: false };
+  return { page: 'home', notFound: true };
 }
 
 function App() {
@@ -164,21 +171,14 @@ function App() {
   const [is404, setIs404] = useState(false);
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.slice(1) as Page;
-      if (!hash) {
-        setCurrentPage('home');
-        setIs404(false);
-      } else if (KNOWN_PAGES.includes(hash)) {
-        setCurrentPage(hash);
-        setIs404(false);
-      } else {
-        setIs404(true);
-      }
+    const handleLocationChange = () => {
+      const { page, notFound } = pageFromPath(window.location.pathname);
+      setCurrentPage(page);
+      setIs404(notFound);
     };
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    handleLocationChange();
+    window.addEventListener('popstate', handleLocationChange);
+    return () => window.removeEventListener('popstate', handleLocationChange);
   }, []);
 
   useEffect(() => {
@@ -188,14 +188,15 @@ function App() {
     updateMetaTag('description', description);
     updatePropertyTag('og:title', title);
     updatePropertyTag('og:description', description);
-    updatePropertyTag('og:url', path ? `https://hybridads.ai/#${path}` : 'https://hybridads.ai/');
+    updatePropertyTag('og:url', path ? `https://hybridads.ai/${path}` : 'https://hybridads.ai/');
     updateMetaTag('twitter:title', title);
     updateMetaTag('twitter:description', description);
     updateCanonical(path);
   }, [currentPage, is404]);
 
   const navigate = (page: Page) => {
-    window.location.hash = page === 'home' ? '' : page;
+    const url = page === 'home' ? '/' : `/${page}`;
+    window.history.pushState({}, '', url);
     setCurrentPage(page);
     setIs404(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
