@@ -70,6 +70,19 @@ export default function Footer({ navigate }: FooterProps) {
                 </button>
               </li>
               <li><button onClick={() => navigate('ai-visibility')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">AI Visibility</button></li>
+              <li>
+                <button onClick={() => navigate('gtm-service')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white inline-flex items-center gap-2">
+                  AI Sales Team
+                  <span className="text-xs bg-amber-500 text-white font-bold px-1.5 py-0.5 rounded-full leading-none">Beta</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => navigate('content-lab')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white inline-flex items-center gap-2">
+                  AI Content Lab
+                  <span className="text-xs bg-amber-500 text-white font-bold px-1.5 py-0.5 rounded-full leading-none">Beta</span>
+                </button>
+              </li>
+              <li><button onClick={() => navigate('ai-score')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">AI Score</button></li>
               <li><button onClick={() => navigate('dashboard')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">Ad Performance</button></li>
               <li><button onClick={() => navigate('about')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">About Us</button></li>
               <li><button onClick={() => navigate('case-studies')} className="hover:text-white transition-colors focus-visible:outline-none focus-visible:text-white">Case Studies</button></li>
