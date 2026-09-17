@@ -21,10 +21,13 @@ const ContentLabPage = lazy(() => import('./pages/ContentLabPage'));
 const SignInPage = lazy(() => import('./pages/SignInPage'));
 const SignUpPage = lazy(() => import('./pages/SignUpPage'));
 const AIVisibilityPage = lazy(() => import('./pages/AIVisibilityPage'));
+const PartnersPage = lazy(() => import('./pages/PartnersPage'));
+const PartnerPortalPage = lazy(() => import('./pages/PartnerPortalPage'));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
 
-export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'ai-visibility' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace' | 'content-lab' | 'sign-in' | 'sign-up';
+export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'ai-visibility' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace' | 'content-lab' | 'sign-in' | 'sign-up' | 'partners' | 'partner-portal' | 'admin';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'ai-visibility', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace', 'content-lab', 'sign-in', 'sign-up'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'ai-visibility', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace', 'content-lab', 'sign-in', 'sign-up', 'partners', 'partner-portal', 'admin'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -129,6 +132,23 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
       'Create your free Hybrid Ads account. Access AI-powered sales automation, content generation, and ad performance analytics.',
     path: 'sign-up',
   },
+  partners: {
+    title: 'Partner Program – Build With Hybrid Ads',
+    description:
+      'Join the Hybrid Ads Partner Program. Independent developers and AI engineers work under their own name on Client Engagements we source, with a 55/45 revenue split and a 12 month agreement.',
+    path: 'partners',
+  },
+  'partner-portal': {
+    title: 'Partner Portal – Hybrid Ads',
+    description:
+      'Your Hybrid Ads Partner portal. Track application status, review notifications, and electronically sign your Developer Enablement & Revenue Share Agreement.',
+    path: 'partner-portal',
+  },
+  admin: {
+    title: 'Admin – Hybrid Ads',
+    description: 'Internal Hybrid Ads administration console.',
+    path: 'admin',
+  },
 };
 
 function updateMetaTag(name: string, content: string) {
@@ -221,6 +241,9 @@ function App() {
       case 'content-lab': return <ContentLabPage navigate={navigate} />;
       case 'sign-in': return <SignInPage navigate={navigate} />;
       case 'sign-up': return <SignUpPage navigate={navigate} />;
+      case 'partners': return <PartnersPage navigate={navigate} />;
+      case 'partner-portal': return <PartnerPortalPage navigate={navigate} />;
+      case 'admin': return <AdminPage navigate={navigate} />;
       default: return <HomePage navigate={navigate} />;
     }
   };

@@ -1,0 +1,37 @@
+project_id = "hybridads"
+
+[functions.aps-analyze]
+verify_jwt = true
+
+[functions.fetch-tweets]
+verify_jwt = true
+
+[functions.extract-brand]
+verify_jwt = true
+
+[functions.generate-viral-posts]
+verify_jwt = false
+
+[functions.create-gtm-checkout]
+verify_jwt = true
+
+[functions.stripe-webhook]
+verify_jwt = false
+
+[functions.get-gtm-status]
+verify_jwt = false
+
+[functions.explee-proxy]
+verify_jwt = true
+
+[functions.provision-explee]
+verify_jwt = false
+
+[functions.generate-content]
+verify_jwt = false
+
+[functions.partner-admin-action]
+verify_jwt = true
+
+[functions.partner-sign-agreement]
+verify_jwt = true

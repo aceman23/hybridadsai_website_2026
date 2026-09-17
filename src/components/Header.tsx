@@ -38,6 +38,7 @@ const navLinks: NavLink[] = [
     children: [
       { label: 'About Us', page: 'about' },
       { label: 'Case Studies', page: 'case-studies' },
+      { label: 'Partners', page: 'partners' },
     ],
   },
 ];

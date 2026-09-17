@@ -234,6 +234,40 @@ const pages = [
     noindex: true,
   },
   {
+    slug: 'partners',
+    title: 'Partner Program – Build Alongside Hybrid Ads',
+    description:
+      'Join the Hybrid Ads Partner Program. Independent developers and AI engineers work under their own name with client sourcing, tooling, and a 55/45 revenue split. No income guarantees.',
+    h1: 'Build alongside Hybrid Ads, under your own name.',
+    intro:
+      'The Hybrid Ads Partner Program connects independent developers and AI engineers with client work sourced by Hybrid Ads. Partners deliver under their own identity and business. No income is guaranteed and results depend on the partner\u2019s own effort, skill, and availability.',
+    bullets: [
+      'Independent developers and AI engineers work under their own identity',
+      'Client sourcing with a 55/45 revenue split in the partner\u2019s favor',
+      '12-month agreement, terminable by either party with 30 days notice',
+      'Access to Hybrid Ads tooling, systems, and internal knowledge',
+    ],
+  },
+  {
+    slug: 'partner-portal',
+    title: 'Partner Portal – Hybrid Ads',
+    description:
+      'Sign in to your Hybrid Ads partner portal to track your application, review your agreement, and sign electronically.',
+    h1: 'Partner Portal',
+    intro: 'Sign in to manage your Hybrid Ads partner application and agreement.',
+    bullets: [],
+    noindex: true,
+  },
+  {
+    slug: 'admin',
+    title: 'Admin – Hybrid Ads',
+    description: 'Internal administration.',
+    h1: 'Admin',
+    intro: 'Internal administration console.',
+    bullets: [],
+    noindex: true,
+  },
+  {
     slug: 'gtm-workspace',
     title: 'AI Sales Workspace – Dashboard | Hybrid Ads',
     description:
