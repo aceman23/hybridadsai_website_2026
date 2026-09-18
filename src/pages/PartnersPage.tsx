@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   Handshake, Code2, Globe, Shield, Users, FileText, CheckCircle2,
-  ArrowRight, Loader2, AlertCircle, Sparkles, Briefcase, Clock,
+  ArrowRight, Loader2, AlertCircle, Sparkles, Briefcase,
   ChevronDown, ChevronUp, Mail, Lock, User as UserIcon,
 } from 'lucide-react';
 import type { Page } from '../App';
@@ -18,7 +18,7 @@ const howItWorks = [
     icon: FileText,
     title: 'Apply',
     description:
-      'Tell us about your skills, portfolio, availability, and how you like to work. It takes about ten minutes.',
+      'Tell us about your skills, portfolio, and links to your work. It only takes a few minutes.',
   },
   {
     step: '02',
@@ -111,10 +111,6 @@ const serviceOptions = [
   'DevOps / infra', 'Technical writing',
 ];
 
-const availabilityOptions = [
-  'Under 10 hrs / week', '10 – 20 hrs / week', '20 – 30 hrs / week', 'Full-time',
-];
-
 interface FormState {
   fullName: string;
   legalName: string;
@@ -134,12 +130,6 @@ interface FormState {
   servicesOffered: string[];
   languages: string;
   tools: string;
-  availability: string;
-  hourlyRate: string;
-  currency: string;
-  bio: string;
-  whyPartner: string;
-  workStyle: string;
   agreeTerms: boolean;
   agreeIndependent: boolean;
 }
@@ -149,8 +139,7 @@ const EMPTY_FORM: FormState = {
   phone: '', country: '', city: '', timezone: '', address: '',
   website: '', portfolioUrl: '', linkedinUrl: '', githubUrl: '',
   yearsExperience: '', primarySkills: [], servicesOffered: [],
-  languages: '', tools: '', availability: '', hourlyRate: '',
-  currency: 'USD', bio: '', whyPartner: '', workStyle: '',
+  languages: '', tools: '',
   agreeTerms: false, agreeIndependent: false,
 };
 
@@ -248,12 +237,6 @@ export default function PartnersPage({ navigate }: Props) {
         services_offered: form.servicesOffered,
         languages,
         tools,
-        availability: form.availability || null,
-        hourly_rate: form.hourlyRate || null,
-        currency: form.currency || null,
-        bio: form.bio || null,
-        why_partner: form.whyPartner || null,
-        work_style: form.workStyle || null,
       });
       if (insertError) throw insertError;
 
@@ -575,43 +558,6 @@ export default function PartnersPage({ navigate }: Props) {
                 </div>
               </fieldset>
 
-              {/* Availability */}
-              <fieldset className="p-6 rounded-2xl border border-gray-200 space-y-4">
-                <legend className="px-2 text-sm font-semibold text-gray-900">Availability and rate</legend>
-                <div>
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Availability</p>
-                  <div className="flex flex-wrap gap-2">
-                    {availabilityOptions.map((opt) => (
-                      <button
-                        type="button"
-                        key={opt}
-                        onClick={() => setForm({ ...form, availability: opt })}
-                        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-                          form.availability === opt
-                            ? 'bg-blue-600 border-blue-600 text-white'
-                            : 'bg-white border-gray-300 text-gray-700 hover:border-blue-400'
-                        }`}
-                      >
-                        <Clock className="w-3 h-3" />
-                        {opt}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <Field label="Target hourly rate" placeholder="e.g. 120" value={form.hourlyRate} onChange={(v) => setForm({ ...form, hourlyRate: v })} />
-                  <Field label="Currency" placeholder="USD" value={form.currency} onChange={(v) => setForm({ ...form, currency: v })} />
-                </div>
-              </fieldset>
-
-              {/* About */}
-              <fieldset className="p-6 rounded-2xl border border-gray-200 space-y-4">
-                <legend className="px-2 text-sm font-semibold text-gray-900">About you</legend>
-                <TextArea label="Short bio" placeholder="Two or three sentences about your background." value={form.bio} onChange={(v) => setForm({ ...form, bio: v })} />
-                <TextArea label="Why do you want to partner with Hybrid Ads?" value={form.whyPartner} onChange={(v) => setForm({ ...form, whyPartner: v })} />
-                <TextArea label="How do you like to work with clients?" placeholder="Communication cadence, project management style, etc." value={form.workStyle} onChange={(v) => setForm({ ...form, workStyle: v })} />
-              </fieldset>
-
               {/* Confirmations */}
               <fieldset className="p-6 rounded-2xl border border-gray-200 space-y-4 bg-gray-50">
                 <legend className="px-2 text-sm font-semibold text-gray-900">Confirmations</legend>
@@ -689,25 +635,6 @@ function Field({
           className={`w-full ${Icon ? 'pl-10' : 'pl-3.5'} pr-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
         />
       </div>
-    </label>
-  );
-}
-
-function TextArea({
-  label, value, onChange, placeholder,
-}: {
-  label: string; value: string; onChange: (v: string) => void; placeholder?: string;
-}) {
-  return (
-    <label className="block">
-      <span className="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">{label}</span>
-      <textarea
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        rows={4}
-        className="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
-      />
     </label>
   );
 }
