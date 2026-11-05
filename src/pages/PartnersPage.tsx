@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
+import EarningsCalculator from '../components/EarningsCalculator';
 import { supabase } from '../lib/supabase';
 
 interface Props {
@@ -406,6 +407,8 @@ export default function PartnersPage({ navigate }: Props) {
           </div>
         </div>
       </section>
+
+      <EarningsCalculator />
 
       {/* Who it's for */}
       <section className="py-20 bg-white">
