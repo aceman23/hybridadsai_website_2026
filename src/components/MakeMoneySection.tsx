@@ -49,7 +49,7 @@ export default function MakeMoneySection({ navigate }: Props) {
             </AnimateIn>
             <AnimateIn delay={280}>
               <button
-                onClick={() => navigate('partners')}
+                onClick={() => navigate('aitraining')}
                 className="group inline-flex items-center gap-2 bg-gray-900 text-white text-sm font-semibold px-6 py-3.5 rounded-lg hover:bg-emerald-700 transition-colors shadow-lg shadow-gray-900/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
               >
                 Start Making Money
@@ -60,7 +60,7 @@ export default function MakeMoneySection({ navigate }: Props) {
 
           <AnimateIn delay={120} className="lg:col-span-3">
             <button
-              onClick={() => navigate('partners')}
+              onClick={() => navigate('aitraining')}
               className="block w-full rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-xl shadow-gray-900/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
               aria-label="Learn about AI Paid Training"
             >

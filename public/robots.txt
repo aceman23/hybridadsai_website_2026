@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /partner-portal
+Disallow: /gtm-workspace
+Disallow: /gtm-success
 
 Sitemap: https://hybridads.ai/sitemap.xml

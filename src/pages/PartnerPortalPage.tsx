@@ -139,7 +139,7 @@ export default function PartnerPortalPage({ navigate }: Props) {
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
-              onClick={() => navigate('partners')}
+              onClick={() => navigate('aitraining')}
               className="inline-flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold px-5 py-2.5 rounded-lg transition-colors"
             >
               Learn about the program
@@ -160,7 +160,7 @@ export default function PartnerPortalPage({ navigate }: Props) {
           <h1 className="text-2xl font-bold text-gray-900 mb-2">No application on file</h1>
           <p className="text-gray-600 mb-6">You haven&apos;t applied to the Hybrid Ads Partner Program yet.</p>
           <button
-            onClick={() => navigate('partners')}
+            onClick={() => navigate('aitraining')}
             className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors"
           >
             Apply now

@@ -2,9 +2,13 @@
 > AI Systems Integrator and Paid Ads Agency. We make local service businesses visible and recommended inside AI assistants (ChatGPT, Perplexity, Gemini, Google AI Overviews) through AI visibility / GEO services, and we run their paid advertising.
 
 ## Key Pages
-- [AI Visibility Services](https://hybridads.ai/ai-visibility): How we make businesses the answer AI recommends — audit, knowledge catalog build, and AI Share of Voice monitoring.
-- [Services](https://hybridads.ai/services): Paid ads and AI systems integration.
-- [Contact](https://hybridads.ai/contact): Book a free AI Visibility Audit.
+- [AI Paid Training](https://hybridads.ai/aitraining): Developers and AI/ML engineers get paid $60–90/hr to train frontier AI models by reviewing code, designing prompts, guiding AI reasoning, and evaluating model responses. Remote, flexible hours. Process: evaluation, approval, high-skill tasks, income.
+- [AI Visibility Services](https://hybridads.ai/ai-visibility): How we make businesses the answer AI recommends: audit, knowledge catalog build, and AI Share of Voice monitoring.
+- [AI Systems Integrator](https://hybridads.ai/ai-agency): Custom AI agents, RAG pipelines, voice AI, and LLM fine-tuning built for production.
+- [AI Sales Team](https://hybridads.ai/gtm-service): A fully autonomous AI go-to-market sales team for prospecting and outreach.
+- [AI Publisher Score](https://hybridads.ai/ai-score): Free audit of how AI assistants describe your business.
+- [Case Studies](https://hybridads.ai/case-studies): Client results and growth stories.
+- [About](https://hybridads.ai/about): The team behind Hybrid Ads.
 
 ## About
 Hybrid Ads combines paid advertising with AI visibility so clients capture demand that exists today and get recommended for the demand forming through AI search.

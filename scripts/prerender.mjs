@@ -234,18 +234,18 @@ const pages = [
     noindex: true,
   },
   {
-    slug: 'partners',
-    title: 'Partner Program – Build Alongside Hybrid Ads',
+    slug: 'aitraining',
+    title: 'AI Paid Training – Get Paid $60–90/hr to Train AI | Hybrid Ads',
     description:
-      'Join the Hybrid Ads Partner Program. Independent developers and AI engineers work under their own name with client sourcing, tooling, and a 55/45 revenue split. No income guarantees.',
-    h1: 'Build alongside Hybrid Ads, under your own name.',
+      'Developers and AI/ML engineers earn $60–90/hr reviewing code, designing prompts, and evaluating responses for frontier AI models. Remote, flexible hours. Apply today.',
+    h1: 'Get paid to train the next generation of AI.',
     intro:
-      'The Hybrid Ads Partner Program connects independent developers and AI engineers with client work sourced by Hybrid Ads. Partners deliver under their own identity and business. No income is guaranteed and results depend on the partner\u2019s own effort, skill, and availability.',
+      'Hybrid Ads AI Paid Training is a new earning path for developers and AI/ML engineers. Review code, design prompts, guide AI reasoning, and evaluate model responses on frontier AI training projects, remotely and on your own schedule. Income is not guaranteed.',
     bullets: [
-      'Independent developers and AI engineers work under their own identity',
-      'Client sourcing with a 55/45 revenue split in the partner\u2019s favor',
-      '12-month agreement, terminable by either party with 30 days notice',
-      'Access to Hybrid Ads tooling, systems, and internal knowledge',
+      'Typical rates of $60–70/hr for developers and $80–90/hr for senior and AI/ML specialists',
+      'Evaluation, approval, high-skill tasks, then income',
+      'Code and reasoning review, prompt design, and response evaluation',
+      'Fully remote with flexible hours and no minimum commitment',
     ],
   },
   {

@@ -24,7 +24,7 @@ const navLinks: NavLink[] = [
     label: 'AI Services',
     page: 'gtm-service',
     children: [
-      { label: 'AI Paid Training', page: 'partners', badge: 'New', badgeColor: 'bg-emerald-600' },
+      { label: 'AI Paid Training', page: 'aitraining', badge: 'New', badgeColor: 'bg-emerald-600' },
       { label: 'AI Sales Team', page: 'gtm-service', badge: 'Beta', badgeColor: 'bg-amber-500' },
       { label: 'AI Content Lab', page: 'content-lab', badge: 'Beta', badgeColor: 'bg-amber-500' },
       { label: 'AI Visibility', page: 'ai-visibility' },
@@ -93,7 +93,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
     timeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
   };
 
-  const isAiServicesSection = currentPage === 'gtm-service' || currentPage === 'nemo-claw' || currentPage === 'ai-score' || currentPage === 'content-lab' || currentPage === 'partners';
+  const isAiServicesSection = currentPage === 'gtm-service' || currentPage === 'nemo-claw' || currentPage === 'ai-score' || currentPage === 'content-lab' || currentPage === 'aitraining';
   const isAboutSection = currentPage === 'about' || currentPage === 'case-studies';
 
   const isDropdownActive = (link: NavLink) => {
@@ -204,9 +204,9 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
 
           <div className="hidden md:flex items-center gap-3">
             <button
-              onClick={() => navigate('partners')}
+              onClick={() => navigate('aitraining')}
               className={`group flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
-                currentPage === 'partners'
+                currentPage === 'aitraining'
                   ? 'bg-amber-500 text-gray-900 shadow-sm shadow-amber-200'
                   : 'bg-amber-400 text-gray-900 hover:bg-amber-500 hover:-translate-y-0.5 shadow-sm shadow-amber-200'
               }`}
@@ -330,7 +330,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
           )}
           <div className="pt-2 space-y-2">
             <button
-              onClick={() => { setMobileOpen(false); navigate('partners'); }}
+              onClick={() => { setMobileOpen(false); navigate('aitraining'); }}
               className="flex items-center justify-center gap-2 w-full text-sm font-semibold text-gray-900 bg-amber-400 px-4 py-3 rounded-lg hover:bg-amber-500 transition-colors"
             >
               <DollarSign className="w-4 h-4" />

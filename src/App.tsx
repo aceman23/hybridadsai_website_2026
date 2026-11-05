@@ -26,9 +26,9 @@ const PartnersPage = lazy(() => import('./pages/PartnersPage'));
 const PartnerPortalPage = lazy(() => import('./pages/PartnerPortalPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 
-export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'ai-visibility' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace' | 'content-lab' | 'sign-in' | 'sign-up' | 'partners' | 'partner-portal' | 'admin';
+export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'ai-visibility' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace' | 'content-lab' | 'sign-in' | 'sign-up' | 'aitraining' | 'partner-portal' | 'admin';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'ai-visibility', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace', 'content-lab', 'sign-in', 'sign-up', 'partners', 'partner-portal', 'admin'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'ai-visibility', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace', 'content-lab', 'sign-in', 'sign-up', 'aitraining', 'partner-portal', 'admin'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -133,11 +133,11 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
       'Create your free Hybrid Ads account. Access AI-powered sales automation, content generation, and ad performance analytics.',
     path: 'sign-up',
   },
-  partners: {
-    title: 'AI Paid Training – Make Money With Hybrid Ads',
+  aitraining: {
+    title: 'AI Paid Training – Get Paid $60–90/hr to Train AI | Hybrid Ads',
     description:
-      'Join Hybrid Ads AI Paid Training. Independent developers and AI engineers get evaluated, approved, and paid for high-skill work.',
-    path: 'partners',
+      'Developers and AI/ML engineers earn $60–90/hr reviewing code, designing prompts, and evaluating responses for frontier AI models. Remote, flexible hours. Apply today.',
+    path: 'aitraining',
   },
   'partner-portal': {
     title: 'Partner Portal – Hybrid Ads',
@@ -242,7 +242,7 @@ function App() {
       case 'content-lab': return <ContentLabPage navigate={navigate} />;
       case 'sign-in': return <SignInPage navigate={navigate} />;
       case 'sign-up': return <SignUpPage navigate={navigate} />;
-      case 'partners': return <PartnersPage navigate={navigate} />;
+      case 'aitraining': return <PartnersPage navigate={navigate} />;
       case 'partner-portal': return <PartnerPortalPage navigate={navigate} />;
       case 'admin': return <AdminPage navigate={navigate} />;
       default: return <HomePage navigate={navigate} />;
@@ -266,7 +266,7 @@ function App() {
             {renderPage()}
           </Suspense>
         </main>
-        {!isAuthPage && !['partners', 'partner-portal', 'admin'].includes(currentPage) && <MakeMoneySection navigate={navigate} />}
+        {!isAuthPage && !['aitraining', 'partner-portal', 'admin'].includes(currentPage) && <MakeMoneySection navigate={navigate} />}
         {!isAuthPage && <Footer navigate={navigate} />}
       </div>
     </ErrorBoundary>
