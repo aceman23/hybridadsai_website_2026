@@ -265,7 +265,7 @@ export default function PartnersPage({ navigate }: Props) {
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-3">Application received</h1>
           <p className="text-gray-600 leading-relaxed mb-6">
-            Thanks for applying to the Hybrid Ads Partner Program. We&apos;ll email you once our team has reviewed your application. Taking you to your partner portal now.
+            Thanks for applying to Hybrid Ads AI Paid Training. We&apos;ll email you once our team has reviewed your application. Taking you to your partner portal now.
           </p>
           <Loader2 className="w-5 h-5 text-blue-600 animate-spin mx-auto" />
         </div>
@@ -282,7 +282,7 @@ export default function PartnersPage({ navigate }: Props) {
           <AnimateIn>
             <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-xs font-semibold text-cyan-300 uppercase tracking-wider mb-6">
               <Handshake className="w-3.5 h-3.5" />
-              Hybrid Ads Partner Program
+              Hybrid Ads AI Paid Training
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight max-w-4xl">
               Build alongside Hybrid Ads,

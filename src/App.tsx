@@ -1,6 +1,7 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import MakeMoneySection from './components/MakeMoneySection';
 import ErrorBoundary from './components/ErrorBoundary';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -133,9 +134,9 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     path: 'sign-up',
   },
   partners: {
-    title: 'Partner Program – Build With Hybrid Ads',
+    title: 'AI Paid Training – Make Money With Hybrid Ads',
     description:
-      'Join the Hybrid Ads Partner Program. Independent developers and AI engineers work under their own name on Client Engagements we source, with a 55/45 revenue split and a 12 month agreement.',
+      'Join Hybrid Ads AI Paid Training. Independent developers and AI engineers get evaluated, approved, and paid for high-skill work.',
     path: 'partners',
   },
   'partner-portal': {
@@ -265,6 +266,7 @@ function App() {
             {renderPage()}
           </Suspense>
         </main>
+        {!isAuthPage && !['partners', 'partner-portal', 'admin'].includes(currentPage) && <MakeMoneySection navigate={navigate} />}
         {!isAuthPage && <Footer navigate={navigate} />}
       </div>
     </ErrorBoundary>

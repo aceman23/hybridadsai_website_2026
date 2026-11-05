@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Menu, X, ChevronDown, Zap, LogIn, LogOut } from 'lucide-react';
+import { Menu, X, ChevronDown, Zap, LogIn, LogOut, DollarSign } from 'lucide-react';
 import type { Page } from '../App';
 import { supabase } from '../lib/supabase';
 import { getAuthDestination } from '../lib/auth-utils';
@@ -29,6 +29,7 @@ const navLinks: NavLink[] = [
       { label: 'AI Visibility', page: 'ai-visibility' },
       { label: 'AI Agents', page: 'nemo-claw' },
       { label: 'AI Score', page: 'ai-score' },
+      { label: 'AI Paid Training', page: 'partners', badge: 'New', badgeColor: 'bg-emerald-600' },
     ],
   },
   { label: 'Ad Performance', page: 'dashboard' },
@@ -38,7 +39,6 @@ const navLinks: NavLink[] = [
     children: [
       { label: 'About Us', page: 'about' },
       { label: 'Case Studies', page: 'case-studies' },
-      { label: 'Partners', page: 'partners' },
     ],
   },
 ];
@@ -93,7 +93,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
     timeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
   };
 
-  const isAiServicesSection = currentPage === 'gtm-service' || currentPage === 'nemo-claw' || currentPage === 'ai-score' || currentPage === 'content-lab';
+  const isAiServicesSection = currentPage === 'gtm-service' || currentPage === 'nemo-claw' || currentPage === 'ai-score' || currentPage === 'content-lab' || currentPage === 'partners';
   const isAboutSection = currentPage === 'about' || currentPage === 'case-studies';
 
   const isDropdownActive = (link: NavLink) => {
@@ -149,7 +149,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
                     <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${openDropdown === link.label ? 'rotate-180' : ''}`} />
                   </button>
                   <div
-                    className={`absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 transition-all duration-200 origin-top ${
+                    className={`absolute top-full right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 transition-all duration-200 origin-top ${
                       openDropdown === link.label
                         ? 'opacity-100 scale-100 translate-y-0'
                         : 'opacity-0 scale-95 -translate-y-1 pointer-events-none'
@@ -203,6 +203,17 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={() => navigate('partners')}
+              className={`group flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
+                currentPage === 'partners'
+                  ? 'bg-amber-500 text-gray-900 shadow-sm shadow-amber-200'
+                  : 'bg-amber-400 text-gray-900 hover:bg-amber-500 hover:-translate-y-0.5 shadow-sm shadow-amber-200'
+              }`}
+            >
+              <DollarSign className="w-4 h-4 transition-transform group-hover:rotate-12" />
+              Make Money
+            </button>
             <button
               onClick={() => {
                 if (isLoggedIn && workspaceDest === 'gtm-service') {
@@ -289,6 +300,11 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
                         }`}
                       >
                         {child.label}
+                        {child.badge && (
+                          <span className={`ml-2 text-[10px] ${child.badgeColor ?? 'bg-cyan-500'} text-white font-bold px-1.5 py-0.5 rounded-full leading-none`}>
+                            {child.badge}
+                          </span>
+                        )}
                       </button>
                     ))}
                   </div>
@@ -313,6 +329,13 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
             )
           )}
           <div className="pt-2 space-y-2">
+            <button
+              onClick={() => { setMobileOpen(false); navigate('partners'); }}
+              className="flex items-center justify-center gap-2 w-full text-sm font-semibold text-gray-900 bg-amber-400 px-4 py-3 rounded-lg hover:bg-amber-500 transition-colors"
+            >
+              <DollarSign className="w-4 h-4" />
+              Make Money
+            </button>
             <button
               onClick={() => {
                 setMobileOpen(false);
