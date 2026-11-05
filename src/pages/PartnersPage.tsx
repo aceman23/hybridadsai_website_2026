@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
-  Handshake, Code2, Globe, Shield, Users, FileText, CheckCircle2,
-  ArrowRight, Loader2, AlertCircle, Sparkles, Briefcase,
-  ChevronDown, ChevronUp, Mail, Lock, User as UserIcon,
+  Code2, Shield, CheckCircle2, ArrowRight, Loader2, AlertCircle,
+  Sparkles, ChevronDown, ChevronUp, Mail, Lock, User as UserIcon,
+  ClipboardCheck, BadgeCheck, Brain, DollarSign, Laptop, Clock, GraduationCap,
 } from 'lucide-react';
 import type { Page } from '../App';
 import AnimateIn from '../components/AnimateIn';
@@ -15,88 +15,94 @@ interface Props {
 const howItWorks = [
   {
     step: '01',
-    icon: FileText,
-    title: 'Apply',
+    icon: ClipboardCheck,
+    title: 'Evaluation',
     description:
-      'Tell us about your skills, portfolio, and links to your work. It only takes a few minutes.',
+      'Apply with your skills and links to your work, then complete a short assessment of AI outputs for quality, accuracy, and relevance.',
   },
   {
     step: '02',
-    icon: Shield,
-    title: 'We review',
+    icon: BadgeCheck,
+    title: 'Approval',
     description:
-      'A member of our team reads every application. We look for technical craft, communication, and a track record of shipping.',
+      'Our team reviews every application. Approved contributors sign a short agreement in their portal and get access to paid projects.',
   },
   {
     step: '03',
-    icon: Handshake,
-    title: 'Sign the agreement',
+    icon: Brain,
+    title: 'High-skill tasks',
     description:
-      'If approved, we send the Developer Enablement & Revenue Share Agreement to your partner portal for electronic signature.',
+      'Design better prompts, guide AI reasoning step by step, review code, and evaluate model responses in your area of expertise.',
   },
   {
     step: '04',
-    icon: Briefcase,
-    title: 'Get matched to work',
+    icon: DollarSign,
+    title: 'Income + better models',
     description:
-      'When a Client Engagement fits your skills, we present the scope, timeline, and fees. You decide whether to accept.',
+      'Get paid for quality work while helping build smarter, more reliable frontier AI models.',
   },
 ];
 
-const providesItems = [
+const taskTypes = [
   {
-    icon: Users,
-    title: 'Client sourcing',
-    body: 'We introduce Client Engagements we source through our paid-media and AI work. Presentation is not a guarantee of work, and you can decline anything that is not a fit.',
-  },
-  {
-    icon: Shield,
-    title: 'Contract and billing',
-    body: 'A single, transparent agreement covers the relationship. We invoice and collect from the Client, then pay your share within 30 days of cleared funds.',
+    icon: Code2,
+    title: 'Code and reasoning review',
+    body: 'Read model-written code and step-by-step reasoning, find the mistakes, and write the correct solution so the model learns from it.',
   },
   {
     icon: Sparkles,
-    title: 'Positioning and materials',
-    body: 'Access to the AI systems and paid-media playbooks we use to win engagements, along with technical and design collateral you can reference on projects.',
+    title: 'Prompt design',
+    body: 'Write challenging, realistic prompts that push models to their limits and expose where they still fall short.',
   },
   {
-    icon: Globe,
-    title: 'A real partnership',
-    body: 'You keep your own name, brand, and tools. This is a partnership, not a subcontract, and you retain your independence on how work gets done.',
+    icon: Brain,
+    title: 'Teaching AI',
+    body: 'Show models how an expert thinks through a problem, from planning to edge cases, in fields like software, data, and ML.',
+  },
+  {
+    icon: Shield,
+    title: 'Response evaluation',
+    body: 'Compare and rate model answers against clear quality guidelines for accuracy, helpfulness, and safety.',
   },
 ];
 
+const perks = [
+  { icon: Laptop, title: 'Fully remote', body: 'Work from anywhere with a laptop and a reliable connection.' },
+  { icon: Clock, title: 'Flexible hours', body: 'Pick up projects when it suits you. No fixed schedule or minimum hours.' },
+  { icon: GraduationCap, title: 'Stay sharp', body: 'Work hands-on with the newest AI models before most people see them.' },
+];
+
 const whoFor = [
-  'Independent developers and AI engineers who ship production code.',
-  'Small studios or teams comfortable working under their own identity.',
-  'Specialists in Web, Mobile, Data, ML, or Cloud infrastructure.',
-  'Anyone with a portfolio of delivered work and clear references.',
+  'Software engineers who write and review production code.',
+  'AI / ML engineers and data scientists.',
+  'Developers with strong problem-solving and clear written communication.',
+  'Specialists in Web, Mobile, Data, Cloud, or Math-heavy fields.',
 ];
 
 const faqs = [
   {
-    q: 'Is there an income guarantee?',
-    a: 'No. We only refer Client Engagements as they come in, and you are free to accept or decline each one. There is no minimum work volume or promise of income.',
+    q: 'What kind of work will I do?',
+    a: 'Tasks that help train frontier AI models: writing and reviewing code, designing prompts, explaining expert reasoning, and rating model responses. Each project comes with clear guidelines.',
   },
   {
-    q: 'Whose account and tools do I use?',
-    a: 'Yours. You work as an independent contractor under your own business name, accounts, tax identity, and tools. You control how the work is done.',
+    q: 'How much can I earn?',
+    a: 'Pay depends on the project, your skill area, and the quality of your work. Rates are shown before you accept a project. There is no guarantee of income or a minimum amount of work.',
   },
   {
-    q: 'How is revenue split?',
-    a: 'For each accepted Client Engagement, net collected fees are split 55% to Hybrid Ads / 45% to you, paid within 30 days of cleared funds from the client.',
+    q: 'How much time do I need to commit?',
+    a: 'None is required. You choose which projects to take and when to work on them. Some contributors work a few hours a week, others much more.',
   },
   {
-    q: 'How long is the agreement?',
-    a: 'The initial term is 12 months and renews automatically for successive 12-month terms unless either side gives 30 days notice of non-renewal. Either party can also terminate on 30 days notice.',
+    q: 'What does the evaluation involve?',
+    a: 'After you apply, we review your background and may ask you to complete a short skills assessment related to your field. It helps us match you to the right projects.',
   },
   {
-    q: 'Do you take equity or exclusivity?',
-    a: 'No equity. You are not exclusive to us — you can continue your own client work. There is a 12-month non-circumvention clause covering clients we introduce.',
+    q: 'Am I an employee?',
+    a: 'No. You take part as an independent contractor using your own equipment and tax identity, and you are free to keep doing your other work.',
   },
   {
-    q: 'Who owns the deliverables?',
-    a: 'Ownership follows the Client agreement. In the default case, deliverables are assigned to the Client on payment in full. You retain rights to pre-existing tools and know-how you bring in.',
+    q: 'How and when do I get paid?',
+    a: 'Once approved, the payment terms are set out in the agreement you sign in your portal. Payment is made for approved, quality work.',
   },
 ];
 
@@ -106,9 +112,9 @@ const primarySkillOptions = [
 ];
 
 const serviceOptions = [
-  'Web apps', 'Mobile apps', 'AI agents', 'RAG pipelines', 'Voice AI',
-  'Automations / integrations', 'Data platforms', 'Model fine-tuning',
-  'DevOps / infra', 'Technical writing',
+  'Code review', 'Prompt design', 'Reasoning / step-by-step solutions',
+  'Response evaluation', 'Data labeling', 'Math / science problems',
+  'Technical writing', 'Safety / red-teaming',
 ];
 
 interface FormState {
@@ -247,7 +253,7 @@ export default function PartnersPage({ navigate }: Props) {
       if (message.toLowerCase().includes('already registered')) {
         setError('That email is already registered. Sign in first, then submit your application.');
       } else if (message.toLowerCase().includes('duplicate') || message.toLowerCase().includes('unique')) {
-        setError('You already have an application on file. Go to your partner portal to check its status.');
+        setError('You already have an application on file. Go to your portal to check its status.');
       } else {
         setError(message);
       }
@@ -265,7 +271,7 @@ export default function PartnersPage({ navigate }: Props) {
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-3">Application received</h1>
           <p className="text-gray-600 leading-relaxed mb-6">
-            Thanks for applying to Hybrid Ads AI Paid Training. We&apos;ll email you once our team has reviewed your application. Taking you to your partner portal now.
+            Thanks for applying to Hybrid Ads AI Paid Training. We&apos;ll email you once our team has reviewed your application. Taking you to your portal now.
           </p>
           <Loader2 className="w-5 h-5 text-blue-600 animate-spin mx-auto" />
         </div>
@@ -280,38 +286,54 @@ export default function PartnersPage({ navigate }: Props) {
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '32px 32px' }} />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <AnimateIn>
-            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-xs font-semibold text-cyan-300 uppercase tracking-wider mb-6">
-              <Handshake className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-xs font-semibold text-emerald-300 uppercase tracking-wider mb-6">
+              <DollarSign className="w-3.5 h-3.5" />
               Hybrid Ads AI Paid Training
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight max-w-4xl">
-              Build alongside Hybrid Ads,
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-400">under your own name.</span>
+              Get paid to train
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300">the next generation of AI.</span>
             </h1>
             <p className="mt-6 text-lg text-gray-300 max-w-2xl leading-relaxed">
-              We&apos;re building a small network of independent developers and AI engineers to take on Client Engagements we source. You work under your own identity and your own accounts. We handle contracts, invoicing, and client relationships.
+              A new earning path for developers and AI/ML engineers. Use your expertise to review code, design prompts, and evaluate model responses on frontier AI training projects, remotely and on your own schedule.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <button
                 onClick={scrollToForm}
-                className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-gray-950 font-bold px-6 py-3.5 rounded-xl transition-colors shadow-lg shadow-cyan-500/20"
+                className="group inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-gray-950 font-bold px-6 py-3.5 rounded-xl transition-colors shadow-lg shadow-emerald-500/20"
               >
-                Apply to the program
-                <ArrowRight className="w-4 h-4" />
+                Start making money
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
               {existing && (
                 <button
                   onClick={() => navigate('partner-portal')}
                   className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3.5 rounded-xl transition-colors border border-white/10"
                 >
-                  Open your partner portal
+                  Open your portal
                   <ArrowRight className="w-4 h-4" />
                 </button>
               )}
             </div>
             <p className="mt-6 text-xs text-gray-500 max-w-xl">
-              No income guarantees. Presentation of a Client Engagement is not an offer of work. Partners deliver under their own name, accounts, and tools.
+              No income guarantees. Project availability varies, and pay depends on the project and the quality of your work.
             </p>
+          </AnimateIn>
+        </div>
+      </section>
+
+      {/* Image */}
+      <section className="relative -mt-10 pb-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimateIn>
+            <div className="rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-2xl shadow-gray-900/10">
+              <img
+                src="/HybridAds_AITraining_Platform_Final.png"
+                alt="New earning path for AI/ML and developers: evaluation, approval, high-skill tasks, then income and better models"
+                className="w-full h-auto"
+                decoding="async"
+              />
+            </div>
           </AnimateIn>
         </div>
       </section>
@@ -321,8 +343,8 @@ export default function PartnersPage({ navigate }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateIn>
             <div className="max-w-2xl">
-              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">How it works</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-3">From application to your first engagement</h2>
+              <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">How it works</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-3">From application to your first paid task</h2>
             </div>
           </AnimateIn>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -330,7 +352,7 @@ export default function PartnersPage({ navigate }: Props) {
               <AnimateIn key={step.step} delay={i * 80}>
                 <div className="h-full p-6 rounded-2xl border border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300 hover:shadow-sm transition-all">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center">
                       <step.icon className="w-5 h-5 text-white" />
                     </div>
                     <span className="text-xs font-bold text-gray-400 tracking-wider">{step.step}</span>
@@ -344,27 +366,40 @@ export default function PartnersPage({ navigate }: Props) {
         </div>
       </section>
 
-      {/* What Hybrid Ads provides */}
+      {/* Task types */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateIn>
             <div className="max-w-2xl">
-              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">What Hybrid Ads provides</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-3">A partnership, not a subcontract</h2>
+              <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">The work</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Frontier model training work</h2>
               <p className="mt-4 text-gray-600 leading-relaxed">
-                You keep control of your business. We handle client sourcing and the commercial side so you can spend your time building.
+                AI models only get better when skilled people show them what good looks like. These are the kinds of tasks you&apos;ll take on.
               </p>
             </div>
           </AnimateIn>
           <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {providesItems.map((item, i) => (
+            {taskTypes.map((item, i) => (
               <AnimateIn key={item.title} delay={i * 80}>
-                <div className="p-6 rounded-2xl bg-white border border-gray-200">
-                  <div className="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center mb-4">
+                <div className="h-full p-6 rounded-2xl bg-white border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mb-4">
                     <item.icon className="w-5 h-5" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">{item.body}</p>
+                </div>
+              </AnimateIn>
+            ))}
+          </div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+            {perks.map((perk, i) => (
+              <AnimateIn key={perk.title} delay={i * 80}>
+                <div className="flex items-start gap-3 p-5 rounded-xl bg-amber-50 border border-amber-100">
+                  <perk.icon className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-900">{perk.title}</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed mt-1">{perk.body}</p>
+                  </div>
                 </div>
               </AnimateIn>
             ))}
@@ -377,10 +412,10 @@ export default function PartnersPage({ navigate }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
           <AnimateIn>
             <div>
-              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Who it&apos;s for</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Independent builders who ship</h2>
+              <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Who it&apos;s for</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Developers and AI experts</h2>
               <p className="mt-4 text-gray-600 leading-relaxed">
-                This program is for professionals who want to focus on the work, not on prospecting. If you have a real portfolio and can hold your end of a client relationship, we want to hear from you.
+                If you can spot a subtle bug, explain your reasoning clearly, and care about getting the details right, your skills are exactly what AI training needs.
               </p>
             </div>
           </AnimateIn>
@@ -402,7 +437,7 @@ export default function PartnersPage({ navigate }: Props) {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateIn>
             <div className="text-center">
-              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">FAQ</span>
+              <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">FAQ</span>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Common questions</h2>
             </div>
           </AnimateIn>
@@ -435,8 +470,8 @@ export default function PartnersPage({ navigate }: Props) {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateIn>
             <div className="text-center">
-              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Apply</span>
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Partner application</h2>
+              <span className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Apply</span>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Apply for AI Paid Training</h2>
               <p className="mt-4 text-gray-600 leading-relaxed max-w-xl mx-auto">
                 Applying creates a Hybrid Ads account (or signs you into your existing one) and files your application for review.
               </p>
@@ -456,7 +491,7 @@ export default function PartnersPage({ navigate }: Props) {
                 onClick={() => navigate('partner-portal')}
                 className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors"
               >
-                Open your partner portal
+                Open your portal
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -507,7 +542,7 @@ export default function PartnersPage({ navigate }: Props) {
 
               {/* Skills */}
               <fieldset className="p-6 rounded-2xl border border-gray-200 space-y-5">
-                <legend className="px-2 text-sm font-semibold text-gray-900">Skills and services</legend>
+                <legend className="px-2 text-sm font-semibold text-gray-900">Skills and task types</legend>
 
                 <div>
                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Primary skills</p>
@@ -569,7 +604,7 @@ export default function PartnersPage({ navigate }: Props) {
                     className="mt-1 w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-sm text-gray-700 leading-relaxed">
-                    I understand that, if accepted, I will be an independent contractor and will perform all work under my own name, accounts, tax identity, and tools. Hybrid Ads is not my employer.
+                    I understand that, if accepted, I will take part as an independent contractor using my own equipment and tax identity. Hybrid Ads is not my employer.
                   </span>
                 </label>
                 <label className="flex items-start gap-3 cursor-pointer">
@@ -580,7 +615,7 @@ export default function PartnersPage({ navigate }: Props) {
                     className="mt-1 w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-sm text-gray-700 leading-relaxed">
-                    I confirm that presentation of a Client Engagement is not an offer of work and that Hybrid Ads makes no guarantee of income or work volume. I&apos;ve read the{' '}
+                    I confirm that acceptance does not guarantee any projects and that Hybrid Ads makes no guarantee of income or work volume. I&apos;ve read the{' '}
                     <button type="button" onClick={() => navigate('terms')} className="text-blue-600 underline underline-offset-2">Terms of Service</button>{' '}
                     and{' '}
                     <button type="button" onClick={() => navigate('privacy')} className="text-blue-600 underline underline-offset-2">Privacy Policy</button>.
