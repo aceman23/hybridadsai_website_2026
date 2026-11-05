@@ -3,9 +3,8 @@ import { Calculator, Clock, DollarSign, TrendingUp } from 'lucide-react';
 import AnimateIn from './AnimateIn';
 
 const tiers = [
-  { id: 'generalist', label: 'Generalist', detail: 'Evaluation and rating', rate: 25 },
-  { id: 'developer', label: 'Developer', detail: 'Code review and prompts', rate: 45 },
-  { id: 'specialist', label: 'AI / ML Specialist', detail: 'Expert reasoning tasks', rate: 70 },
+  { id: 'developer', label: 'Developer', detail: 'Code review, prompts, and evaluation', min: 60, max: 70 },
+  { id: 'specialist', label: 'Senior / AI-ML Specialist', detail: 'Expert reasoning and advanced tasks', min: 80, max: 90 },
 ];
 
 const MIN_HOURS = 1;
@@ -16,11 +15,13 @@ const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: '
 
 export default function EarningsCalculator() {
   const [hours, setHours] = useState(10);
-  const [tierId, setTierId] = useState(tiers[1].id);
-  const tier = tiers.find((t) => t.id === tierId) ?? tiers[1];
+  const [tierId, setTierId] = useState(tiers[0].id);
+  const tier = tiers.find((t) => t.id === tierId) ?? tiers[0];
 
-  const weekly = hours * tier.rate;
-  const monthly = weekly * WEEKS_PER_MONTH;
+  const weeklyMin = hours * tier.min;
+  const weeklyMax = hours * tier.max;
+  const monthlyMin = weeklyMin * WEEKS_PER_MONTH;
+  const monthlyMax = weeklyMax * WEEKS_PER_MONTH;
   const hoursPercent = ((hours - MIN_HOURS) / (MAX_HOURS - MIN_HOURS)) * 100;
 
   return (
@@ -43,7 +44,7 @@ export default function EarningsCalculator() {
             <div className="lg:col-span-3 p-6 sm:p-8 bg-gray-50 space-y-8">
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Skill level</p>
-                <div className="grid sm:grid-cols-3 gap-3" role="radiogroup" aria-label="Skill level">
+                <div className="grid sm:grid-cols-2 gap-3" role="radiogroup" aria-label="Skill level">
                   {tiers.map((t) => {
                     const active = t.id === tierId;
                     return (
@@ -62,7 +63,7 @@ export default function EarningsCalculator() {
                         <span className="block text-sm font-bold text-gray-900">{t.label}</span>
                         <span className="block text-xs text-gray-500 mt-1">{t.detail}</span>
                         <span className={`block text-sm font-semibold mt-3 ${active ? 'text-emerald-700' : 'text-gray-700'}`}>
-                          ~{currency.format(t.rate)}/hr
+                          {currency.format(t.min)}–{currency.format(t.max)}/hr
                         </span>
                       </button>
                     );
@@ -104,23 +105,29 @@ export default function EarningsCalculator() {
                 Estimated income
               </div>
               <p className="mt-4 text-sm text-gray-400">Per week</p>
-              <p className="text-5xl font-bold tracking-tight tabular-nums transition-all" aria-live="polite">
-                {currency.format(weekly)}
+              <p className="text-4xl sm:text-5xl font-bold tracking-tight tabular-nums" aria-live="polite">
+                {currency.format(weeklyMin)}
+                <span className="text-gray-500"> – </span>
+                {currency.format(weeklyMax)}
               </p>
               <div className="mt-6 grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                   <TrendingUp className="w-4 h-4 text-emerald-300 mb-2" />
                   <p className="text-xs text-gray-400">Per month</p>
-                  <p className="text-lg font-bold tabular-nums">{currency.format(monthly)}</p>
+                  <p className="text-lg font-bold tabular-nums">
+                    {currency.format(monthlyMin)}–{currency.format(monthlyMax)}
+                  </p>
                 </div>
                 <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                   <DollarSign className="w-4 h-4 text-amber-300 mb-2" />
                   <p className="text-xs text-gray-400">Hourly rate</p>
-                  <p className="text-lg font-bold tabular-nums">{currency.format(tier.rate)}</p>
+                  <p className="text-lg font-bold tabular-nums">
+                    {currency.format(tier.min)}–{currency.format(tier.max)}
+                  </p>
                 </div>
               </div>
               <p className="mt-6 text-xs text-gray-400 leading-relaxed">
-                Estimates only, based on example rates. Actual pay depends on the project, your skills, and the quality of your work. Income and project availability are not guaranteed.
+                Estimates only. Actual pay depends on the project, your skills, and the quality of your work. Income and project availability are not guaranteed.
               </p>
             </div>
           </div>

@@ -87,7 +87,7 @@ const faqs = [
   },
   {
     q: 'How much can I earn?',
-    a: 'Pay depends on the project, your skill area, and the quality of your work. Rates are shown before you accept a project. There is no guarantee of income or a minimum amount of work.',
+    a: 'Typical rates range from $60–70/hr for developers to $80–90/hr for senior and AI/ML specialists. Pay depends on the project, your skill area, and the quality of your work. Rates are shown before you accept a project. There is no guarantee of income or a minimum amount of work.',
   },
   {
     q: 'How much time do I need to commit?',
