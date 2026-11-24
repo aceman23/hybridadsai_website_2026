@@ -45,6 +45,11 @@ export default function TestimonialsPage({ navigate }: TestimonialsPageProps) {
               const clientQuote = highlight?.quoteFrom
                 ? testimonials.find((t) => t.name === highlight.quoteFrom)
                 : undefined;
+              const shownQuote = clientQuote
+                ? { text: clientQuote.quote, author: clientQuote.name }
+                : highlight?.ceoQuote?.approved
+                  ? { text: highlight.ceoQuote.text, author: `CEO, ${project.name}` }
+                  : undefined;
               return (
                 <AnimateIn key={project.name} delay={Math.min(i, 3) * 60}>
                   <article className="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:border-blue-200 transition-all duration-300 grid md:grid-cols-[280px_1fr]">
@@ -74,11 +79,11 @@ export default function TestimonialsPage({ navigate }: TestimonialsPageProps) {
                       <h3 className="text-xl font-black text-gray-900 mb-1">{project.name}</h3>
                       {highlight && <p className="text-blue-700 font-semibold mb-3">{highlight.headline}</p>}
                       <p className="text-gray-600 leading-relaxed mb-5">{highlight?.summary ?? project.desc}</p>
-                      {clientQuote && (
+                      {shownQuote && (
                         <blockquote className="relative bg-emerald-50 border border-emerald-100 rounded-xl p-5 mb-5">
                           <Quote className="absolute -top-3 left-4 h-6 w-6 text-emerald-600 bg-white rounded-full p-1 border border-emerald-100" aria-hidden="true" />
-                          <p className="text-gray-700 leading-relaxed">"{clientQuote.quote}"</p>
-                          <footer className="mt-2 text-sm font-semibold text-emerald-700">{clientQuote.name}</footer>
+                          <p className="text-gray-700 leading-relaxed">"{shownQuote.text}"</p>
+                          <footer className="mt-2 text-sm font-semibold text-emerald-700">{shownQuote.author}</footer>
                         </blockquote>
                       )}
                       <div className="mt-auto flex flex-wrap gap-1.5">
