@@ -39,6 +39,7 @@ const navLinks: NavLink[] = [
     children: [
       { label: 'About Us', page: 'about' },
       { label: 'Case Studies', page: 'case-studies' },
+      { label: 'Testimonials', page: 'testimonials' },
     ],
   },
 ];
@@ -94,7 +95,7 @@ export default function Header({ currentPage, navigate }: HeaderProps) {
   };
 
   const isAiServicesSection = currentPage === 'gtm-service' || currentPage === 'nemo-claw' || currentPage === 'ai-score' || currentPage === 'content-lab' || currentPage === 'aitraining';
-  const isAboutSection = currentPage === 'about' || currentPage === 'case-studies';
+  const isAboutSection = currentPage === 'about' || currentPage === 'case-studies' || currentPage === 'testimonials';
 
   const isDropdownActive = (link: NavLink) => {
     if (link.label === 'AI Services') return isAiServicesSection;

@@ -46,6 +46,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://hybridads.ai/testimonials</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://hybridads.ai/social-generator</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

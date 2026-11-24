@@ -144,6 +144,21 @@ const pages = [
     ],
   },
   {
+    slug: 'testimonials',
+    title: 'Client Testimonials & Project Results | Hybrid Ads',
+    description:
+      'Read what clients say about Hybrid Ads and see results from every project we have built, newest first: 3X bookings, $0.63 CPC ad campaigns, AI platforms and apps.',
+    h1: 'Client Testimonials and Project Results',
+    intro:
+      'Every project Hybrid Ads has built and what it delivered, newest first, plus testimonials from business owners we work with.',
+    bullets: [
+      'BC Automation: 18-page platform with AI-powered admin and lead tracking',
+      'KARLimoLax: 26.7K impressions and 712 clicks at $0.63 CPC',
+      'mySomaLabs: 3X increase in monthly conversions and bookings',
+      'Newport Body Works: 602.6% increase in Book Now clicks',
+    ],
+  },
+  {
     slug: 'social-generator',
     title: 'Social Media Card Generator – Auto Brand Detection | Hybrid Ads',
     description:

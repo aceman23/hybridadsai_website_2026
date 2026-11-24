@@ -14,6 +14,7 @@ const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const NemoClawPage = lazy(() => import('./pages/NemoClawPage'));
 const CaseStudiesPage = lazy(() => import('./pages/CaseStudiesPage'));
+const TestimonialsPage = lazy(() => import('./pages/TestimonialsPage'));
 const SocialMediaGeneratorPage = lazy(() => import('./pages/SocialMediaGeneratorPage'));
 const GTMServicePage = lazy(() => import('./pages/GTMServicePage'));
 const GTMSuccessPage = lazy(() => import('./pages/GTMSuccessPage'));
@@ -26,9 +27,9 @@ const PartnersPage = lazy(() => import('./pages/PartnersPage'));
 const PartnerPortalPage = lazy(() => import('./pages/PartnerPortalPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 
-export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'ai-agency' | 'ai-score' | 'ai-visibility' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace' | 'content-lab' | 'sign-in' | 'sign-up' | 'aitraining' | 'partner-portal' | 'admin';
+export type Page = 'home' | 'dashboard' | 'about' | 'case-studies' | 'testimonials' | 'ai-agency' | 'ai-score' | 'ai-visibility' | 'privacy' | 'terms' | 'nemo-claw' | 'social-generator' | 'gtm-service' | 'gtm-success' | 'gtm-workspace' | 'content-lab' | 'sign-in' | 'sign-up' | 'aitraining' | 'partner-portal' | 'admin';
 
-const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'ai-agency', 'ai-score', 'ai-visibility', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace', 'content-lab', 'sign-in', 'sign-up', 'aitraining', 'partner-portal', 'admin'];
+const KNOWN_PAGES: Page[] = ['home', 'dashboard', 'about', 'case-studies', 'testimonials', 'ai-agency', 'ai-score', 'ai-visibility', 'privacy', 'terms', 'nemo-claw', 'social-generator', 'gtm-service', 'gtm-success', 'gtm-workspace', 'content-lab', 'sign-in', 'sign-up', 'aitraining', 'partner-portal', 'admin'];
 
 const SEO: Record<Page, { title: string; description: string; path: string }> = {
   home: {
@@ -60,6 +61,12 @@ const SEO: Record<Page, { title: string; description: string; path: string }> = 
     description:
       'See how Hybrid Ads delivers measurable results: $476K/month revenue, 602% booking increases, 101.9K Instagram views, and more. Real results for real businesses.',
     path: 'case-studies',
+  },
+  testimonials: {
+    title: 'Client Testimonials & Project Results | Hybrid Ads',
+    description:
+      'Read what clients say about Hybrid Ads and see results from every project we have built, newest first: 3X bookings, $0.63 CPC ad campaigns, AI platforms and apps.',
+    path: 'testimonials',
   },
   'ai-score': {
     title: 'AI Publisher Score – Free AI Visibility Audit | Hybrid Ads',
@@ -229,6 +236,7 @@ function App() {
       case 'dashboard': return <DashboardPage navigate={navigate} />;
       case 'about': return <AboutPage navigate={navigate} />;
       case 'case-studies': return <CaseStudiesPage navigate={navigate} />;
+      case 'testimonials': return <TestimonialsPage navigate={navigate} />;
       case 'ai-agency': return <AIAgencyPage navigate={navigate} />;
       case 'ai-score': return <AIScorePage navigate={navigate} />;
       case 'ai-visibility': return <AIVisibilityPage navigate={navigate} />;

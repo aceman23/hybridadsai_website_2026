@@ -8,6 +8,7 @@
 - [AI Sales Team](https://hybridads.ai/gtm-service): A fully autonomous AI go-to-market sales team for prospecting and outreach.
 - [AI Publisher Score](https://hybridads.ai/ai-score): Free audit of how AI assistants describe your business.
 - [Case Studies](https://hybridads.ai/case-studies): Client results and growth stories.
+- [Testimonials](https://hybridads.ai/testimonials): Client testimonials and results from every project we've built, newest first.
 - [About](https://hybridads.ai/about): The team behind Hybrid Ads.
 
 ## About
