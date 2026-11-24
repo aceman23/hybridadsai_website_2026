@@ -2,14 +2,39 @@
 > AI Systems Integrator and Paid Ads Agency. We make local service businesses visible and recommended inside AI assistants (ChatGPT, Perplexity, Gemini, Google AI Overviews) through AI visibility / GEO services, and we run their paid advertising.
 
 ## Key Pages
-- [AI Paid Training](https://hybridads.ai/aitraining): Developers and AI/ML engineers get paid $60–90/hr to train frontier AI models by reviewing code, designing prompts, guiding AI reasoning, and evaluating model responses. Remote, flexible hours. Process: evaluation, approval, high-skill tasks, income.
+- [AI Paid Training](https://hybridads.ai/aitraining): Developers and AI/ML engineers get paid $60–90/hr to train frontier AI models by reviewing code, designing prompts, guiding AI reasoning, and evaluating model responses. Remote, flexible hours. Includes an earnings calculator. Process: evaluation, approval, high-skill tasks, income.
 - [AI Visibility Services](https://hybridads.ai/ai-visibility): How we make businesses the answer AI recommends: audit, knowledge catalog build, and AI Share of Voice monitoring.
 - [AI Systems Integrator](https://hybridads.ai/ai-agency): Custom AI agents, RAG pipelines, voice AI, and LLM fine-tuning built for production.
 - [AI Sales Team](https://hybridads.ai/gtm-service): A fully autonomous AI go-to-market sales team for prospecting and outreach.
+- [NemoClaw Enterprise AI Agents](https://hybridads.ai/nemo-claw): Secure, sandboxed AI agents built on NVIDIA NemoClaw and NeMo Agent Toolkit for enterprise paid media teams.
+- [AI Content Lab](https://hybridads.ai/content-lab): AI content generator for platform-optimized social posts with tone control and image prompts.
 - [AI Publisher Score](https://hybridads.ai/ai-score): Free audit of how AI assistants describe your business.
+- [Ad Analytics Dashboard](https://hybridads.ai/dashboard): Unified Google, Meta, LinkedIn and TikTok ad data in one AI-powered dashboard.
+- [Social Media Card Generator](https://hybridads.ai/social-generator): Paste a website URL to auto-detect brand colors and logo and generate ready-to-post social cards.
 - [Case Studies](https://hybridads.ai/case-studies): Client results and growth stories.
 - [Testimonials](https://hybridads.ai/testimonials): Client testimonials and results from every project we've built, newest first.
 - [About](https://hybridads.ai/about): The team behind Hybrid Ads.
+
+## Recent Projects (newest first)
+- BC Automation: 18-page platform for an industrial automation firm with CMS, AI image creation, analytics, and lead tracking.
+- KARLimoLax: Luxury transportation website and booking on LimoLogic.io; Meta ads delivered 26.7K impressions and 712 clicks at $0.63 CPC.
+- DapperLimoLax: LAX limousine booking platform with real-time availability, fleet management, and paid ads driving direct bookings.
+- AsterionDB: Enterprise database platform for secure, converged management of unstructured content.
+- Inference Learning Hub: AI education platform on LLM serving, disaggregated inference, and hands-on machine learning.
+- Lifeverse: AI faith community platform including 1Stayz, an AI care system that helps churches retain first-time visitors.
+- mySomaLabs: Website redesign, SEO, and paid ads for a recovery and biohacking lab; 3X increase in monthly conversions and bookings.
+- OpenTranslateAI: Open-source, privacy-first React website translation widget supporting 10+ languages.
+- LimoLogic: AI platform for luxury transportation operators with turnkey websites, booking, chatbots, CRM, and ads.
+- AI Agent Pals: Offline, privacy-first mobile AI companions running open-source LLMs on device.
+- Car Spotting by MotorTrend: AR iOS game using machine learning to identify and collect real cars.
+- MotorTrend App: Official MotorTrend iOS app with streaming shows, news, buyer's guides, and magazine archives.
+
+## Client Results
+- Newport Body Works: 602.6% increase in "Book Now" clicks, 490+ bookings per month.
+- mySomaLabs: 3X increase in monthly conversions and bookings.
+- Brooklynz Pizza Artesia: 1.6K+ website users in 60 days and first-page Google rankings.
+- Paradise Club: Around 60% better conversion from a new Shopify landing page.
+- Bond & Stitch Company: Shopify store launched in 14 days.
 
 ## About
 Hybrid Ads combines paid advertising with AI visibility so clients capture demand that exists today and get recommended for the demand forming through AI search.
