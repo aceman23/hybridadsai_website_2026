@@ -99,17 +99,6 @@ export const recentProjects = [
     screenshot: true,
   },
   {
-    name: 'SnapScanAI',
-    url: 'https://github.com/aceman23/snapscan-landing',
-    category: 'Mobile App',
-    tag: 'Mobile AI App',
-    tagColor: 'bg-green-100 text-green-700',
-    desc: 'AI-powered document scanner with Gemini File Search, cloud sync, local LLM chat, smooth animations, and clean UX. Built for privacy-conscious professionals and remote workers.',
-    stack: ['Next.js 13', 'TypeScript', 'Gemini AI', 'Local LLM'],
-    img: '/SnapScanAI.png',
-    screenshot: true,
-  },
-  {
     name: 'AI Agent Pals',
     url: 'https://ai-agent-pals-26.aura.build/',
     category: 'Mobile App',
@@ -245,10 +234,6 @@ export const projectHighlights: Record<string, { headline: string; summary: stri
   LimoLogic: {
     headline: 'A turnkey growth engine for luxury transportation',
     summary: 'Ready-made websites, instant online booking, AI chat assistants, customer management, and Google, Meta, and TikTok ads in one platform.',
-  },
-  SnapScanAI: {
-    headline: 'Smart document scanning that respects privacy',
-    summary: 'Scan, search, and chat with your documents using AI, with cloud sync and an on-device assistant for remote professionals.',
   },
   'AI Agent Pals': {
     headline: 'AI companions that never leave your phone',
